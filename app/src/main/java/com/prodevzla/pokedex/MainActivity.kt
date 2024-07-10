@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.prodevzla.pokedex.ui.screens.ListScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import kotlinx.serialization.Serializable
 
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController, startDestination = Home) {
                     composable<Home> {
-                        Text("HELLO RENZO")
+                        ListScreen()
                     }
                     composable<Profile> { backStackEntry ->
                         Text(text = "BYE RENZO")
