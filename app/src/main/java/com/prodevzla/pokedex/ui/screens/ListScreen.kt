@@ -27,11 +27,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.model.Pokemon
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
@@ -39,7 +43,7 @@ import com.prodevzla.pokedex.ui.util.CustomScaffold
 import com.prodevzla.pokedex.viewModel.ListViewModel
 
 @Composable
-fun ListScreen(viewModel: ListViewModel = ListViewModel()) {
+fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
 
     val state by viewModel.uiState.collectAsState()
 
@@ -126,14 +130,19 @@ fun PokemonCard(modifier: Modifier = Modifier, pokemon: Pokemon) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
+
             AsyncImage(
-                model = pokemon.image.takeIf { it.isNotEmpty() } ?: R.drawable.pokemon,
-                contentDescription = pokemon.name,
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(pokemon.image.toString())
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
+                contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .height(40.dp)
-                    .offset(y = (-5).dp)
+                    .offset(y = (-8).dp)
             )
+
             Text(
                 text = pokemon.name,
 
@@ -160,8 +169,8 @@ fun PokemonCardPreview() {
     PokedexTheme {
         PokemonCard(
             pokemon = Pokemon(
-                "Charmander",
-                ""
+                4,
+                "Charmander"
             )
         )
     }

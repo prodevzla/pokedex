@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.moshi.retrofit.converter)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.coil.svg)
+    implementation(libs.androidx.hilt.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

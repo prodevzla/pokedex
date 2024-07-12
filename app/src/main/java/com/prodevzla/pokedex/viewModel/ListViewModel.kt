@@ -1,25 +1,33 @@
 package com.prodevzla.pokedex.viewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.prodevzla.pokedex.data.PokemonRepository
 import com.prodevzla.pokedex.model.Pokemon
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ListViewModel : ViewModel() {
+@HiltViewModel
+class ListViewModel @Inject constructor(
+    private val repository: PokemonRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ListUIState())
     val uiState: StateFlow<ListUIState> = _uiState
 
     init {
-        val list = listOf(
-            Pokemon(
-                "Bulbasaur",
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-            ),
-            Pokemon("Charmander", ""),
-            Pokemon("Squirtle", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png")
-        )
-        _uiState.value = ListUIState(list)
+
+        viewModelScope.launch {
+            val response = repository.getPokemonList()
+
+            _uiState.value = _uiState.value.copy(
+                pokemonList = response.getOrNull() ?: emptyList()
+            )
+
+        }
     }
 
     fun onSearchChange(input: String) {
@@ -34,4 +42,3 @@ class ListViewModel : ViewModel() {
         val search: String = "",
     )
 }
-
