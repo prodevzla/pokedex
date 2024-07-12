@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.model.Pokemon
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.util.CustomScaffold
 import com.prodevzla.pokedex.viewModel.ListViewModel
 
@@ -135,6 +136,7 @@ fun PokemonCard(modifier: Modifier = Modifier, pokemon: Pokemon) {
             )
             Text(
                 text = pokemon.name,
+
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 8.dp)
@@ -147,16 +149,20 @@ fun PokemonCard(modifier: Modifier = Modifier, pokemon: Pokemon) {
 @Preview
 @Composable
 fun ListScreenPreview() {
-    ListScreen()
+    PokedexTheme {
+        ListScreen()
+    }
 }
 
 @Preview
 @Composable
 fun PokemonCardPreview() {
-    PokemonCard(
-        pokemon = Pokemon(
-            "Charmander",
-            ""
+    PokedexTheme {
+        PokemonCard(
+            pokemon = Pokemon(
+                "Charmander",
+                ""
+            )
         )
-    )
+    }
 }

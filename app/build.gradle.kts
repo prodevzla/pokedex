@@ -66,6 +66,11 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.coil.compose)
     implementation(libs.hilt.android)
+    implementation(libs.retrofit)
+    implementation(libs.moshi)
+    implementation(libs.moshi.retrofit.converter)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,4 +79,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.hilt.android.compiler)
+    ksp(libs.moshi.kotlin.codegen)
 }

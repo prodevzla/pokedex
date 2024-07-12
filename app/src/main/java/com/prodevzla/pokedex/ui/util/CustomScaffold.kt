@@ -13,9 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
+import com.prodevzla.pokedex.ui.theme.pokemonFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,32 +36,48 @@ fun CustomScaffold(
     Scaffold(
         modifier = modifier,
         topBar = {
-        Column {
-            CenterAlignedTopAppBar(title = {
-                Text(text = title)
-            },
-                colors = TopAppBarColors(
-                    containerColor = Color.Black,
-                    scrolledContainerColor = Color.Black,
-                    navigationIconContentColor = Color.Blue,
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White
+            Column {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = title,
+                            color = Color.Blue,
+                            style = TextStyle(
+                                fontFamily = pokemonFontFamily,
+                                fontSize = 24.sp,
+                                shadow = Shadow(
+                                    color = Color.Red,
+                                    offset = Offset(5.0f, 10.0f),
+                                    blurRadius = 3f
+                                )
+                            )
+                        )
 
+                    },
+                    colors = TopAppBarColors(
+                        containerColor = Color.Black,
+                        scrolledContainerColor = Color.Black,
+                        navigationIconContentColor = Color.Blue,
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White
+
+                    )
                 )
-            )
-            HorizontalDivider()
-        }
-    }) { innerPadding ->
+                HorizontalDivider()
+            }
+        }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF87CEFA),  // Lighter blue
-                        Color(0xFF0000FF), // Darker blue
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF87CEFA),  // Lighter blue
+                            Color(0xFF0000FF), // Darker blue
+                        )
                     )
-                ))
+                )
         ) {
             content()
         }
@@ -62,7 +87,9 @@ fun CustomScaffold(
 @Preview
 @Composable
 fun CustomScaffoldPreview() {
-    CustomScaffold(modifier = Modifier, title = "Custom Scaffold") {
-        Text(text = "Hello")
+    PokedexTheme {
+        CustomScaffold(modifier = Modifier, title = "Custom Scaffold") {
+            Text(text = "Hello")
+        }
     }
 }
