@@ -17,7 +17,7 @@ class ListViewModel : ViewModel() {
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
             ),
             Pokemon("Charmander", ""),
-            Pokemon("Squirtle", "https://pokeapi.co/api/v2/pokemon/7/")
+            Pokemon("Squirtle", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png")
         )
         _uiState.value = ListUIState(list)
     }

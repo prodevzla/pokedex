@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,12 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.prodevzla.pokedex.ui.screens.ListScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.navigationBarColor = this.getColor(R.color.black)
+
         setContent {
             PokedexTheme {
                 val navController = rememberNavController()
@@ -59,7 +57,7 @@ fun GreetingPreview() {
 object Home
 
 // Define a profile destination that takes an ID
-@Serializable
+@kotlinx.serialization.Serializable
 data class Profile(val id: String)
 
 //Add dependencies

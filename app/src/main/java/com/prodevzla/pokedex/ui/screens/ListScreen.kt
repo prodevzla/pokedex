@@ -48,9 +48,7 @@ fun ListScreen(viewModel: ListViewModel = ListViewModel()) {
         PokemonList(
             state = state,
             focusRequester = focusRequester,
-            onSearchChange = { viewModel.onSearchChange(it) }
-
-
+            onSearchChange = viewModel::onSearchChange
         )
     }
 }
