@@ -8,9 +8,9 @@ import javax.inject.Singleton
 @Singleton
 class PokemonRepositoryImpl @Inject constructor(private val service: Service): PokemonRepository {
 
-    override suspend fun getPokemonList(): Result<List<Pokemon>> {
+    override suspend fun getPokemonList(limit: Int, offset: Int): Result<List<Pokemon>> {
         try {
-            val response = service.getPokemonList()
+            val response = service.getPokemonList(limit, offset)
 
             return Result.success(response.body()?.results?.map {
                 it.toPokemon()

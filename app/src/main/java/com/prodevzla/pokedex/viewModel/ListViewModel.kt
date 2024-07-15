@@ -15,6 +15,9 @@ class ListViewModel @Inject constructor(
     private val repository: PokemonRepository
 ) : ViewModel() {
 
+    private var offset = 0
+    private val limit = 20
+
     private val _uiState = MutableStateFlow(ListUIState())
     val uiState: StateFlow<ListUIState> = _uiState
 
@@ -22,14 +25,20 @@ class ListViewModel @Inject constructor(
 //        field = MutableStateFlow(ListUIState())
 
     init {
+        loadMorePokemon()
+    }
 
+    fun loadMorePokemon() {
         viewModelScope.launch {
-            val response = repository.getPokemonList()
+            val response = repository.getPokemonList(limit, offset)
+
+            val newPokemonList = _uiState.value.pokemonList + (response.getOrNull() ?: emptyList())
 
             _uiState.value = _uiState.value.copy(
-                pokemonList = response.getOrNull() ?: emptyList()
+                pokemonList = newPokemonList
             )
 
+            offset += limit
         }
     }
 
@@ -41,7 +50,7 @@ class ListViewModel @Inject constructor(
     }
 
     data class ListUIState(
-        val pokemonList: List<Pokemon> = emptyList(),
+        val pokemonList: List<Pokemon> = mutableListOf(),
         val search: String = "",
     )
 }

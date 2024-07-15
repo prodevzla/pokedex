@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.coil.svg)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.paging.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
