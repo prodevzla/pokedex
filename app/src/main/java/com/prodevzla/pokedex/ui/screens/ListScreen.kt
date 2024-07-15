@@ -17,7 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -92,7 +95,7 @@ fun ColumnScope.PokemonList(
             .align(Alignment.CenterHorizontally)
             .background(
                 color = Color.Blue,
-                shape = shape
+                shape = shape,
             ),
         value = state.search,
         shape = shape,
@@ -100,7 +103,10 @@ fun ColumnScope.PokemonList(
         maxLines = 1,
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Center,
-            color = Color.White
+            color = Color.White,
+        ),
+        colors = OutlinedTextFieldDefaults.colors().copy(
+            cursorColor = Color.White
         )
     )
 

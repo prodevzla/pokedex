@@ -41,12 +41,12 @@ fun CustomScaffold(
                     title = {
                         Text(
                             text = title,
-                            color = Color.Blue,
+                            color = Color.Black,
                             style = TextStyle(
                                 fontFamily = pokemonFontFamily,
                                 fontSize = 24.sp,
                                 shadow = Shadow(
-                                    color = Color.Red,
+                                    color = Color.Blue,
                                     offset = Offset(5.0f, 10.0f),
                                     blurRadius = 3f
                                 )
