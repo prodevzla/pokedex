@@ -10,27 +10,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -58,23 +51,24 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
 
     val focusRequester = remember { FocusRequester() }
 
-    val lazyGridState = rememberLazyGridState()
+    StateLessListScreen(
+        state = state,
+        focusRequester = focusRequester,
+        onSearchChange = viewModel::onSearchChange
+    )
+}
 
-    LaunchedEffect(lazyGridState) {
-        snapshotFlow { lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
-            .collect { lastVisibleItemIndex ->
-                if (lastVisibleItemIndex == state.pokemonList.size - 1) {
-                    viewModel.loadMorePokemon()
-                }
-            }
-    }
-
+@Composable
+fun StateLessListScreen(
+    state: ListViewModel.ListUIState,
+    focusRequester: FocusRequester,
+    onSearchChange: (String) -> Unit = {},
+) {
     CustomScaffold(title = "Pokedex") {
         PokemonList(
             state = state,
             focusRequester = focusRequester,
-            lazyGridState = lazyGridState,
-            onSearchChange = viewModel::onSearchChange
+            onSearchChange = onSearchChange
         )
     }
 }
@@ -83,7 +77,6 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
 fun ColumnScope.PokemonList(
     state: ListViewModel.ListUIState,
     focusRequester: FocusRequester,
-    lazyGridState: LazyGridState,
     onSearchChange: (String) -> Unit,
 ) {
 
@@ -131,8 +124,18 @@ fun ColumnScope.PokemonList(
 
     Spacer(modifier = Modifier.height(16.dp))
 
+    if (state.isLoading) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.White
+            )
+        }
+
+        return
+    }
+
     LazyVerticalGrid(
-        state = lazyGridState,
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
@@ -153,8 +156,7 @@ fun PokemonCard(modifier: Modifier = Modifier, pokemon: Pokemon) {
         shape = RoundedCornerShape(8.dp)
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
 
             AsyncImage(
@@ -185,7 +187,34 @@ fun PokemonCard(modifier: Modifier = Modifier, pokemon: Pokemon) {
 @Composable
 fun ListScreenPreview() {
     PokedexTheme {
-        ListScreen()
+        StateLessListScreen(
+            state = ListViewModel.ListUIState(
+                isLoading = false,
+                pokemonList = listOf(
+                    Pokemon(
+                        id = 6885,
+                        name = "Neva Wright",
+                    )
+                ),
+                search = "Charmander"
+            ),
+            focusRequester = FocusRequester(),
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ListScreenLoadingPreview() {
+    PokedexTheme {
+        StateLessListScreen(
+            state = ListViewModel.ListUIState(
+                isLoading = true,
+                pokemonList = listOf(),
+                search = "Charmander"
+            ),
+            focusRequester = FocusRequester(),
+        )
     }
 }
 

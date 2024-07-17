@@ -28,19 +28,28 @@ class ListViewModel @Inject constructor(
         loadMorePokemon()
     }
 
-    fun loadMorePokemon() {
-        viewModelScope.launch {
-            val response = repository.getPokemonList(limit, offset)
+    fun loadMorePokemon() = viewModelScope.launch {
+        when (val response = repository.getPokemonList(limit, offset)) {
+            is com.prodevzla.pokedex.model.Result.Error -> {
+                println("error: ${response.error.name}")
+            }
 
-            val newPokemonList = _uiState.value.pokemonList + (response.getOrNull() ?: emptyList())
+            is com.prodevzla.pokedex.model.Result.Success -> {
+                val newPokemonList =
+                    _uiState.value.pokemonList + response.data
 
-            _uiState.value = _uiState.value.copy(
-                pokemonList = newPokemonList
-            )
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    pokemonList = newPokemonList
+                )
 
-            offset += limit
+                offset += limit
+
+            }
         }
+
     }
+
 
     fun onSearchChange(input: String) {
         println("input: $input")
@@ -50,6 +59,7 @@ class ListViewModel @Inject constructor(
     }
 
     data class ListUIState(
+        val isLoading: Boolean = true,
         val pokemonList: List<Pokemon> = mutableListOf(),
         val search: String = "",
     )
