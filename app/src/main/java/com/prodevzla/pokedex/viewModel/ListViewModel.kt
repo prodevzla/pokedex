@@ -30,11 +30,10 @@ class ListViewModel @Inject constructor(
     }
 
     fun loadMorePokemon() = viewModelScope.launch {
-        updateUiState {
-            copy(
-                isLoading = offset == 0,
+        _uiState.value = _uiState.value.copy(
+            isLoading = offset == 0,
+
             )
-        }
         when (val response = repository.getPokemonList(limit, offset)) {
             is Result.Error -> {
                 println("error: ${response.error.name}")
@@ -44,12 +43,10 @@ class ListViewModel @Inject constructor(
                 val newPokemonList =
                     _uiState.value.pokemonList + response.data
 
-                updateUiState {
-                    copy(
-                        isLoading = false,
-                        pokemonList = newPokemonList,
-                    )
-                }
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    pokemonList = newPokemonList,
+                )
 
                 offset += limit
 
@@ -58,21 +55,11 @@ class ListViewModel @Inject constructor(
 
     }
 
-    private fun updateUiState(update: ListUIState.() -> ListUIState) {
-        _uiState.value = _uiState.value.update()
-    }
-
     fun onSearchChange(input: String) {
         println("input: $input")
         _uiState.value = _uiState.value.copy(
             search = input,
         )
-
-        updateUiState {
-            copy(
-                search = input
-            )
-        }
     }
 
     data class ListUIState(
