@@ -15,7 +15,6 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val repository: PokemonRepository
 ) : ViewModel() {
-
     private var offset = 0
     private val limit = 20
 
@@ -30,9 +29,9 @@ class ListViewModel @Inject constructor(
     }
 
     fun loadMorePokemon() = viewModelScope.launch {
-        _uiState.value = _uiState.value.copy(
-            isLoading = offset == 0,
-
+        _uiState.value =
+            _uiState.value.copy(
+                isLoading = offset == 0,
             )
         when (val response = repository.getPokemonList(limit, offset)) {
             is Result.Error -> {
@@ -40,26 +39,25 @@ class ListViewModel @Inject constructor(
             }
 
             is Result.Success -> {
-                val newPokemonList =
-                    _uiState.value.pokemonList + response.data
+                val newPokemonList = _uiState.value.pokemonList + response.data
 
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    pokemonList = newPokemonList,
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        pokemonList = newPokemonList,
+                    )
 
                 offset += limit
-
             }
         }
-
     }
 
     fun onSearchChange(input: String) {
         println("input: $input")
-        _uiState.value = _uiState.value.copy(
-            search = input,
-        )
+        _uiState.value =
+            _uiState.value.copy(
+                search = input,
+            )
     }
 
     data class ListUIState(
