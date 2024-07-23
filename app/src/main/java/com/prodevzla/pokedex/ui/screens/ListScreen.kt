@@ -77,7 +77,9 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
     }
 
     StateLessListScreen(
-        state = state,
+        search = state.search,
+        isLoading = state.isLoading,
+        pokemonList = state.pokemonList,
         context = context,
         lazyGridState = lazyGridState,
         focusRequester = focusRequester,
@@ -87,20 +89,50 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
 
 @Composable
 fun StateLessListScreen(
-    state: ListViewModel.ListUIState,
+    modifier: Modifier = Modifier,
+    search: String,
+    isLoading: Boolean,
+    pokemonList: List<Pokemon>,
     context: Context,
     lazyGridState: LazyGridState,
     focusRequester: FocusRequester,
     onSearchChange: (String) -> Unit = {},
 ) {
     CustomScaffold(title = "Pokedex") {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Image(
+            modifier = modifier.height(100.dp),
+            painter = painterResource(id = R.drawable.pokemon),
+            contentDescription = "pokemon",
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SearchBar(
+            modifier = modifier.fillMaxWidth(),
+            focusRequester = focusRequester,
+            search = search,
+            onSearchChange = onSearchChange,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (isLoading) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White,
+                )
+            }
+
+            return@CustomScaffold
+        }
         PokemonList(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             context = context,
-            state = state,
+            items = pokemonList,
             lazyGridState = lazyGridState,
-            focusRequester = focusRequester,
-            onSearchChange = onSearchChange,
         )
     }
 }
@@ -109,47 +141,16 @@ fun StateLessListScreen(
 fun PokemonList(
     modifier: Modifier = Modifier,
     context: Context,
-    state: ListViewModel.ListUIState,
+    items: List<Pokemon>,
     lazyGridState: LazyGridState,
-    focusRequester: FocusRequester,
-    onSearchChange: (String) -> Unit,
 ) {
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Image(
-        modifier = modifier.height(100.dp),
-        painter = painterResource(id = R.drawable.pokemon),
-        contentDescription = "pokemon",
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    SearchBar(
-        modifier = modifier.fillMaxWidth(),
-        focusRequester = focusRequester,
-        state = state,
-        onSearchChange = onSearchChange,
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    if (state.isLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-                color = Color.White,
-            )
-        }
-
-        return
-    }
-
     LazyVerticalGrid(
+        modifier = modifier,
         state = lazyGridState,
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
     ) {
-        items(state.pokemonList) { item ->
+        items(items) { item ->
             PokemonCard(context = context, pokemon = item)
         }
 
@@ -173,7 +174,7 @@ fun PokemonList(
 fun SearchBar(
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester,
-    state: ListViewModel.ListUIState,
+    search: String,
     onSearchChange: (String) -> Unit,
 ) {
     val shape =
@@ -193,7 +194,7 @@ fun SearchBar(
                     color = Color.Blue,
                     shape = shape,
                 ),
-        value = state.search,
+        value = search,
         shape = shape,
         onValueChange = onSearchChange,
         maxLines = 1,
@@ -256,23 +257,26 @@ fun PokemonCard(
 @Preview
 @Composable
 fun ListScreenPreview() {
+    val state =
+        ListViewModel.ListUIState(
+            isLoading = false,
+            pokemonList =
+                listOf(
+                    Pokemon(
+                        id = 6885,
+                        name = "Charmander",
+                    ),
+                ),
+            search = "Charmander",
+        )
     PokedexTheme {
         StateLessListScreen(
-            state =
-                ListViewModel.ListUIState(
-                    isLoading = false,
-                    pokemonList =
-                        listOf(
-                            Pokemon(
-                                id = 6885,
-                                name = "Charmander",
-                            ),
-                        ),
-                    search = "Charmander",
-                ),
             context = LocalContext.current,
             lazyGridState = LazyGridState(),
             focusRequester = FocusRequester(),
+            search = state.search,
+            isLoading = state.isLoading,
+            pokemonList = state.pokemonList,
         )
     }
 }
@@ -280,17 +284,20 @@ fun ListScreenPreview() {
 @Preview
 @Composable
 fun ListScreenLoadingPreview() {
+    val state =
+        ListViewModel.ListUIState(
+            isLoading = true,
+            pokemonList = listOf(),
+            search = "Charmander",
+        )
     PokedexTheme {
         StateLessListScreen(
-            state =
-                ListViewModel.ListUIState(
-                    isLoading = true,
-                    pokemonList = listOf(),
-                    search = "Charmander",
-                ),
             context = LocalContext.current,
             lazyGridState = LazyGridState(),
             focusRequester = FocusRequester(),
+            search = state.search,
+            isLoading = state.isLoading,
+            pokemonList = state.pokemonList,
         )
     }
 }
