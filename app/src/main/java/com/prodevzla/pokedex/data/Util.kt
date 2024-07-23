@@ -7,7 +7,7 @@ import retrofit2.Response
 internal inline fun <T, R> executeNetworkCall(
     networkCall: () -> Response<T>,
     processResponse: (T?) -> R
-): Result<R, DataError.Network> {
+): Result<R> {
     return try {
         val response = networkCall()
         if (response.isSuccessful) {

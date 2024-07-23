@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.data.PokemonRepository
 import com.prodevzla.pokedex.model.Pokemon
+import com.prodevzla.pokedex.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,19 +30,26 @@ class ListViewModel @Inject constructor(
     }
 
     fun loadMorePokemon() = viewModelScope.launch {
+        updateUiState {
+            copy(
+                isLoading = offset == 0,
+            )
+        }
         when (val response = repository.getPokemonList(limit, offset)) {
-            is com.prodevzla.pokedex.model.Result.Error -> {
+            is Result.Error -> {
                 println("error: ${response.error.name}")
             }
 
-            is com.prodevzla.pokedex.model.Result.Success -> {
+            is Result.Success -> {
                 val newPokemonList =
                     _uiState.value.pokemonList + response.data
 
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    pokemonList = newPokemonList
-                )
+                updateUiState {
+                    copy(
+                        isLoading = false,
+                        pokemonList = newPokemonList,
+                    )
+                }
 
                 offset += limit
 
@@ -50,12 +58,21 @@ class ListViewModel @Inject constructor(
 
     }
 
+    private fun updateUiState(update: ListUIState.() -> ListUIState) {
+        _uiState.value = _uiState.value.update()
+    }
 
     fun onSearchChange(input: String) {
         println("input: $input")
         _uiState.value = _uiState.value.copy(
             search = input,
         )
+
+        updateUiState {
+            copy(
+                search = input
+            )
+        }
     }
 
     data class ListUIState(
