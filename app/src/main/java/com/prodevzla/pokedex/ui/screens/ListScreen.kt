@@ -102,7 +102,9 @@ fun StateLessListScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Image(
-            modifier = modifier.height(100.dp),
+            modifier = modifier
+                .height(100.dp)
+                .align(Alignment.CenterHorizontally),
             painter = painterResource(id = R.drawable.pokemon),
             contentDescription = "pokemon",
         )
@@ -156,10 +158,9 @@ fun PokemonList(
 
         item(span = { GridItemSpan(2) }) {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
@@ -177,36 +178,32 @@ fun SearchBar(
     search: String,
     onSearchChange: (String) -> Unit,
 ) {
-    val shape =
-        RoundedCornerShape(
-            topStartPercent = 50,
-            topEndPercent = 5,
-            bottomEndPercent = 50,
-            bottomStartPercent = 5,
-        )
+    val shape = RoundedCornerShape(
+        topStartPercent = 50,
+        topEndPercent = 5,
+        bottomEndPercent = 50,
+        bottomStartPercent = 5,
+    )
 
     OutlinedTextField(
-        modifier =
-            modifier
-                .focusRequester(focusRequester)
-                .padding(horizontal = 16.dp)
-                .background(
-                    color = Color.Blue,
-                    shape = shape,
-                ),
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .padding(horizontal = 16.dp)
+            .background(
+                color = Color.Blue,
+                shape = shape,
+            ),
         value = search,
         shape = shape,
         onValueChange = onSearchChange,
         maxLines = 1,
-        textStyle =
-            LocalTextStyle.current.copy(
-                textAlign = TextAlign.Center,
-                color = Color.White,
-            ),
-        colors =
-            OutlinedTextFieldDefaults.colors().copy(
-                cursorColor = Color.White,
-            ),
+        textStyle = LocalTextStyle.current.copy(
+            textAlign = TextAlign.Center,
+            color = Color.White,
+        ),
+        colors = OutlinedTextFieldDefaults.colors().copy(
+            cursorColor = Color.White,
+        ),
     )
 }
 
@@ -217,38 +214,32 @@ fun PokemonCard(
     pokemon: Pokemon,
 ) {
     Card(
-        modifier =
-            modifier
-                .height(120.dp)
-                .padding(8.dp),
-        // distance between cards
+        modifier = modifier
+            .height(120.dp)
+            .padding(8.dp), // distance between cards
         shape = RoundedCornerShape(8.dp),
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 model =
-                    ImageRequest
-                        .Builder(context)
-                        .data(pokemon.image.toString())
-                        .placeholder(R.drawable.pokemon)
-                        .decoderFactory(SvgDecoder.Factory())
-                        .build(),
+                ImageRequest
+                    .Builder(context)
+                    .data(pokemon.image.toString())
+                    .placeholder(R.drawable.pokemon)
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
                 contentDescription = null,
-                modifier =
-                    Modifier
-                        .align(Alignment.Center)
-                        .height(40.dp)
-                        .offset(y = (-8).dp),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .height(40.dp)
+                    .offset(y = (-8).dp),
             )
 
             Text(
                 text = pokemon.name,
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 8.dp),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp),
             )
         }
     }
@@ -261,12 +252,12 @@ fun ListScreenPreview() {
         ListViewModel.ListUIState(
             isLoading = false,
             pokemonList =
-                listOf(
-                    Pokemon(
-                        id = 6885,
-                        name = "Charmander",
-                    ),
+            listOf(
+                Pokemon(
+                    id = 6885,
+                    name = "Charmander",
                 ),
+            ),
             search = "Charmander",
         )
     PokedexTheme {
@@ -308,10 +299,10 @@ fun PokemonCardPreview() {
     PokedexTheme {
         PokemonCard(
             pokemon =
-                Pokemon(
-                    4,
-                    "Charmander",
-                ),
+            Pokemon(
+                4,
+                "Charmander",
+            ),
             context = LocalContext.current,
         )
     }
