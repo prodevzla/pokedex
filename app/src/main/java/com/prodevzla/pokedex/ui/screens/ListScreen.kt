@@ -76,6 +76,10 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
         }
     }
 
+    val onSearchChange: (String) -> Unit = remember(viewModel) {
+        return@remember viewModel::onSearchChange
+    }
+
     StateLessListScreen(
         search = state.search,
         isLoading = state.isLoading,
@@ -83,8 +87,9 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
         context = context,
         lazyGridState = lazyGridState,
         focusRequester = focusRequester,
-        onSearchChange = viewModel::onSearchChange,
+        onSearchChange = onSearchChange,
     )
+
 }
 
 @Composable
@@ -99,6 +104,7 @@ fun StateLessListScreen(
     onSearchChange: (String) -> Unit = {},
 ) {
     CustomScaffold(title = "Pokedex") {
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Image(
@@ -131,11 +137,11 @@ fun StateLessListScreen(
             return@CustomScaffold
         }
         PokemonList(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
             context = context,
             items = pokemonList,
             lazyGridState = lazyGridState,
         )
+
     }
 }
 
@@ -152,7 +158,7 @@ fun PokemonList(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
     ) {
-        items(items) { item ->
+        items(items, key = { it.id }) { item ->
             PokemonCard(context = context, pokemon = item)
         }
 
@@ -252,7 +258,7 @@ fun ListScreenPreview() {
         ListViewModel.ListUIState(
             isLoading = false,
             pokemonList =
-            listOf(
+            mutableListOf(
                 Pokemon(
                     id = 6885,
                     name = "Charmander",
@@ -278,7 +284,7 @@ fun ListScreenLoadingPreview() {
     val state =
         ListViewModel.ListUIState(
             isLoading = true,
-            pokemonList = listOf(),
+            pokemonList = mutableListOf(),
             search = "Charmander",
         )
     PokedexTheme {

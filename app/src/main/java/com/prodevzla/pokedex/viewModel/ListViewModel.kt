@@ -8,6 +8,7 @@ import com.prodevzla.pokedex.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,54 +16,51 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val repository: PokemonRepository
 ) : ViewModel() {
+
     private var offset = 0
     private val limit = 20
 
     private val _uiState = MutableStateFlow(ListUIState())
     val uiState: StateFlow<ListUIState> = _uiState
 
-//    val uiState: StateFlow<ListUIState>
-//        field = MutableStateFlow(ListUIState())
-
     init {
         loadMorePokemon()
     }
 
     fun loadMorePokemon() = viewModelScope.launch {
-        _uiState.value =
-            _uiState.value.copy(
-                isLoading = offset == 0,
-            )
-        when (val response = repository.getPokemonList(limit, offset)) {
-            is Result.Error -> {
-                println("error: ${response.error.name}")
-            }
-
-            is Result.Success -> {
-                val newPokemonList = _uiState.value.pokemonList + response.data
-
-                _uiState.value =
-                    _uiState.value.copy(
-                        isLoading = false,
-                        pokemonList = newPokemonList,
-                    )
-
-                offset += limit
-            }
+        if (offset == 0) {
+            _uiState.value = _uiState.value.copy(isLoading = true)
         }
+
+        val response = repository.getPokemonList(limit, offset)
+        if (response is Result.Error) {
+            println("error: ${response.error.name}")
+            return@launch
+        }
+
+        _uiState.update { state ->
+            val newPokemonList = state.pokemonList.toMutableList().apply {
+                addAll((response as Result.Success).data)
+            }
+            state.copy(
+                isLoading = false,
+                pokemonList = newPokemonList
+            )
+        }
+
+        offset += limit
     }
 
     fun onSearchChange(input: String) {
         println("input: $input")
-        _uiState.value =
-            _uiState.value.copy(
-                search = input,
-            )
+        _uiState.value = _uiState.value.copy(
+            search = input,
+        )
     }
 
     data class ListUIState(
         val isLoading: Boolean = true,
-        val pokemonList: List<Pokemon> = mutableListOf(),
+        val pokemonList: List<Pokemon> = emptyList(),
         val search: String = "",
     )
 }
