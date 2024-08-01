@@ -5,13 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.prodevzla.pokedex.ui.screens.ListScreen
+import com.prodevzla.pokedex.presentation.Home
+import com.prodevzla.pokedex.presentation.Pokemon
+import com.prodevzla.pokedex.presentation.list.ListScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     composable<Home> {
                         ListScreen()
                     }
-                    composable<Profile> { backStackEntry ->
+                    composable<Pokemon> { backStackEntry ->
                         Text(text = "BYE RENZO")
                     }
                 }
@@ -37,32 +36,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PokedexTheme {
-        Greeting("Android")
-    }
-}
-
-// Define a home destination that doesn't take any arguments
-@kotlinx.serialization.Serializable
-object Home
-
-// Define a profile destination that takes an ID
-@kotlinx.serialization.Serializable
-data class Profile(val id: String)
-
-//Add dependencies
-//navigation compose
-//hilt
-//retrofit

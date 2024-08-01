@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.model
+package com.prodevzla.pokedex.model.domain
 
 import java.net.URL
 

@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex.data
 
-import com.prodevzla.pokedex.model.DataError
-import com.prodevzla.pokedex.model.Result
+import com.prodevzla.pokedex.model.domain.DataError
+import com.prodevzla.pokedex.model.domain.Result
 import retrofit2.Response
 
 internal inline fun <T, R> executeNetworkCall(

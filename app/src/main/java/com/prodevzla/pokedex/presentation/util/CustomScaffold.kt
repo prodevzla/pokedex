@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.ui.util
+package com.prodevzla.pokedex.presentation.util
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

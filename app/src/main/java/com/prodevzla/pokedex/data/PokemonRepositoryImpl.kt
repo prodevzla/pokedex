@@ -1,8 +1,9 @@
 package com.prodevzla.pokedex.data
 
-import com.prodevzla.pokedex.model.Pokemon
-import com.prodevzla.pokedex.model.Result
+import com.prodevzla.pokedex.model.domain.Pokemon
+import com.prodevzla.pokedex.model.domain.Result
 import com.prodevzla.pokedex.model.api.toPokemon
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +15,7 @@ class PokemonRepositoryImpl @Inject constructor(
         limit: Int,
         offset: Int,
     ): Result<List<Pokemon>> {
+        delay(5000)
         return executeNetworkCall(
             networkCall = { service.getPokemonList(limit, offset) },
             processResponse = { body ->

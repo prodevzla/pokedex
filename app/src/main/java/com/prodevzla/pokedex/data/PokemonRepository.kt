@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex.data
 
-import com.prodevzla.pokedex.model.Pokemon
-import com.prodevzla.pokedex.model.Result
+import com.prodevzla.pokedex.model.domain.Pokemon
+import com.prodevzla.pokedex.model.domain.Result
 
 interface PokemonRepository {
 
