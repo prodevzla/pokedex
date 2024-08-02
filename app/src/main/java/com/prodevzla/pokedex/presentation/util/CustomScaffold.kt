@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
@@ -18,10 +19,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.pokemonFontFamily
+import com.prodevzla.pokedex.ui.utils.ThemePreviews
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,35 +34,32 @@ fun CustomScaffold(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Column {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(
-                            text = title,
-                            color = Color.Black,
-                            style = TextStyle(
-                                fontFamily = pokemonFontFamily,
-                                fontSize = 24.sp,
-                                shadow = Shadow(
-                                    color = Color.Blue,
-                                    offset = Offset(5.0f, 10.0f),
-                                    blurRadius = 3f
-                                )
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = title,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = TextStyle(
+                            fontFamily = pokemonFontFamily,
+                            fontSize = 24.sp,
+                            shadow = Shadow(
+                                color = Color.Blue,
+                                offset = Offset(5.0f, 10.0f),
+                                blurRadius = 3f
                             )
                         )
-
-                    },
-                    colors = TopAppBarColors(
-                        containerColor = Color.Black,
-                        scrolledContainerColor = Color.Black,
-                        navigationIconContentColor = Color.Blue,
-                        titleContentColor = Color.White,
-                        actionIconContentColor = Color.White
-
                     )
+
+                },
+                colors = TopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    scrolledContainerColor = Color.Black,
+                    navigationIconContentColor = Color.Blue,
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+
                 )
-                HorizontalDivider()
-            }
+            )
         }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -70,7 +68,7 @@ fun CustomScaffold(
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFF87CEFA),  // Lighter blue
+                            MaterialTheme.colorScheme.surface,
                             Color(0xFF0000FF), // Darker blue
                         )
                     )
@@ -81,11 +79,11 @@ fun CustomScaffold(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 fun CustomScaffoldPreview() {
     PokedexTheme {
-        CustomScaffold(modifier = Modifier, title = "Custom Scaffold") {
+        CustomScaffold(modifier = Modifier, title = "Pokedex") {
             Text(text = "Hello")
         }
     }
