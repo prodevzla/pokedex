@@ -32,37 +32,22 @@ class ListViewModel @Inject constructor(
             _uiState.value = ListState.Loading
         }
 
-        val response = repository.getPokemonList(limit, offset)
-        if (response is Result.Error) {
-            println("error: ${response.error.name}")
-            _uiState.value = ListState.Error
-            return@launch
-        }
-        (response as Result.Success)
+        when (val response = repository.getPokemonList(limit, offset)) {
+            is Result.Error -> {
+                println("error: ${response.error.name}")
+                _uiState.value = ListState.Error
+            }
 
-        if (_uiState.value is ListState.Loading || _uiState.value is ListState.Error) {
-            _uiState.value = ListState.Content(
-                data = response.data,
-                search = ""
-            )
-        }
+            is Result.Success -> {
+                val newPokemonList = (uiState.value as? ListState.Content)?.data.orEmpty() + response.data
 
-        if (_uiState.value is ListState.Content) {
-            _uiState.update { state ->
-                val currentContent = state as ListState.Content
-                val newList = currentContent.data.toMutableList().apply {
-                    addAll(response.data)
-                }
-
-                currentContent.copy(
-                    data = newList
+                _uiState.value = ListState.Content(
+                    data = newPokemonList,
+                    search = ""
                 )
+                offset += limit
             }
         }
-
-
-
-        offset += limit
     }
 
     fun onSearchChange(input: String) {
@@ -80,9 +65,11 @@ class ListViewModel @Inject constructor(
 }
 
 sealed interface ListState {
-    data object Loading: ListState
+    data object Loading : ListState
 
-    data class Content(val data: List<Pokemon>, val search: String): ListState
+    data class Content(val data: List<Pokemon>, val search: String) : ListState
 
-    data object Error: ListState
+    data object Error : ListState
 }
+
+//TODO -> ADD USECASE

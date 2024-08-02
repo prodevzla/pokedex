@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
-import com.prodevzla.pokedex.ui.utils.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
 
 @Composable
 fun SearchBar(

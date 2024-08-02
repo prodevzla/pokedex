@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -36,9 +35,9 @@ import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
-import com.prodevzla.pokedex.ui.utils.ErrorScreen
-import com.prodevzla.pokedex.ui.utils.LoadingScreen
-import com.prodevzla.pokedex.ui.utils.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.ErrorScreen
+import com.prodevzla.pokedex.presentation.util.LoadingScreen
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
 
 @Composable
 fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
@@ -159,7 +158,7 @@ fun PokemonList(
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.surface,
                 )
             }
         }

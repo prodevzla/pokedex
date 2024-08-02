@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.ui.utils
+package com.prodevzla.pokedex.presentation.util
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview

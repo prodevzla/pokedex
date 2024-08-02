@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.ui.utils
+package com.prodevzla.pokedex.presentation.util
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,9 @@ fun ErrorScreen(modifier: Modifier = Modifier, tryAgain: () -> Unit = {}) {
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     GenericContent(modifier) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.surface,
+        )
     }
 }
 

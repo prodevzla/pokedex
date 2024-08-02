@@ -1,7 +1,6 @@
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -11,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +23,7 @@ import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
-import com.prodevzla.pokedex.ui.utils.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
 
 @Composable
 fun PokemonCard(
