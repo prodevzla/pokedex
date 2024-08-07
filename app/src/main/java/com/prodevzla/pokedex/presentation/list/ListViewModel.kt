@@ -2,19 +2,20 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prodevzla.pokedex.data.PokemonRepository
+import com.prodevzla.pokedex.domain.GetPokemonsUseCase
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val repository: PokemonRepository
+    private val getPokemonsUseCase: GetPokemonsUseCase
 ) : ViewModel() {
 
     private var offset = 0
@@ -27,27 +28,18 @@ class ListViewModel @Inject constructor(
         loadMorePokemon()
     }
 
-    fun loadMorePokemon() = viewModelScope.launch {
-        if (offset == 0) {
-            _uiState.value = ListState.Loading
-        }
+    fun loadMorePokemon() {
+        if (offset == 0) _uiState.value = ListState.Loading
 
-        when (val response = repository.getPokemonList(limit, offset)) {
-            is Result.Error -> {
-                println("error: ${response.error.name}")
-                _uiState.value = ListState.Error
-            }
-
-            is Result.Success -> {
-                val newPokemonList = (uiState.value as? ListState.Content)?.data.orEmpty() + response.data
-
-                _uiState.value = ListState.Content(
-                    data = newPokemonList,
+        getPokemonsUseCase.invoke(limit, offset).onEach { response ->
+            _uiState.value = when (response) {
+                is Result.Error -> ListState.Error
+                is Result.Success -> ListState.Content(
+                    data = (uiState.value as? ListState.Content)?.data.orEmpty() + response.data,
                     search = ""
-                )
-                offset += limit
+                ).also { offset += limit }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun onSearchChange(input: String) {
@@ -61,7 +53,6 @@ class ListViewModel @Inject constructor(
         }
     }
 
-
 }
 
 sealed interface ListState {
@@ -71,5 +62,3 @@ sealed interface ListState {
 
     data object Error : ListState
 }
-
-//TODO -> ADD USECASE
