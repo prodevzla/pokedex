@@ -4,4 +4,7 @@ package com.prodevzla.pokedex.presentation
 object Home
 
 @kotlinx.serialization.Serializable
-data class Pokemon(val id: String)
+object Pokemon
+
+@kotlinx.serialization.Serializable
+object Favourites

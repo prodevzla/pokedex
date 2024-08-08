@@ -15,7 +15,11 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +44,11 @@ import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 
 @Composable
-fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
+fun ListScreen(
+    viewModel: ListViewModel = hiltViewModel(),
+    onClickNavIcon: () -> Unit,
+    onClickPokemon: (Int) -> Unit,
+) {
     val context = LocalContext.current
 
     val state by viewModel.uiState.collectAsState()
@@ -69,13 +77,10 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel()) {
         return@remember viewModel::onSearchChange
     }
 
-    val onClickPokemon: (Pokemon) -> Unit = {
-        Toast.makeText(context, "Pokemon is ${it.name}", Toast.LENGTH_SHORT).show()
-    }
-
     ListContent(
         state = state,
         context = context,
+        onClickNavIcon = onClickNavIcon,
         lazyGridState = lazyGridState,
         focusRequester = focusRequester,
         onSearchChange = onSearchChange,
@@ -89,12 +94,21 @@ fun ListContent(
     modifier: Modifier = Modifier,
     state: ListState,
     context: Context,
+    onClickNavIcon: () -> Unit = {},
     lazyGridState: LazyGridState,
     focusRequester: FocusRequester,
     onSearchChange: (String) -> Unit = {},
-    onClickPokemon: (Pokemon) -> Unit = {},
+    onClickPokemon: (Int) -> Unit = {},
 ) {
-    CustomScaffold(modifier = modifier, title = "Pokedex") {
+    CustomScaffold(
+        modifier = modifier,
+        title = "Pokedex",
+        navIcon = {
+            IconButton(onClick = onClickNavIcon) {
+                Icon(Icons.Filled.Menu, contentDescription = "menu")
+            }
+        }
+    ) {
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
@@ -138,7 +152,7 @@ fun PokemonList(
     context: Context,
     items: List<Pokemon>,
     lazyGridState: LazyGridState,
-    onClickPokemon: (Pokemon) -> Unit,
+    onClickPokemon: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,

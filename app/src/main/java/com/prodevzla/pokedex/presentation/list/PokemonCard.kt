@@ -30,7 +30,7 @@ fun PokemonCard(
     modifier: Modifier = Modifier,
     context: Context,
     pokemon: Pokemon,
-    onClickPokemon: (Pokemon) -> Unit = {},
+    onClickPokemon: (Int) -> Unit = {},
 ) {
     Card(
         modifier = modifier
@@ -45,7 +45,7 @@ fun PokemonCard(
 
         ),
         onClick = {
-            onClickPokemon.invoke(pokemon)
+            onClickPokemon.invoke(pokemon.id)
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
