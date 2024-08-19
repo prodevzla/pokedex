@@ -4,6 +4,8 @@ import com.prodevzla.pokedex.model.api.toPokemon
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,17 +14,17 @@ class PokemonRepositoryImpl @Inject constructor(
     private val service: Service
 ) : PokemonRepository {
 
-    override suspend fun getPokemonList(
+    override fun getPokemonList(
         limit: Int,
         offset: Int,
-    ): Result<List<Pokemon>> {
+    ): Flow<Result<List<Pokemon>>> = flow {
         delay(700)
-        return executeNetworkCall(
+        emit(executeNetworkCall(
             networkCall = { service.getPokemonList(limit, offset) },
             processResponse = { body ->
                 body?.results?.map { it.toPokemon() } ?: emptyList()
             },
-        )
+        ))
     }
 
     override suspend fun getPokemonInfo(name: String): Result<Pokemon> {

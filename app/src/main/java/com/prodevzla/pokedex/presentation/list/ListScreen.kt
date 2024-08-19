@@ -1,8 +1,6 @@
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -29,19 +27,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
-import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import com.prodevzla.pokedex.ui.theme.spacing
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
+import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
 fun ListScreen(
@@ -52,8 +46,6 @@ fun ListScreen(
     val context = LocalContext.current
 
     val state by viewModel.uiState.collectAsState()
-
-    val focusRequester = remember { FocusRequester() }
 
     val lazyGridState = rememberLazyGridState()
 
@@ -73,17 +65,11 @@ fun ListScreen(
         }
     }
 
-    val onSearchChange: (String) -> Unit = remember(viewModel) {
-        return@remember viewModel::onSearchChange
-    }
-
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         lazyGridState = lazyGridState,
-        focusRequester = focusRequester,
-        onSearchChange = onSearchChange,
         onClickPokemon = onClickPokemon,
     )
 
@@ -96,8 +82,6 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     lazyGridState: LazyGridState,
-    focusRequester: FocusRequester,
-    onSearchChange: (String) -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
 ) {
     CustomScaffold(
@@ -109,31 +93,10 @@ fun ListContent(
             }
         }
     ) {
-
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-        Image(
-            modifier = modifier
-                .height(100.dp)
-                .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.pokemon),
-            contentDescription = "pokemon",
-        )
-
         when (state) {
             ListState.Loading -> LoadingScreen()
             ListState.Error -> ErrorScreen()
             is ListState.Content -> {
-
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-                SearchBar(
-                    modifier = modifier.fillMaxWidth(),
-                    focusRequester = focusRequester,
-                    search = state.search,
-                    onSearchChange = onSearchChange,
-                )
-
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 PokemonList(
                     context = context,
@@ -200,7 +163,6 @@ fun ListScreenPreview() {
             state = state,
             context = LocalContext.current,
             lazyGridState = LazyGridState(),
-            focusRequester = FocusRequester()
         )
     }
 }
@@ -214,7 +176,6 @@ fun ListScreenLoadingPreview() {
             state = state,
             context = LocalContext.current,
             lazyGridState = LazyGridState(),
-            focusRequester = FocusRequester()
         )
     }
 }

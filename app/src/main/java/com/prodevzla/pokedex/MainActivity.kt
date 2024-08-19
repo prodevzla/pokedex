@@ -6,24 +6,14 @@ import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -63,30 +53,23 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = { AppDrawer() },
                 ) {
+                    NavHost(navController = navController, startDestination = Home) {
+                        composable<Home> {
+                            ListScreen(
+                                onClickPokemon = { navController.navigate(Pokemon) },
+                                onClickNavIcon = { toggleDrawer(scope, drawerState) }
+                            )
+                        }
+                        composable<Pokemon> { backStackEntry ->
+                            Text(text = "Pokemon Details")
+                        }
 
-                    Scaffold(bottomBar = {
-                        BottomNavigationBar(
-                            navController = navController,
-                            currentRoute = currentRoute
-                        )
-                    }) {
-                        NavHost(navController = navController, startDestination = Home) {
-                            composable<Home> {
-                                ListScreen(
-                                    onClickPokemon = { navController.navigate(Pokemon) },
-                                    onClickNavIcon = { toggleDrawer(scope, drawerState) }
-                                )
-                            }
-                            composable<Pokemon> { backStackEntry ->
-                                Text(text = "Pokemon Details")
-                            }
-
-                            composable<Favourites> {
-                                Text(text = "Favourites")
-                            }
+                        composable<Favourites> {
+                            Text(text = "Favourites")
                         }
                     }
                 }
+
             }
         }
     }
@@ -95,23 +78,5 @@ class MainActivity : ComponentActivity() {
 fun toggleDrawer(scope: CoroutineScope, drawerState: DrawerState) {
     scope.launch {
         if (drawerState.isClosed) drawerState.open() else drawerState.close()
-    }
-}
-
-@Composable
-fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
-    NavigationBar(containerColor = RoyalBlue) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.Home, "Home") },
-            label = { Text(stringResource(R.string.home)) },
-            selected = currentRoute == Home::class.java.name,
-            onClick = { navController.navigate(Home) }
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.Favorite, "Settings") },
-            label = { Text(stringResource(R.string.favourites)) },
-            selected = currentRoute == Favourites::class.java.name,
-            onClick = { navController.navigate(Favourites) }
-        )
     }
 }

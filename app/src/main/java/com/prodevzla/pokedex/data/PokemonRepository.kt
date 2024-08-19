@@ -2,13 +2,14 @@ package com.prodevzla.pokedex.data
 
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
+import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
-    suspend fun getPokemonList(
+    fun getPokemonList(
         limit: Int,
         offset: Int
-    ): Result<List<Pokemon>>
+    ): Flow<Result<List<Pokemon>>>
 
     suspend fun getPokemonInfo(
         name: String

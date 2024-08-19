@@ -13,23 +13,21 @@ class GetPokemonsUseCase(
 ) {
 
     operator fun invoke(limit: Int, offset: Int): Flow<Result<List<Pokemon>>> =
-        flow {
-            emit(repository.getPokemonList(limit, offset))
-        }
-        .map { response ->
-            when (response) {
-                is Result.Error -> response
-                is Result.Success -> Result.Success(
-                    response.data.map { pokemon ->
-                        Pokemon(
-                            id = pokemon.id,
-                            name = pokemon.name,
-                            image = URL(IMAGE_URL + pokemon.id + ".svg")
-                        )
-                    }
-                )
+        repository.getPokemonList(limit, offset)
+            .map { response ->
+                when (response) {
+                    is Result.Error -> response
+                    is Result.Success -> Result.Success(
+                        response.data.map { pokemon ->
+                            Pokemon(
+                                id = pokemon.id,
+                                name = pokemon.name,
+                                image = URL(IMAGE_URL + pokemon.id + ".svg")
+                            )
+                        }
+                    )
+                }
             }
-        }
 
     companion object {
         const val IMAGE_URL =
