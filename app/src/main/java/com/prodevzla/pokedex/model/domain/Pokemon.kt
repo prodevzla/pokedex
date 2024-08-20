@@ -16,7 +16,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
         id = this.id,
         name = this.name,
         //image = URL(this.dreamworld!!)
-        types = this.pokemon_v2_pokemontypes.map { it.type_id },
+        types = this.pokemon_v2_pokemontypes.map { it.type_id!! },
         versions = this.pokemon_v2_pokemongameindices.map { it.id }
     )
 }

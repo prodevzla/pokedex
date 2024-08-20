@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.domain
 
-import com.prodevzla.pokedex.data.PokemonRepository
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
 import kotlinx.coroutines.flow.Flow

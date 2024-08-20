@@ -2,8 +2,11 @@ package com.prodevzla.pokedex.data
 
 import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.GetPokemonListQuery
+import com.prodevzla.pokedex.GetPokemonTypesQuery
+import com.prodevzla.pokedex.domain.PokemonRepository
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
+import com.prodevzla.pokedex.model.domain.Type
 import com.prodevzla.pokedex.model.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,5 +26,19 @@ class PokemonRepositoryImpl @Inject constructor(
             },
         ))
     }
+
+    override fun getPokemonTypes(): Flow<Result<List<Type>>> = flow {
+        emit(
+            executeApolloCall(
+                networkCall = {
+                    apolloClient.query(GetPokemonTypesQuery())
+                },
+                processResponse = { body ->
+                    body!!.pokemon_v2_type.toDomain()
+                }
+            )
+        )
+    }
+
 
 }

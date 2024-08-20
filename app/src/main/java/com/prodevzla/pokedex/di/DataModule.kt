@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex.di
 
 import com.apollographql.apollo.ApolloClient
-import com.prodevzla.pokedex.data.PokemonRepository
+import com.prodevzla.pokedex.domain.PokemonRepository
 import com.prodevzla.pokedex.data.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.Service
 import com.squareup.moshi.Moshi

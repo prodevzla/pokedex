@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.di
 
 import com.prodevzla.pokedex.data.PokemonRepositoryImpl
+import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.GetPokemonsUseCase
 import dagger.Module
 import dagger.Provides
@@ -14,8 +15,14 @@ object DomainModule {
 
     @Provides
     @Singleton
-    fun provideGetPokemonUseCase(pokemonRepository: PokemonRepositoryImpl): GetPokemonsUseCase {
-        return GetPokemonsUseCase(pokemonRepository)
+    fun provideGetPokemonUseCase(repository: PokemonRepositoryImpl): GetPokemonsUseCase {
+        return GetPokemonsUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPokemonTypesUseCase(repository: PokemonRepositoryImpl): GetPokemonTypesUseCase {
+        return GetPokemonTypesUseCase(repository)
     }
 
 }
