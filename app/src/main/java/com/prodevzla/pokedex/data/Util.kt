@@ -1,5 +1,8 @@
 package com.prodevzla.pokedex.data
 
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Operation
 import com.prodevzla.pokedex.model.domain.DataError
 import com.prodevzla.pokedex.model.domain.Result
 import retrofit2.Response
@@ -21,6 +24,37 @@ internal inline fun <T, R> executeNetworkCall(
                 else -> DataError.Network.UNKNOWN
             }
             Result.Error(error)
+        }
+    } catch (e: Exception) {
+        val error = when (e) {
+            is java.net.UnknownHostException -> DataError.Network.NO_INTERNET
+            is java.net.SocketTimeoutException -> DataError.Network.REQUEST_TIMEOUT
+            is java.io.IOException -> DataError.Network.SERVER_ERROR
+            is kotlinx.serialization.SerializationException -> DataError.Network.SERIALIZATION
+            else -> DataError.Network.UNKNOWN
+        }
+        e.printStackTrace()
+        Result.Error(error)
+    }
+}
+
+internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
+    networkCall: () -> ApolloCall<T>,
+    processResponse: (T?) -> R
+): Result<R> {
+    return try {
+        val response = networkCall().execute()
+        if (response.hasErrors()) {
+//            val error = when (response.code()) {
+//                408 -> DataError.Network.REQUEST_TIMEOUT
+//                429 -> DataError.Network.TOO_MANY_REQUESTS
+//                413 -> DataError.Network.PAYLOAD_TOO_LARGE
+//                500, 502, 503, 504 -> DataError.Network.SERVER_ERROR
+//                else -> DataError.Network.UNKNOWN
+//            }
+            Result.Error(DataError.Network.SERVER_ERROR)
+        } else {
+            Result.Success(processResponse(response.data))
         }
     } catch (e: Exception) {
         val error = when (e) {

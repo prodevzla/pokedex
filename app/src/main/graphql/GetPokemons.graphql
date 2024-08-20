@@ -1,0 +1,22 @@
+query GetPokemonListQuery {
+    pokemon_v2_pokemon {
+        id
+        name
+        height
+        pokemon_v2_pokemongameindices {
+            id
+            pokemon_v2_version {
+                id
+                name
+            }
+        }
+        pokemon_v2_pokemontypes {
+            id
+            type_id
+            pokemon_v2_type {
+                id
+                name
+            }
+        }
+    }
+}

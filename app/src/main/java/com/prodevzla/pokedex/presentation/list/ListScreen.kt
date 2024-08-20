@@ -20,11 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -49,27 +46,10 @@ fun ListScreen(
 
     val lazyGridState = rememberLazyGridState()
 
-    val isAtBottom by remember {
-        derivedStateOf {
-            val layoutInfo = lazyGridState.layoutInfo
-            val visibleItems = layoutInfo.visibleItemsInfo
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val lastVisibleItem = visibleItems.lastOrNull()
-            totalItemsCount > 0 && lastVisibleItem != null && lastVisibleItem.index == totalItemsCount - 1
-        }
-    }
-
-    LaunchedEffect(isAtBottom) {
-        if (isAtBottom) {
-            viewModel.loadMorePokemon()
-        }
-    }
-
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
-        lazyGridState = lazyGridState,
         onClickPokemon = onClickPokemon,
     )
 
@@ -81,7 +61,6 @@ fun ListContent(
     state: ListState,
     context: Context,
     onClickNavIcon: () -> Unit = {},
-    lazyGridState: LazyGridState,
     onClickPokemon: (Int) -> Unit = {},
 ) {
     CustomScaffold(
@@ -101,7 +80,6 @@ fun ListContent(
                 PokemonList(
                     context = context,
                     items = state.data,
-                    lazyGridState = lazyGridState,
                     onClickPokemon = onClickPokemon,
                 )
             }
@@ -114,12 +92,10 @@ fun PokemonList(
     modifier: Modifier = Modifier,
     context: Context,
     items: List<Pokemon>,
-    lazyGridState: LazyGridState,
     onClickPokemon: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
-        state = lazyGridState,
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(MaterialTheme.spacing.small),
     ) {
@@ -162,7 +138,6 @@ fun ListScreenPreview() {
         ListContent(
             state = state,
             context = LocalContext.current,
-            lazyGridState = LazyGridState(),
         )
     }
 }
@@ -175,7 +150,6 @@ fun ListScreenLoadingPreview() {
         ListContent(
             state = state,
             context = LocalContext.current,
-            lazyGridState = LazyGridState(),
         )
     }
 }

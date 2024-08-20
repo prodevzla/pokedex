@@ -1,5 +1,6 @@
 package com.prodevzla.pokedex.di
 
+import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.data.PokemonRepository
 import com.prodevzla.pokedex.data.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.Service
@@ -39,8 +40,16 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun providePokemonRepository(service: Service): PokemonRepository {
-        return PokemonRepositoryImpl(service)
+    fun providePokemonRepository(apolloClient: ApolloClient): PokemonRepository {
+        return PokemonRepositoryImpl(apolloClient)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApolloClient(): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+            .build()
     }
 
 }

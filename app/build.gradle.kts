@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.apollo)
 }
 
 android {
@@ -31,6 +32,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -74,6 +76,7 @@ dependencies {
     implementation(libs.coil.svg)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.apollo.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,4 +86,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.prodevzla.pokedex")
+        introspection {
+            endpointUrl.set("https://beta.pokeapi.co/graphql/v1beta")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
+    }
 }

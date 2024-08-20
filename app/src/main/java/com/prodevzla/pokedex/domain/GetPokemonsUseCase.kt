@@ -4,7 +4,6 @@ import com.prodevzla.pokedex.data.PokemonRepository
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.net.URL
 
@@ -12,8 +11,8 @@ class GetPokemonsUseCase(
     private val repository: PokemonRepository
 ) {
 
-    operator fun invoke(limit: Int, offset: Int): Flow<Result<List<Pokemon>>> =
-        repository.getPokemonList(limit, offset)
+    operator fun invoke(): Flow<Result<List<Pokemon>>> =
+        repository.getPokemonList()
             .map { response ->
                 when (response) {
                     is Result.Error -> response
@@ -28,6 +27,8 @@ class GetPokemonsUseCase(
                     )
                 }
             }
+
+
 
     companion object {
         const val IMAGE_URL =

@@ -1,9 +1,10 @@
 package com.prodevzla.pokedex.data
 
-import com.prodevzla.pokedex.model.api.toPokemon
+import com.apollographql.apollo.ApolloClient
+import com.prodevzla.pokedex.GetPokemonListQuery
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
-import kotlinx.coroutines.delay
+import com.prodevzla.pokedex.model.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -11,18 +12,14 @@ import javax.inject.Singleton
 
 @Singleton // or @ActivityScoped?
 class PokemonRepositoryImpl @Inject constructor(
-    private val service: Service
+    private val apolloClient: ApolloClient,
 ) : PokemonRepository {
 
-    override fun getPokemonList(
-        limit: Int,
-        offset: Int,
-    ): Flow<Result<List<Pokemon>>> = flow {
-        delay(700)
-        emit(executeNetworkCall(
-            networkCall = { service.getPokemonList(limit, offset) },
+    override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
+        emit(executeApolloCall(
+            networkCall = { apolloClient.query(GetPokemonListQuery()) },
             processResponse = { body ->
-                body?.results?.map { it.toPokemon() } ?: emptyList()
+                body!!.pokemon_v2_pokemon.toDomain()
             },
         ))
     }

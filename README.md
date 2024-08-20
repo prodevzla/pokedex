@@ -1,3 +1,5 @@
+--install apollo
+
 --fetch all game versions
     --show game versions filter below the toolbar
 
