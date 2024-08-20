@@ -24,14 +24,4 @@ class PokemonRepositoryImpl @Inject constructor(
         ))
     }
 
-    override suspend fun getPokemonInfo(name: String): Result<Pokemon> {
-        return Result.Success(
-            Pokemon(
-                id = 7040,
-                name = "Agnes Farrell",
-                image = null,
-            ),
-        )
-    }
-
 }

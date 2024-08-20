@@ -8,8 +8,4 @@ interface PokemonRepository {
 
     fun getPokemonList(): Flow<Result<List<Pokemon>>>
 
-    suspend fun getPokemonInfo(
-        name: String
-    ): Result<Pokemon>
-
 }

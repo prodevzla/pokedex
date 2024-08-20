@@ -10,11 +10,11 @@ data class PokemonAPI(
     @Json(name = "url") val url: String, //TODO URL ?
 )
 
-fun PokemonAPI.toPokemon(): Pokemon {
-    val id = this.url.removeSuffix("/").split("/").last().toInt()
-
-    return Pokemon(
-        id = id,
-        name = this.name,
-    )
-}
+//fun PokemonAPI.toPokemon(): Pokemon {
+//    val id = this.url.removeSuffix("/").split("/").last().toInt()
+//
+//    return Pokemon(
+//        id = id,
+//        name = this.name,
+//    )
+//}

@@ -18,11 +18,9 @@ class GetPokemonsUseCase(
                     is Result.Error -> response
                     is Result.Success -> Result.Success(
                         response.data.map { pokemon ->
-                            Pokemon(
-                                id = pokemon.id,
-                                name = pokemon.name,
+                            pokemon.apply {
                                 image = URL(IMAGE_URL + pokemon.id + ".svg")
-                            )
+                            }
                         }
                     )
                 }

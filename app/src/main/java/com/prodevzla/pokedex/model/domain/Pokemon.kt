@@ -3,13 +3,21 @@ package com.prodevzla.pokedex.model.domain
 import com.prodevzla.pokedex.GetPokemonListQuery
 import java.net.URL
 
-data class Pokemon(val id: Int, val name: String, val image: URL? = null)
+data class Pokemon(
+    val id: Int,
+    val name: String,
+    var image: URL? = null,
+    val types: List<Int>,
+    val versions: List<Int>,
+)
 
 fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
     return Pokemon(
         id = this.id,
         name = this.name,
         //image = URL(this.dreamworld!!)
+        types = this.pokemon_v2_pokemontypes.map { it.type_id },
+        versions = this.pokemon_v2_pokemongameindices.map { it.id }
     )
 }
 

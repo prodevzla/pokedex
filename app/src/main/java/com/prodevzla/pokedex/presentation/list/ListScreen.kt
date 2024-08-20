@@ -126,10 +126,14 @@ fun ListScreenPreview() {
             Pokemon(
                 id = 6885,
                 name = "Charmander",
+                types = listOf(),
+                versions = listOf(),
             ),
             Pokemon(
                 id = 6886,
                 name = "Charmeleon",
+                types = listOf(),
+                versions = listOf(),
             ),
         ),
         search = "Charmander",
