@@ -65,10 +65,11 @@ fun PokemonCard(
             )
 
             Text(
-                text = pokemon.name,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = MaterialTheme.spacing.small),
+                text = pokemon.name,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

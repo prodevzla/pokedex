@@ -1,25 +1,22 @@
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,8 +38,8 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
-    val onFilterChangeType: () -> Unit = remember(viewModel) {
-        return@remember viewModel::onFilterChangeType
+    val onClickType: (Int) -> Unit = remember(viewModel) {
+        return@remember viewModel::onClickType
     }
 
     ListContent(
@@ -50,7 +47,7 @@ fun ListScreen(
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
-        onFilterChangeType= onFilterChangeType,
+        onClickType = onClickType,
     )
 
 }
@@ -62,8 +59,10 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
-    onFilterChangeType: () -> Unit = {},
+    onClickType: (Int) -> Unit = {},
 ) {
+    var showTypes by remember { mutableStateOf(false) }
+
     CustomScaffold(
         modifier = modifier,
         title = "Pokedex",
@@ -79,7 +78,9 @@ fun ListContent(
             is ListState.Content -> {
                 FiltersRow(
                     modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-                    onFilterChangeType = onFilterChangeType,
+                    onClickFilterType = {
+                        showTypes = true
+                    },
                 )
 
                 PokemonList(
@@ -87,9 +88,21 @@ fun ListContent(
                     items = state.pokemonList,
                     onClickPokemon = onClickPokemon,
                 )
+
+                if (showTypes) {
+                    FilterTypeBottomSheet(
+                        pokemonTypes = state.pokemonTypes,
+                        onDismiss = { showTypes = false },
+                        onClickType = {
+                            onClickType.invoke(it)
+                            showTypes = false
+                        }
+                    )
+                }
             }
         }
     }
+
 }
 
 @Composable

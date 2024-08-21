@@ -6,7 +6,7 @@ import com.prodevzla.pokedex.GetPokemonTypesQuery
 import com.prodevzla.pokedex.domain.PokemonRepository
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
-import com.prodevzla.pokedex.model.domain.Type
+import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.model.domain.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,7 +27,7 @@ class PokemonRepositoryImpl @Inject constructor(
         ))
     }
 
-    override fun getPokemonTypes(): Flow<Result<List<Type>>> = flow {
+    override fun getPokemonTypes(): Flow<Result<List<PokemonType>>> = flow {
         emit(
             executeApolloCall(
                 networkCall = {

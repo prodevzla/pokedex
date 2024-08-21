@@ -6,7 +6,7 @@ import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.GetPokemonsUseCase
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.Result
-import com.prodevzla.pokedex.model.domain.Type
+import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.model.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ class ListViewModel @Inject constructor(
     private val _pokemonList: Flow<Result<List<Pokemon>>> =
         getPokemonsUseCase.invoke()
 
-    private val _types: Flow<Result<List<Type>>> =
+    private val _types: Flow<Result<List<PokemonType>>> =
         getPokemonTypesUseCase.invoke()
 
     private val _typeFilter = MutableStateFlow(0)
@@ -59,8 +59,8 @@ class ListViewModel @Inject constructor(
                 initialValue = ListState.Loading
             )
 
-    fun onFilterChangeType() {
-        _typeFilter.value = 4
+    fun onClickType(type: Int) {
+        _typeFilter.value = type
     }
 
 }
@@ -70,7 +70,7 @@ sealed interface ListState {
 
     data class Content(
         val pokemonList: List<Pokemon>,
-        val pokemonTypes: List<Type>,
+        val pokemonTypes: List<PokemonType>,
         val typeFilter: String = "ALL GAME VERSIONS"
     ) : ListState
 

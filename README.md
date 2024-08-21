@@ -6,6 +6,8 @@
 
 --create string util class
 
+--re-check how to get the color for each type (get from veekun)
+
 --add module for models
 
 --fetch all game versions

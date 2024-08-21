@@ -14,7 +14,7 @@ import com.prodevzla.pokedex.ui.theme.spacing
 @Composable
 fun FiltersRow(
     modifier: Modifier = Modifier,
-    onFilterChangeType: () -> Unit = {},
+    onClickFilterType: () -> Unit = {},
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -25,7 +25,7 @@ fun FiltersRow(
         FilterButton(
             modifier = Modifier.weight(1f),
             text = "all types",
-            onClick = onFilterChangeType
+            onClick = onClickFilterType
         )
     }
 }
