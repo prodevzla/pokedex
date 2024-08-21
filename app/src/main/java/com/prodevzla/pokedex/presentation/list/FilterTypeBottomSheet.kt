@@ -52,7 +52,7 @@ fun FilterTypeSheetContent(
         item {
             Text(
                 text = "Select type",
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleMedium
             )
         }
 
@@ -62,7 +62,10 @@ fun FilterTypeSheetContent(
                 onClick = { onClickType.invoke(it.id) },
                 shape = RectangleShape
             ) {
-                Text(text = it.name.uppercase())
+                Text(
+                    text = it.name.uppercase(),
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }

@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +24,10 @@ fun FilterButton(
         contentPadding = PaddingValues(0.dp),
         onClick = onClick
     ) {
-        Text(text = text.uppercase())
+        Text(
+            text = text.uppercase(),
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 

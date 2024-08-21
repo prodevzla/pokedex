@@ -15,6 +15,12 @@ private val pokemonFontFamily = FontFamily(
     Font(R.font.pokemon, FontWeight.Bold)
 )
 
+private val standardFontFamily = FontFamily(
+    Font(R.font.comic_neue_light, FontWeight.Light),
+    Font(R.font.comic_neue_regular, FontWeight.Normal),
+    Font(R.font.comic_neue_bold, FontWeight.Bold),
+)
+
 val PokemonTypography = Typography(
     bodyLarge = TextStyle(
         fontFamily = pokemonFontFamily,
@@ -30,10 +36,10 @@ val PokemonTypography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Monospace,
+    titleMedium = TextStyle(
+        fontFamily = standardFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp,
+        fontSize = 14.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
