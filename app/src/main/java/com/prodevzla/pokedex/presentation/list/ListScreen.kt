@@ -21,13 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.domain.Filter
-import com.prodevzla.pokedex.domain.FilterType
 import com.prodevzla.pokedex.model.domain.Pokemon
+import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
-import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -84,11 +83,10 @@ fun ListContent(
                     filters = state.filters,
                     onClickFilter = {
                         when(it) {
-                            FilterType.VERSIONS -> TODO()
-                            FilterType.GENERATIONS -> TODO()
-                            FilterType.TYPES -> showTypes = true
+                            is Filter.Version -> TODO()
+                            is Filter.Generation -> TODO()
+                            is Filter.Type -> showTypes = true
                         }
-
                     },
                 )
 
@@ -117,6 +115,7 @@ fun ListContent(
     }
 
 }
+
 @ThemePreviews
 @Composable
 fun ListScreenPreview() {
@@ -137,23 +136,18 @@ fun ListScreenPreview() {
         ),
         pokemonTypes = emptyList(),
         filters = listOf(
-            Filter(
-                label = "all game versions",
-                type = FilterType.VERSIONS,
+            Filter.Version(
                 weight = 1.5f,
-                color = NeutralGrey,
             ),
-            Filter(
-                label = "all gens",
-                type = FilterType.GENERATIONS,
+            Filter.Generation(
                 weight = 1.0f,
-                color = NeutralGrey,
             ),
-            Filter(
-                label = "all types",
-                type = FilterType.TYPES,
+            Filter.Type(
                 weight = 1.0f,
-                color = NeutralGrey,
+                pokemonType = PokemonType(
+                    id = 10,
+                    name = "Fire"
+                ),
             )
         )
     )

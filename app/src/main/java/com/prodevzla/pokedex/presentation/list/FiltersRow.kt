@@ -8,9 +8,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.prodevzla.pokedex.domain.Filter
-import com.prodevzla.pokedex.domain.FilterType
+import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
-import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -18,7 +17,7 @@ import com.prodevzla.pokedex.ui.theme.spacing
 fun FiltersRow(
     modifier: Modifier = Modifier,
     filters: List<Filter>,
-    onClickFilter: (FilterType) -> Unit = {},
+    onClickFilter: (Filter) -> Unit = {},
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -42,23 +41,18 @@ fun FiltersRowPreview() {
         Surface {
             FiltersRow(
                 filters = listOf(
-                    Filter(
-                        label = "all game versions",
-                        type = FilterType.VERSIONS,
+                    Filter.Version(
                         weight = 1.5f,
-                        color = NeutralGrey,
                     ),
-                    Filter(
-                        label = "all gens",
-                        type = FilterType.GENERATIONS,
+                    Filter.Generation(
                         weight = 1.0f,
-                        color = NeutralGrey,
                     ),
-                    Filter(
-                        label = "all types",
-                        type = FilterType.TYPES,
+                    Filter.Type(
                         weight = 1.0f,
-                        color = NeutralGrey,
+                        pokemonType = PokemonType(
+                            id = 10,
+                            name = "Fire"
+                        ),
                     )
                 )
             )

@@ -1,45 +1,38 @@
 package com.prodevzla.pokedex.domain
 
-import androidx.compose.ui.graphics.Color
 import com.prodevzla.pokedex.model.domain.PokemonType
-import com.prodevzla.pokedex.presentation.list.getColor
-import com.prodevzla.pokedex.ui.theme.NeutralGrey
 
 class GetFiltersUseCase {
 
     operator fun invoke(pokemonTypes: List<PokemonType>, typeFilter: Int): List<Filter> {
         return listOf(
-            Filter(
-                label = "all game versions",
-                type = FilterType.VERSIONS,
+            Filter.Version(
                 weight = 2f,
-                color = NeutralGrey
             ),
-            Filter(
-                label = "all gens",
-                type = FilterType.GENERATIONS,
+            Filter.Generation(
                 weight = 1f,
-                color = NeutralGrey
             ),
-            Filter(
-                label = pokemonTypes.first { it.id == typeFilter }.name,
-                type = FilterType.TYPES,
+            Filter.Type(
                 weight = 1f,
-                color = pokemonTypes.first { it.id == typeFilter }.getColor()
+                pokemonType = pokemonTypes.first { it.id == typeFilter },
             )
         )
     }
 }
 
-data class Filter(
-    val label: String,
-    val type: FilterType,
-    val weight: Float,
-    val color: Color,
-)
+sealed class Filter(open val weight: Float) {
 
-enum class FilterType {
-    VERSIONS,
-    GENERATIONS,
-    TYPES,
+    data class Version(override val weight: Float): Filter(weight)
+
+    data class Generation(override val weight: Float): Filter(weight)
+
+    data class Type(override val weight: Float, val pokemonType: PokemonType): Filter(weight)
+
+    fun getLabel(): String {
+        return when(this) {
+            is Version -> "all game versions"
+            is Generation -> "all gens"
+            is Type -> this.pokemonType.name
+        }
+    }
 }

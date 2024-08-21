@@ -8,37 +8,35 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.domain.Filter
-import com.prodevzla.pokedex.domain.FilterType
+import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
-import com.prodevzla.pokedex.ui.theme.NeutralGrey
+import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
 fun FilterButton(
     modifier: Modifier = Modifier,
     filter: Filter,
-    onClick: (FilterType) -> Unit = {},
+    onClick: (Filter) -> Unit = {},
 ) {
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors().copy(
-            containerColor = filter.color
+            containerColor = filter.getColor()
         ),
         shape = RectangleShape,
         contentPadding = PaddingValues(0.dp),
-        onClick = { onClick(filter.type) }
+        onClick = { onClick(filter) }
     ) {
         Text(
-            text = filter.label.uppercase(),
+            text = filter.getLabel().uppercase(),
             style = MaterialTheme.typography.titleMedium
         )
     }
 }
-
 
 
 @ThemePreviews
@@ -47,11 +45,12 @@ fun FilterButtonPreview() {
     PokedexTheme {
         Surface {
             FilterButton(
-                filter = Filter(
-                    label = "all types",
-                    type = FilterType.TYPES,
-                    weight = 1f,
-                    color = NeutralGrey,
+                filter = Filter.Type(
+                    weight = 1.0f,
+                    pokemonType = PokemonType(
+                        id = 10,
+                        name = "Fire"
+                    ),
                 )
             )
         }
