@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.di
 
 import com.prodevzla.pokedex.data.PokemonRepositoryImpl
+import com.prodevzla.pokedex.domain.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.GetPokemonsUseCase
 import dagger.Module
@@ -24,5 +25,9 @@ object DomainModule {
     fun provideGetPokemonTypesUseCase(repository: PokemonRepositoryImpl): GetPokemonTypesUseCase {
         return GetPokemonTypesUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetFiltersUseCase() = GetFiltersUseCase()
 
 }

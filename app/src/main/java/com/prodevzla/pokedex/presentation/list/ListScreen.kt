@@ -20,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.prodevzla.pokedex.domain.Filter
+import com.prodevzla.pokedex.domain.FilterType
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
@@ -78,8 +80,14 @@ fun ListContent(
             is ListState.Content -> {
                 FiltersRow(
                     modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-                    onClickFilterType = {
-                        showTypes = true
+                    filters = state.filters,
+                    onClickFilter = {
+                        when(it) {
+                            FilterType.VERSIONS -> TODO()
+                            FilterType.GENERATIONS -> TODO()
+                            FilterType.TYPES -> showTypes = true
+                        }
+
                     },
                 )
 
@@ -155,6 +163,23 @@ fun ListScreenPreview() {
             ),
         ),
         pokemonTypes = emptyList(),
+        filters = listOf(
+            Filter(
+                label = "all game versions",
+                type = FilterType.VERSIONS,
+                weight = 1.5f
+            ),
+            Filter(
+                label = "all gens",
+                type = FilterType.GENERATIONS,
+                weight = 1.0f
+            ),
+            Filter(
+                label = "all types",
+                type = FilterType.TYPES,
+                weight = 1.0f
+            )
+        )
     )
     PokedexTheme {
         ListContent(

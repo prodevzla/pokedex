@@ -2,6 +2,8 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.prodevzla.pokedex.domain.Filter
+import com.prodevzla.pokedex.domain.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.GetPokemonsUseCase
 import com.prodevzla.pokedex.model.domain.Pokemon
@@ -21,6 +23,7 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     getPokemonsUseCase: GetPokemonsUseCase,
     getPokemonTypesUseCase: GetPokemonTypesUseCase,
+    getFiltersUseCase: GetFiltersUseCase,
 ) : ViewModel() {
 
 
@@ -42,7 +45,8 @@ class ListViewModel @Inject constructor(
                                 typeFilter
                             )
                         },
-                        pokemonTypes = types.data
+                        pokemonTypes = types.data,
+                        filters = getFiltersUseCase.invoke(types.data, typeFilter),
                     )
                 }
 
@@ -71,7 +75,7 @@ sealed interface ListState {
     data class Content(
         val pokemonList: List<Pokemon>,
         val pokemonTypes: List<PokemonType>,
-        val typeFilter: String = "ALL GAME VERSIONS"
+        val filters: List<Filter>,
     ) : ListState
 
     data object Error : ListState
