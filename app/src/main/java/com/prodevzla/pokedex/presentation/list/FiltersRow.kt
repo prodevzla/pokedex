@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.prodevzla.pokedex.domain.Filter
 import com.prodevzla.pokedex.domain.FilterType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -26,8 +27,9 @@ fun FiltersRow(
         filters.forEach {
             FilterButton(
                 modifier = Modifier.weight(it.weight),
-                text = it.label,
-                onClick = { onClickFilter(it.type) })
+                filter = it,
+                onClick = onClickFilter
+            )
         }
 
     }
@@ -43,17 +45,20 @@ fun FiltersRowPreview() {
                     Filter(
                         label = "all game versions",
                         type = FilterType.VERSIONS,
-                        weight = 1.5f
+                        weight = 1.5f,
+                        color = NeutralGrey,
                     ),
                     Filter(
                         label = "all gens",
                         type = FilterType.GENERATIONS,
-                        weight = 1.0f
+                        weight = 1.0f,
+                        color = NeutralGrey,
                     ),
                     Filter(
                         label = "all types",
                         type = FilterType.TYPES,
-                        weight = 1.0f
+                        weight = 1.0f,
+                        color = NeutralGrey,
                     )
                 )
             )

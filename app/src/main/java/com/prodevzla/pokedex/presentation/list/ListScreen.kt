@@ -27,6 +27,7 @@ import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -91,11 +92,15 @@ fun ListContent(
                     },
                 )
 
-                PokemonList(
-                    context = context,
-                    items = state.pokemonList,
-                    onClickPokemon = onClickPokemon,
-                )
+                LazyVerticalGrid(
+                    modifier = modifier,
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(MaterialTheme.spacing.small),
+                ) {
+                    items(state.pokemonList, key = { it.id }) { item ->
+                        PokemonCard(context = context, pokemon = item, onClickPokemon = onClickPokemon)
+                    }
+                }
 
                 if (showTypes) {
                     FilterTypeBottomSheet(
@@ -112,38 +117,6 @@ fun ListContent(
     }
 
 }
-
-@Composable
-fun PokemonList(
-    modifier: Modifier = Modifier,
-    context: Context,
-    items: List<Pokemon>,
-    onClickPokemon: (Int) -> Unit,
-) {
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(MaterialTheme.spacing.small),
-    ) {
-        items(items, key = { it.id }) { item ->
-            PokemonCard(context = context, pokemon = item, onClickPokemon = onClickPokemon)
-        }
-
-//        item(span = { GridItemSpan(2) }) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(vertical = MaterialTheme.spacing.medium),
-//            ) {
-//                CircularProgressIndicator(
-//                    modifier = Modifier.align(Alignment.Center),
-//                    color = MaterialTheme.colorScheme.surface,
-//                )
-//            }
-//        }
-    }
-}
-
 @ThemePreviews
 @Composable
 fun ListScreenPreview() {
@@ -167,17 +140,20 @@ fun ListScreenPreview() {
             Filter(
                 label = "all game versions",
                 type = FilterType.VERSIONS,
-                weight = 1.5f
+                weight = 1.5f,
+                color = NeutralGrey,
             ),
             Filter(
                 label = "all gens",
                 type = FilterType.GENERATIONS,
-                weight = 1.0f
+                weight = 1.0f,
+                color = NeutralGrey,
             ),
             Filter(
                 label = "all types",
                 type = FilterType.TYPES,
-                weight = 1.0f
+                weight = 1.0f,
+                color = NeutralGrey,
             )
         )
     )

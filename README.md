@@ -2,11 +2,13 @@
 ++fetch all pokemon types
 ++show pokemon types filter below the toolbar
 
---create bottom sheet dialog
+++create bottom sheet dialog
+++re-check how to get the color for each type (get from veekun)
+
+--verify what's the best place for the getColor extension and all the new logic related to colors
 
 --create string util class
 
---re-check how to get the color for each type (get from veekun)
 
 --add module for models
 

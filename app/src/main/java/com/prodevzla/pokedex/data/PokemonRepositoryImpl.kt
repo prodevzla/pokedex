@@ -40,5 +40,4 @@ class PokemonRepositoryImpl @Inject constructor(
         )
     }
 
-
 }

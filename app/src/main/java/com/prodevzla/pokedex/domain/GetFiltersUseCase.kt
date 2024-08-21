@@ -1,6 +1,9 @@
 package com.prodevzla.pokedex.domain
 
+import androidx.compose.ui.graphics.Color
 import com.prodevzla.pokedex.model.domain.PokemonType
+import com.prodevzla.pokedex.presentation.list.getColor
+import com.prodevzla.pokedex.ui.theme.NeutralGrey
 
 class GetFiltersUseCase {
 
@@ -10,16 +13,19 @@ class GetFiltersUseCase {
                 label = "all game versions",
                 type = FilterType.VERSIONS,
                 weight = 2f,
+                color = NeutralGrey
             ),
             Filter(
                 label = "all gens",
                 type = FilterType.GENERATIONS,
                 weight = 1f,
+                color = NeutralGrey
             ),
             Filter(
-                label = pokemonTypes.firstOrNull { it.id == typeFilter }?.name ?: "all types",
+                label = pokemonTypes.first { it.id == typeFilter }.name,
                 type = FilterType.TYPES,
-                weight = 1f
+                weight = 1f,
+                color = pokemonTypes.first { it.id == typeFilter }.getColor()
             )
         )
     }
@@ -29,6 +35,7 @@ data class Filter(
     val label: String,
     val type: FilterType,
     val weight: Float,
+    val color: Color,
 )
 
 enum class FilterType {
