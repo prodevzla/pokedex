@@ -3,9 +3,9 @@ package com.prodevzla.pokedex.model.domain
 import com.prodevzla.pokedex.GetPokemonTypesQuery
 
 data class PokemonType(
-    val id: Int,
-    val name: String,
-)
+    override val id: Int,
+    override val name: String,
+): Filterable
 
 fun GetPokemonTypesQuery.Pokemon_v2_type.toDomain(): PokemonType {
     return PokemonType(

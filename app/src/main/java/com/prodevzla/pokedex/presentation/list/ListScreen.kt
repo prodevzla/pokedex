@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.domain.Filter
 import com.prodevzla.pokedex.model.domain.Pokemon
+import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
@@ -40,6 +41,10 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    val onClickGeneration: (Int) -> Unit = remember(viewModel) {
+        return@remember viewModel::onClickGeneration
+    }
+
     val onClickType: (Int) -> Unit = remember(viewModel) {
         return@remember viewModel::onClickType
     }
@@ -49,11 +54,12 @@ fun ListScreen(
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
+        onClickGeneration = onClickGeneration,
         onClickType = onClickType,
     )
 
 }
-
+//TODO use events pattern
 @Composable
 fun ListContent(
     modifier: Modifier = Modifier,
@@ -61,8 +67,10 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
+    onClickGeneration: (Int) -> Unit = {},
     onClickType: (Int) -> Unit = {},
 ) {
+    var showGenerations by remember { mutableStateOf(false) }
     var showTypes by remember { mutableStateOf(false) }
 
     CustomScaffold(
@@ -84,7 +92,7 @@ fun ListContent(
                     onClickFilter = {
                         when(it) {
                             is Filter.Version -> TODO()
-                            is Filter.Generation -> TODO()
+                            is Filter.Generation -> showGenerations = true
                             is Filter.Type -> showTypes = true
                         }
                     },
@@ -110,6 +118,17 @@ fun ListContent(
                         }
                     )
                 }
+
+                if (showGenerations) {
+                    FilterTypeBottomSheet(
+                        pokemonTypes = state.pokemonGenerations,
+                        onDismiss = { showGenerations = false },
+                        onClickType = {
+                            onClickGeneration.invoke(it)
+                            showGenerations = false
+                        }
+                    )
+                }
             }
         }
     }
@@ -125,13 +144,13 @@ fun ListScreenPreview() {
                 id = 6885,
                 name = "Charmander",
                 types = listOf(),
-                versions = listOf(),
+                generation = 1,
             ),
             Pokemon(
                 id = 6886,
                 name = "Charmeleon",
                 types = listOf(),
-                versions = listOf(),
+                generation = 1,
             ),
         ),
         pokemonTypes = emptyList(),
@@ -141,6 +160,10 @@ fun ListScreenPreview() {
             ),
             Filter.Generation(
                 weight = 1.0f,
+                pokemonGeneration = PokemonGeneration(
+                    id = 1,
+                    name = "Gen I"
+                )
             ),
             Filter.Type(
                 weight = 1.0f,
@@ -149,7 +172,8 @@ fun ListScreenPreview() {
                     name = "Fire"
                 ),
             )
-        )
+        ),
+        pokemonGenerations = emptyList()
     )
     PokedexTheme {
         ListContent(

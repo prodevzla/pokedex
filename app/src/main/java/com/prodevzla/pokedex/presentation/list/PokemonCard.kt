@@ -84,7 +84,7 @@ fun PokemonCardPreview() {
                 id = 4,
                 name = "Charmander",
                 types = listOf(),
-                versions = listOf(),
+                generation = 1,
 
             ),
             context = LocalContext.current,

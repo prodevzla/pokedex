@@ -1,0 +1,25 @@
+package com.prodevzla.pokedex.domain
+
+import com.prodevzla.pokedex.model.domain.PokemonGeneration
+import com.prodevzla.pokedex.model.domain.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class GetPokemonGenerationsUseCase(
+    private val repository: PokemonRepository
+) {
+
+    operator fun invoke(): Flow<Result<List<PokemonGeneration>>> {
+        val allTypesOption = PokemonGeneration(
+            id = 0,
+            name = "all gens"
+        )
+        return repository.getPokemonGenerations().map {
+            when(it) {
+                is Result.Error -> it
+                is Result.Success -> Result.Success(listOf(allTypesOption) + it.data)
+            }
+        }
+    }
+
+}

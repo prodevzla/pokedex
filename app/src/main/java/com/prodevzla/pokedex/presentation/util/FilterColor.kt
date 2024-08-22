@@ -2,6 +2,10 @@ package com.prodevzla.pokedex.presentation.util
 
 import androidx.compose.ui.graphics.Color
 import com.prodevzla.pokedex.domain.Filter
+import com.prodevzla.pokedex.domain.Filter.Generation
+import com.prodevzla.pokedex.domain.Filter.Type
+import com.prodevzla.pokedex.domain.Filter.Version
+import com.prodevzla.pokedex.model.domain.Filterable
 import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.typeBug
@@ -23,11 +27,21 @@ import com.prodevzla.pokedex.ui.theme.typeRock
 import com.prodevzla.pokedex.ui.theme.typeSteel
 import com.prodevzla.pokedex.ui.theme.typeWater
 
+fun Filterable.getColor(): Color {
+    return when(this) {
+        is PokemonType -> getColor()
+//        is Filter.Version -> NeutralGrey
+//        is Filter.Generation -> NeutralGrey
+//        is Filter.Type -> this.pokemonType.getColor()
+        else -> NeutralGrey
+    }
+}
+
 fun Filter.getColor(): Color {
     return when(this) {
-        is Filter.Version -> NeutralGrey
-        is Filter.Generation -> NeutralGrey
-        is Filter.Type -> this.pokemonType.getColor()
+        is Version -> NeutralGrey
+        is Generation -> NeutralGrey
+        is Type -> this.pokemonType.getColor()
     }
 }
 

@@ -7,6 +7,9 @@
 
 --verify what's the best place for the getColor extension and all the new logic related to colors
 
+--check get filter use case
+--create event pattern for onclick
+
 --create string util class
 
 

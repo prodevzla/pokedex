@@ -8,7 +8,7 @@ data class Pokemon(
     val name: String,
     var image: URL? = null,
     val types: List<Int>,
-    val versions: List<Int>,
+    val generation: Int?,
 )
 
 fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
@@ -17,7 +17,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
         name = this.name,
         //image = URL(this.dreamworld!!)
         types = this.pokemon_v2_pokemontypes.map { it.type_id!! },
-        versions = this.pokemon_v2_pokemongameindices.map { it.id }
+        generation = this.pokemon_v2_pokemonforms.firstOrNull()?.pokemon_v2_pokemonformgenerations?.firstOrNull()?.generation_id
     )
 }
 

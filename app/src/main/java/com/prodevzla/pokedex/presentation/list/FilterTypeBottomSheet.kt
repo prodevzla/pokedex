@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import com.prodevzla.pokedex.model.domain.Filterable
 import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
@@ -25,7 +26,7 @@ import com.prodevzla.pokedex.ui.theme.spacing
 @Composable
 fun FilterTypeBottomSheet(
     modifier: Modifier = Modifier,
-    pokemonTypes: List<PokemonType>,
+    pokemonTypes: List<Filterable>,
     onDismiss: () -> Unit = {},
     onClickType: (Int) -> Unit = {}
 ) {
@@ -44,7 +45,7 @@ fun FilterTypeBottomSheet(
 @Composable
 fun FilterTypeSheetContent(
     modifier: Modifier = Modifier,
-    pokemonTypes: List<PokemonType>,
+    pokemonTypes: List<Filterable>,
     onClickType: (Int) -> Unit = {}
 ) {
     LazyColumn(
