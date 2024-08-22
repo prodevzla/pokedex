@@ -1,5 +1,6 @@
 package com.prodevzla.pokedex.domain
 
+import com.prodevzla.pokedex.model.domain.Filterable
 import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
 
@@ -12,9 +13,9 @@ class GetFiltersUseCase {
         pokemonTypes: List<PokemonType>, typeFilter: Int
     ): List<Filter> {
         return listOf(
-            Filter.Version(
-                weight = 2f,
-            ),
+//            Filter.Version(
+//                weight = 2f,
+//            ),
             Filter.Generation(
                 weight = 1f,
                 pokemonGeneration = pokemonGenerations.first { it.id == generationFilter },
@@ -27,27 +28,19 @@ class GetFiltersUseCase {
     }
 }
 
-sealed class Filter(open val weight: Float) {
+sealed class Filter(open val weight: Float, open val selection: Filterable) {
 
-    data class Version(override val weight: Float) : Filter(weight)
+//    data class Version(override val weight: Float) : Filter<PokemonGeneration>(weight)
 
     data class Generation(
         override val weight: Float,
         val pokemonGeneration: PokemonGeneration
-    ) : Filter(weight)
+    ) : Filter(weight, pokemonGeneration)
 
     data class Type(
         override val weight: Float,
         val pokemonType: PokemonType
-    ) : Filter(weight)
-
-    fun getLabel(): String {
-        return when (this) {
-            is Version -> "all game versions"
-            is Generation -> this.pokemonGeneration.name//TODO there is something ODD here
-            is Type -> this.pokemonType.name
-        }
-    }
+    ) : Filter(weight, pokemonType)
 
 
 }

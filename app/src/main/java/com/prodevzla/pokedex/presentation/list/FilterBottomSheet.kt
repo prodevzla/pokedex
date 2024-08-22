@@ -24,9 +24,9 @@ import com.prodevzla.pokedex.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterTypeBottomSheet(
+fun FilterBottomSheet(
     modifier: Modifier = Modifier,
-    pokemonTypes: List<Filterable>,
+    items: List<Filterable>,
     onDismiss: () -> Unit = {},
     onClickType: (Int) -> Unit = {}
 ) {
@@ -35,21 +35,23 @@ fun FilterTypeBottomSheet(
         modifier = modifier,
         onDismissRequest = onDismiss,
     ) {
-        FilterTypeSheetContent(
-            pokemonTypes = pokemonTypes,
+        FilterSheetContent(
+            items = items,
             onClickType = onClickType
         )
     }
 }
 
 @Composable
-fun FilterTypeSheetContent(
+fun FilterSheetContent(
     modifier: Modifier = Modifier,
-    pokemonTypes: List<Filterable>,
+    items: List<Filterable>,
     onClickType: (Int) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.medium),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -59,7 +61,7 @@ fun FilterTypeSheetContent(
             )
         }
 
-        items(pokemonTypes) {
+        items(items) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { onClickType.invoke(it.id) },
@@ -83,8 +85,8 @@ fun FilterTypeSheetContent(
 fun FilterTypeBottomSheetPreview() {
     PokedexTheme {
         Surface {
-            FilterTypeSheetContent(
-                pokemonTypes = listOf(
+            FilterSheetContent(
+                items = listOf(
                     PokemonType(id = 1, name = "normal"),
                     PokemonType(id = 2, name = "fighting"),
                     PokemonType(id = 3, name = "flying"),

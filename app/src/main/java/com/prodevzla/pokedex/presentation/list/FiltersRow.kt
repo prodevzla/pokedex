@@ -42,9 +42,9 @@ fun FiltersRowPreview() {
         Surface {
             FiltersRow(
                 filters = listOf(
-                    Filter.Version(
-                        weight = 1.5f,
-                    ),
+//                    Filter.Version(
+//                        weight = 1.5f,
+//                    ),
                     Filter.Generation(
                         weight = 1.0f,
                         pokemonGeneration = PokemonGeneration(

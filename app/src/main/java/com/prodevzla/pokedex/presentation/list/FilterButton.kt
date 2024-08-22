@@ -32,7 +32,7 @@ fun FilterButton(
         onClick = { onClick(filter) }
     ) {
         Text(
-            text = filter.getLabel().uppercase(),
+            text = filter.selection.name.uppercase(),
             style = MaterialTheme.typography.titleMedium
         )
     }

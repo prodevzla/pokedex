@@ -91,7 +91,7 @@ fun ListContent(
                     filters = state.filters,
                     onClickFilter = {
                         when(it) {
-                            is Filter.Version -> TODO()
+//                            is Filter.Version -> TODO()
                             is Filter.Generation -> showGenerations = true
                             is Filter.Type -> showTypes = true
                         }
@@ -109,8 +109,8 @@ fun ListContent(
                 }
 
                 if (showTypes) {
-                    FilterTypeBottomSheet(
-                        pokemonTypes = state.pokemonTypes,
+                    FilterBottomSheet(
+                        items = state.pokemonTypes,
                         onDismiss = { showTypes = false },
                         onClickType = {
                             onClickType.invoke(it)
@@ -120,8 +120,8 @@ fun ListContent(
                 }
 
                 if (showGenerations) {
-                    FilterTypeBottomSheet(
-                        pokemonTypes = state.pokemonGenerations,
+                    FilterBottomSheet(
+                        items = state.pokemonGenerations,
                         onDismiss = { showGenerations = false },
                         onClickType = {
                             onClickGeneration.invoke(it)
@@ -155,9 +155,9 @@ fun ListScreenPreview() {
         ),
         pokemonTypes = emptyList(),
         filters = listOf(
-            Filter.Version(
-                weight = 1.5f,
-            ),
+//            Filter.Version(
+//                weight = 1.5f,
+//            ),
             Filter.Generation(
                 weight = 1.0f,
                 pokemonGeneration = PokemonGeneration(
