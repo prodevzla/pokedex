@@ -15,9 +15,13 @@ class GetPokemonGenerationsUseCase(
             name = "all gens"
         )
         return repository.getPokemonGenerations().map {
-            when(it) {
+            when (it) {
                 is Result.Error -> it
-                is Result.Success -> Result.Success(listOf(allTypesOption) + it.data)
+                is Result.Success -> Result.Success(listOf(allTypesOption) + it.data.map { generation ->
+                    PokemonGeneration(
+                        generation.id, generation.name.replace("generation", "gen")
+                    )
+                })
             }
         }
     }

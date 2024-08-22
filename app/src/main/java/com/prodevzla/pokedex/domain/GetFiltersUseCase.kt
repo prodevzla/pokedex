@@ -3,6 +3,8 @@ package com.prodevzla.pokedex.domain
 import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
 
+//should each filter has a lambda for the click operation?
+
 class GetFiltersUseCase {
 
     operator fun invoke(

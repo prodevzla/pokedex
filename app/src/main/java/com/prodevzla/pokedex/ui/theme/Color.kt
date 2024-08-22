@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val RoyalBlue = Color(0xFF0000FF)
 val NeutralGrey = Color(0xFFCDD4DB)
+val SelectedGrey = Color(0xFF8A8B91)
 
 val typeNormal = Color(168,168,125)
 val typeFighting = Color(133,55,45)
@@ -23,6 +24,3 @@ val typeIce = Color(166,214,215)
 val typeDragon = Color(105,59,239)
 val typeDark = Color(108,89,74)
 val typeFairy = Color(235,164,221)
-
-
-

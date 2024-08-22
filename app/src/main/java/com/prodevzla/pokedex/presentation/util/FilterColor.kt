@@ -6,8 +6,10 @@ import com.prodevzla.pokedex.domain.Filter.Generation
 import com.prodevzla.pokedex.domain.Filter.Type
 import com.prodevzla.pokedex.domain.Filter.Version
 import com.prodevzla.pokedex.model.domain.Filterable
+import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.ui.theme.NeutralGrey
+import com.prodevzla.pokedex.ui.theme.SelectedGrey
 import com.prodevzla.pokedex.ui.theme.typeBug
 import com.prodevzla.pokedex.ui.theme.typeDark
 import com.prodevzla.pokedex.ui.theme.typeDragon
@@ -27,26 +29,34 @@ import com.prodevzla.pokedex.ui.theme.typeRock
 import com.prodevzla.pokedex.ui.theme.typeSteel
 import com.prodevzla.pokedex.ui.theme.typeWater
 
-fun Filterable.getColor(): Color {
-    return when(this) {
-        is PokemonType -> getColor()
-//        is Filter.Version -> NeutralGrey
-//        is Filter.Generation -> NeutralGrey
-//        is Filter.Type -> this.pokemonType.getColor()
-        else -> NeutralGrey
-    }
-}
-
+//used in the filter
 fun Filter.getColor(): Color {
-    return when(this) {
+    return when (this) {
         is Version -> NeutralGrey
-        is Generation -> NeutralGrey
+        is Generation -> this.pokemonGeneration.getColor()
         is Type -> this.pokemonType.getColor()
     }
 }
 
+//used inside the bottom sheet
+fun Filterable.getColor(): Color {
+    return when (this) {
+        is PokemonGeneration -> getColor()
+        is PokemonType -> getColor()
+//        is Filter.Version -> NeutralGrey
+        else -> NeutralGrey
+    }
+}
+
+fun PokemonGeneration.getColor(): Color {
+    return when (this.id) {
+        0 -> NeutralGrey
+        else -> SelectedGrey
+    }
+}
+
 fun PokemonType.getColor(): Color {
-    return when(this.id) {
+    return when (this.id) {
         1 -> typeNormal
         2 -> typeFighting
         3 -> typeFlying
