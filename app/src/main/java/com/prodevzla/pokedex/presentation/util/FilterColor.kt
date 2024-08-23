@@ -2,8 +2,6 @@ package com.prodevzla.pokedex.presentation.util
 
 import androidx.compose.ui.graphics.Color
 import com.prodevzla.pokedex.domain.Filter
-import com.prodevzla.pokedex.domain.Filter.Generation
-import com.prodevzla.pokedex.domain.Filter.Type
 import com.prodevzla.pokedex.model.domain.Filterable
 import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
@@ -30,11 +28,7 @@ import com.prodevzla.pokedex.ui.theme.typeWater
 
 //used in the filter
 fun Filter.getColor(): Color {
-    return when (this) {
-        //is Version -> NeutralGrey
-        is Generation -> this.pokemonGeneration.getColor()
-        is Type -> this.pokemonType.getColor()
-    }
+    return this.selection.getColor()
 }
 
 //used inside the bottom sheet

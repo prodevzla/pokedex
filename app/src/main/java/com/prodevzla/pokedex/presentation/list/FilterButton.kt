@@ -47,10 +47,11 @@ fun FilterButtonPreview() {
             FilterButton(
                 filter = Filter.Type(
                     weight = 1.0f,
-                    pokemonType = PokemonType(
+                    selection = PokemonType(
                         id = 10,
                         name = "Fire"
                     ),
+                    values = emptyList()
                 )
             )
         }

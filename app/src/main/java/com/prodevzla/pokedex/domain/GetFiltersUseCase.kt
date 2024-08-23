@@ -18,29 +18,37 @@ class GetFiltersUseCase {
 //            ),
             Filter.Generation(
                 weight = 1f,
-                pokemonGeneration = pokemonGenerations.first { it.id == generationFilter },
+                selection = pokemonGenerations.first { it.id == generationFilter },
+                values = pokemonGenerations
             ),
             Filter.Type(
                 weight = 1f,
-                pokemonType = pokemonTypes.first { it.id == typeFilter },
+                selection = pokemonTypes.first { it.id == typeFilter },
+                values = pokemonTypes
             )
         )
     }
 }
 
-sealed class Filter(open val weight: Float, open val selection: Filterable) {
+sealed class Filter(
+    open val weight: Float,
+    open val selection: Filterable,
+    open val values: List<Filterable>
+) {
 
 //    data class Version(override val weight: Float) : Filter<PokemonGeneration>(weight)
 
     data class Generation(
         override val weight: Float,
-        val pokemonGeneration: PokemonGeneration
-    ) : Filter(weight, pokemonGeneration)
+        override val selection: PokemonGeneration,
+        override val values: List<PokemonGeneration>
+    ) : Filter(weight, selection, values)
 
     data class Type(
         override val weight: Float,
-        val pokemonType: PokemonType
-    ) : Filter(weight, pokemonType)
+        override val selection: PokemonType,
+        override val values: List<PokemonType>
+    ) : Filter(weight, selection, values)
 
 
 }

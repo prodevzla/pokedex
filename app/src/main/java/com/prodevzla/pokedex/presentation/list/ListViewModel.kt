@@ -55,14 +55,12 @@ class ListViewModel @Inject constructor(
                         }.filterIf(generationFilter != 0) {
                             it.generation == generationFilter
                         },
-                        pokemonTypes = types.data,
                         filters = getFiltersUseCase.invoke(
                             pokemonGenerations = generations.data,
                             generationFilter = generationFilter,
                             pokemonTypes = types.data,
                             typeFilter = typeFilter,
                         ),
-                        pokemonGenerations = generations.data
                     )
                 }
 
@@ -87,8 +85,6 @@ class ListViewModel @Inject constructor(
         _typeFilter.value = type
     }
 
-
-
 }
 
 sealed interface ListState {
@@ -96,8 +92,6 @@ sealed interface ListState {
 
     data class Content(
         val pokemonList: List<Pokemon>,
-        val pokemonGenerations: List<PokemonGeneration>,
-        val pokemonTypes: List<PokemonType>,
         val filters: List<Filter>,
     ) : ListState
 

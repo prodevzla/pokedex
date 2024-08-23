@@ -47,17 +47,19 @@ fun FiltersRowPreview() {
 //                    ),
                     Filter.Generation(
                         weight = 1.0f,
-                        pokemonGeneration = PokemonGeneration(
+                        selection = PokemonGeneration(
                             id = 1,
                             name = "Gen I"
-                        )
+                        ),
+                        values = emptyList()
                     ),
                     Filter.Type(
                         weight = 1.0f,
-                        pokemonType = PokemonType(
+                        selection = PokemonType(
                             id = 10,
                             name = "Fire"
                         ),
+                        values = emptyList()
                     )
                 )
             )

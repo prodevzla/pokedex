@@ -110,7 +110,7 @@ fun ListContent(
 
                 if (showTypes) {
                     FilterBottomSheet(
-                        items = state.pokemonTypes,
+                        items = state.filters[1].values,//TODO improve this
                         onDismiss = { showTypes = false },
                         onClickType = {
                             onClickType.invoke(it)
@@ -121,7 +121,7 @@ fun ListContent(
 
                 if (showGenerations) {
                     FilterBottomSheet(
-                        items = state.pokemonGenerations,
+                        items = state.filters[0].values,//TODO improve this
                         onDismiss = { showGenerations = false },
                         onClickType = {
                             onClickGeneration.invoke(it)
@@ -153,27 +153,27 @@ fun ListScreenPreview() {
                 generation = 1,
             ),
         ),
-        pokemonTypes = emptyList(),
         filters = listOf(
 //            Filter.Version(
 //                weight = 1.5f,
 //            ),
             Filter.Generation(
                 weight = 1.0f,
-                pokemonGeneration = PokemonGeneration(
+                selection = PokemonGeneration(
                     id = 1,
                     name = "Gen I"
-                )
+                ),
+                values = emptyList()
             ),
             Filter.Type(
                 weight = 1.0f,
-                pokemonType = PokemonType(
+                selection = PokemonType(
                     id = 10,
                     name = "Fire"
                 ),
+                values = emptyList()
             )
         ),
-        pokemonGenerations = emptyList()
     )
     PokedexTheme {
         ListContent(
