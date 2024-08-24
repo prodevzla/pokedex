@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.prodevzla.pokedex.domain.Filter
+import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews

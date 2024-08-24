@@ -15,14 +15,16 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton // or @ActivityScoped?
+@Singleton
 class PokemonRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
         emit(executeApolloCall(
-            networkCall = { apolloClient.query(GetPokemonListQuery()) },
+            networkCall = {
+                apolloClient.query(GetPokemonListQuery())
+            },
             processResponse = { body ->
                 body!!.pokemon_v2_pokemon.toDomain()
             },

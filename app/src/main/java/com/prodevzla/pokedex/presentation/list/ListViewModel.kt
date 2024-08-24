@@ -2,15 +2,11 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prodevzla.pokedex.domain.Filter
 import com.prodevzla.pokedex.domain.GetFiltersUseCase
-import com.prodevzla.pokedex.domain.GetPokemonGenerationsUseCase
-import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.model.domain.Pokemon
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.Result
-import com.prodevzla.pokedex.model.domain.PokemonType
 import com.prodevzla.pokedex.model.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -24,80 +20,61 @@ import javax.inject.Inject
 @HiltViewModel
 class ListViewModel @Inject constructor(
     getPokemonsUseCase: GetPokemonsUseCase,
-    getPokemonTypesUseCase: GetPokemonTypesUseCase,
     getFiltersUseCase: GetFiltersUseCase,
-    getPokemonGenerationsUseCase: GetPokemonGenerationsUseCase,
 ) : ViewModel() {
 
+    private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(DEFAULT_FILTER)
+    private val _typeFilter = MutableStateFlow(DEFAULT_FILTER)
 
     private val _pokemonList: Flow<Result<List<Pokemon>>> =
         getPokemonsUseCase.invoke()
 
-    private val _generations: Flow<Result<List<PokemonGeneration>>> =
-        getPokemonGenerationsUseCase.invoke()
-
-    private val _types: Flow<Result<List<PokemonType>>> =
-        getPokemonTypesUseCase.invoke()
-
-    private val _generationFilter = MutableStateFlow(0)
-
-    private val _typeFilter = MutableStateFlow(0)
-
-    private val _showFilterDialog: MutableStateFlow<Filter?> = MutableStateFlow(null)
-
-    private val _filtersCombination: Flow<List<Filter>?> = combine(
-        _generations, _generationFilter, _types, _typeFilter
-    ) { generations, generationFilter, types, typeFilter  ->
-        when {
-            types is Result.Success && generations is Result.Success -> {
-                getFiltersUseCase.invoke(
-                    pokemonGenerations = generations.data,
-                    generationFilter = generationFilter,
-                    pokemonTypes = types.data,
-                    typeFilter = typeFilter,
-                    onClickGeneration = ::onClickGeneration,
-                    onClickType = ::onClickType
-                )
-            }
-
-            else -> { null }
-        }
-
-    }
+    private val _filters = getFiltersUseCase.invoke(
+        generationFilter = _generationFilter,
+        typeFilter = _typeFilter,
+        onClickGeneration = ::onClickGeneration,
+        onClickType = ::onClickType
+    )
 
     val uiState: StateFlow<ListState> =
         combine(
             _pokemonList,
-            _filtersCombination,
-            _showFilterDialog
-        ) { pokemonList, filters, showFilterDialog ->
+            _filters,
+        ) { pokemonList, filters ->
             when {
-                pokemonList is Result.Success && filters != null -> {
+                pokemonList is Result.Success -> {
                     ListState.Content(
-                        pokemonList = pokemonList.data.filterIf(_typeFilter.value != 0) {
-                            it.types.contains(
-                                _typeFilter.value
-                            )
-                        }.filterIf(_generationFilter.value != 0) {
-                            it.generation == _generationFilter.value
-                        },
+                        pokemonList = filterPokemon(
+                            pokemonList = pokemonList.data,
+                            generationFilter = _generationFilter.value,
+                            typeFilter = _typeFilter.value
+                        ),
                         filters = filters,
-                        showFilterDialog = showFilterDialog,
                     )
                 }
 
-                else -> {
-                    ListState.Error
-                }
+                else -> ListState.Error
             }
-
-
         }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ListState.Loading
             )
+
+    private fun filterPokemon(
+        pokemonList: List<Pokemon>,
+        generationFilter: Int,
+        typeFilter: Int
+    ): List<Pokemon> {
+        return pokemonList.filterIf(generationFilter != DEFAULT_FILTER) {
+            it.generation == generationFilter
+        }.filterIf(typeFilter != DEFAULT_FILTER) {
+            it.types.contains(
+                typeFilter
+            )
+        }
+    }
 
     private fun onClickGeneration(generation: Int) {
         _generationFilter.value = generation
@@ -107,21 +84,36 @@ class ListViewModel @Inject constructor(
         _typeFilter.value = type
     }
 
-    fun onClickFilter(filter: Filter?) {
-        _showFilterDialog.value = filter
+    companion object {
+        private const val DEFAULT_FILTER = 0
     }
 
 }
 
+/**
+ * Represents the different states of the Pokémon list screen.
+ */
 sealed interface ListState {
+
+    /**
+     * Represents the loading state when data is being fetched.
+     */
     data object Loading : ListState
 
+    /**
+     * Represents the content state when data has been successfully fetched.
+     *
+     * @property pokemonList The list of Pokémon to display. This list is always present if the state is Content.
+     * @property filters The list of filters to apply to the Pokémon list. If the app fails to fetch generations and/or types,
+     * the filters will be null, and the Pokémon, if fetched successfully, will still appear.
+     */
     data class Content(
         val pokemonList: List<Pokemon>,
-        val filters: List<Filter>,
-        val showFilterDialog: Filter? = null,
+        val filters: List<Filter>?,
     ) : ListState
 
+    /**
+     * Represents the error state when data fails to load.
+     */
     data object Error : ListState
 }
-

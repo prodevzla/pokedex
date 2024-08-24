@@ -1,61 +1,50 @@
 package com.prodevzla.pokedex.domain
 
-import com.prodevzla.pokedex.model.domain.Filterable
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.PokemonType
+import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.model.domain.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 
-//should each filter has a lambda for the click operation?
-
-class GetFiltersUseCase {
+class GetFiltersUseCase(
+    private val getPokemonGenerationsUseCase: GetPokemonGenerationsUseCase,
+    private val getPokemonTypesUseCase: GetPokemonTypesUseCase,
+) {
 
     operator fun invoke(
-        pokemonGenerations: List<PokemonGeneration>, generationFilter: Int,
-        pokemonTypes: List<PokemonType>, typeFilter: Int,
+        generationFilter: MutableStateFlow<Int>,
+        typeFilter: MutableStateFlow<Int>,
         onClickGeneration: (Int) -> Unit,
         onClickType: (Int) -> Unit,
-    ): List<Filter> {
-        return listOf(
-//            Filter.Version(
-//                weight = 2f,
-//            ),
-            Filter.Generation(
-                weight = 1f,
-                selection = pokemonGenerations.first { it.id == generationFilter },
-                values = pokemonGenerations,
-                onClickSelection = onClickGeneration,
-            ),
-            Filter.Type(
-                weight = 1f,
-                selection = pokemonTypes.first { it.id == typeFilter },
-                values = pokemonTypes,
-                onClickSelection = onClickType
-            )
-        )
+    ): Flow<List<Filter>?> = combine(
+        getPokemonGenerationsUseCase.invoke(),
+        getPokemonTypesUseCase.invoke(),
+        generationFilter,
+        typeFilter
+    ) { generations, types, filterGeneration, filterType ->
+        when {
+            generations is Result.Success && types is Result.Success -> {
+                listOf(
+                    Filter.Generation(
+                        weight = 1f,
+                        selection = generations.data.first { it.id == filterGeneration },
+                        values = generations.data,
+                        onClickSelection = onClickGeneration,
+                    ),
+                    Filter.Type(
+                        weight = 1f,
+                        selection = types.data.first { it.id == filterType },
+                        values = types.data,
+                        onClickSelection = onClickType
+                    )
+                )
+            }
+
+            else -> null
+        }
+
+
     }
 }
 
-sealed interface Filter {
-    val weight: Float
-    val selection: Filterable
-    val values: List<Filterable>
-    val onClickSelection: (Int) -> Unit
 
-
-//    data class Version(override val weight: Float) : Filter<PokemonGeneration>(weight)
-
-    data class Generation(
-        override val weight: Float,
-        override val selection: PokemonGeneration,
-        override val values: List<PokemonGeneration>,
-        override val onClickSelection: (Int) -> Unit
-    ) : Filter
-
-    data class Type(
-        override val weight: Float,
-        override val selection: PokemonType,
-        override val values: List<PokemonType>,
-        override val onClickSelection: (Int) -> Unit
-    ) : Filter
-
-
-}

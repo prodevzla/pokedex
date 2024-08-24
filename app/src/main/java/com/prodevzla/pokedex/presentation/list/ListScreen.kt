@@ -14,11 +14,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.prodevzla.pokedex.domain.Filter
+import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.model.domain.Pokemon
 import com.prodevzla.pokedex.model.domain.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.PokemonType
@@ -39,16 +41,12 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
-    val onClickFilter: (Filter?) -> Unit = remember(viewModel) {
-        return@remember viewModel::onClickFilter
-    }
 
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
-        onClickFilter = onClickFilter,
     )
 
 }
@@ -60,7 +58,6 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
-    onClickFilter: (Filter?) -> Unit = {},
 ) {
 
     CustomScaffold(
@@ -72,17 +69,23 @@ fun ListContent(
             }
         }
     ) {
+
+        var showFilterDialog: Filter? by remember { mutableStateOf(null) }
+
         when (state) {
             ListState.Loading -> LoadingScreen()
             ListState.Error -> ErrorScreen()
             is ListState.Content -> {
-                FiltersRow(
-                    modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-                    filters = state.filters,
-                    onClickFilter = {
-                        onClickFilter(it)
-                    },
-                )
+                state.filters?.let { filters ->
+                    FiltersRow(
+                        modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
+                        filters = filters,
+                        onClickFilter = {
+                            showFilterDialog = it
+                        },
+                    )
+                }
+
 
                 LazyVerticalGrid(
                     modifier = modifier,
@@ -94,15 +97,15 @@ fun ListContent(
                     }
                 }
 
-                state.showFilterDialog?.let { filter ->
+                showFilterDialog?.let { filter ->
                     FilterBottomSheet(
                         items = filter.values,
                         onDismiss = {
-                            onClickFilter.invoke(null)
+                            showFilterDialog = null
                         },
                         onClickType = {
                             filter.onClickSelection.invoke(it)
-                            onClickFilter.invoke(null)
+                            showFilterDialog = null
                         }
                     )
                 }
