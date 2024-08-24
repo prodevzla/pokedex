@@ -43,26 +43,46 @@ class ListViewModel @Inject constructor(
 
     private val _typeFilter = MutableStateFlow(0)
 
+    private val _showFilterDialog: MutableStateFlow<Filter?> = MutableStateFlow(null)
+
+    private val _filtersCombination: Flow<List<Filter>?> = combine(
+        _generations, _generationFilter, _types, _typeFilter
+    ) { generations, generationFilter, types, typeFilter  ->
+        when {
+            types is Result.Success && generations is Result.Success -> {
+                getFiltersUseCase.invoke(
+                    pokemonGenerations = generations.data,
+                    generationFilter = generationFilter,
+                    pokemonTypes = types.data,
+                    typeFilter = typeFilter,
+                    onClickGeneration = ::onClickGeneration,
+                    onClickType = ::onClickType
+                )
+            }
+
+            else -> { null }
+        }
+
+    }
+
     val uiState: StateFlow<ListState> =
-        combine(_pokemonList, _generations, _generationFilter, _types, _typeFilter) { pokemonList, generations, generationFilter, types, typeFilter ->
+        combine(
+            _pokemonList,
+            _filtersCombination,
+            _showFilterDialog
+        ) { pokemonList, filters, showFilterDialog ->
             when {
-                pokemonList is Result.Success && types is Result.Success && generations is Result.Success -> {
+                pokemonList is Result.Success && filters != null -> {
                     ListState.Content(
-                        pokemonList = pokemonList.data.filterIf(typeFilter != 0) {
+                        pokemonList = pokemonList.data.filterIf(_typeFilter.value != 0) {
                             it.types.contains(
-                                typeFilter
+                                _typeFilter.value
                             )
-                        }.filterIf(generationFilter != 0) {
-                            it.generation == generationFilter
+                        }.filterIf(_generationFilter.value != 0) {
+                            it.generation == _generationFilter.value
                         },
-                        filters = getFiltersUseCase.invoke(
-                            pokemonGenerations = generations.data,
-                            generationFilter = generationFilter,
-                            pokemonTypes = types.data,
-                            typeFilter = typeFilter,
-                            onClickGeneration = ::onClickGeneration,
-                            onClickType = ::onClickType
-                        ),
+                        filters = filters,
+                        showFilterDialog = showFilterDialog,
                     )
                 }
 
@@ -87,6 +107,10 @@ class ListViewModel @Inject constructor(
         _typeFilter.value = type
     }
 
+    fun onClickFilter(filter: Filter?) {
+        _showFilterDialog.value = filter
+    }
+
 }
 
 sealed interface ListState {
@@ -95,7 +119,9 @@ sealed interface ListState {
     data class Content(
         val pokemonList: List<Pokemon>,
         val filters: List<Filter>,
+        val showFilterDialog: Filter? = null,
     ) : ListState
 
     data object Error : ListState
 }
+

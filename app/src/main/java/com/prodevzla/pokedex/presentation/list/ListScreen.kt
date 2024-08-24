@@ -14,9 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,11 +39,16 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    val onClickFilter: (Filter?) -> Unit = remember(viewModel) {
+        return@remember viewModel::onClickFilter
+    }
+
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
+        onClickFilter = onClickFilter,
     )
 
 }
@@ -57,9 +60,8 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
+    onClickFilter: (Filter?) -> Unit = {},
 ) {
-    var showGenerations by remember { mutableStateOf(false) }
-    var showTypes by remember { mutableStateOf(false) }
 
     CustomScaffold(
         modifier = modifier,
@@ -78,11 +80,7 @@ fun ListContent(
                     modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
                     filters = state.filters,
                     onClickFilter = {
-                        when(it) {
-//                            is Filter.Version -> TODO()
-                            is Filter.Generation -> showGenerations = true
-                            is Filter.Type -> showTypes = true
-                        }
+                        onClickFilter(it)
                     },
                 )
 
@@ -96,27 +94,19 @@ fun ListContent(
                     }
                 }
 
-                if (showTypes) {
+                state.showFilterDialog?.let { filter ->
                     FilterBottomSheet(
-                        items = state.filters[1].values,//TODO improve this
-                        onDismiss = { showTypes = false },
+                        items = filter.values,
+                        onDismiss = {
+                            onClickFilter.invoke(null)
+                        },
                         onClickType = {
-                            state.filters[1].onClickSelection.invoke(it)
-                            showTypes = false
+                            filter.onClickSelection.invoke(it)
+                            onClickFilter.invoke(null)
                         }
                     )
                 }
 
-                if (showGenerations) {
-                    FilterBottomSheet(
-                        items = state.filters[0].values,//TODO improve this
-                        onDismiss = { showGenerations = false },
-                        onClickType = {
-                            state.filters[0].onClickSelection.invoke(it)
-                            showGenerations = false
-                        }
-                    )
-                }
             }
         }
     }
