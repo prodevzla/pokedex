@@ -60,6 +60,8 @@ class ListViewModel @Inject constructor(
                             generationFilter = generationFilter,
                             pokemonTypes = types.data,
                             typeFilter = typeFilter,
+                            onClickGeneration = ::onClickGeneration,
+                            onClickType = ::onClickType
                         ),
                     )
                 }
@@ -77,11 +79,11 @@ class ListViewModel @Inject constructor(
                 initialValue = ListState.Loading
             )
 
-    fun onClickGeneration(generation: Int) {
+    private fun onClickGeneration(generation: Int) {
         _generationFilter.value = generation
     }
 
-    fun onClickType(type: Int) {
+    private fun onClickType(type: Int) {
         _typeFilter.value = type
     }
 

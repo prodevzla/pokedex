@@ -10,7 +10,9 @@ class GetFiltersUseCase {
 
     operator fun invoke(
         pokemonGenerations: List<PokemonGeneration>, generationFilter: Int,
-        pokemonTypes: List<PokemonType>, typeFilter: Int
+        pokemonTypes: List<PokemonType>, typeFilter: Int,
+        onClickGeneration: (Int) -> Unit,
+        onClickType: (Int) -> Unit,
     ): List<Filter> {
         return listOf(
 //            Filter.Version(
@@ -19,12 +21,14 @@ class GetFiltersUseCase {
             Filter.Generation(
                 weight = 1f,
                 selection = pokemonGenerations.first { it.id == generationFilter },
-                values = pokemonGenerations
+                values = pokemonGenerations,
+                onClickSelection = onClickGeneration,
             ),
             Filter.Type(
                 weight = 1f,
                 selection = pokemonTypes.first { it.id == typeFilter },
-                values = pokemonTypes
+                values = pokemonTypes,
+                onClickSelection = onClickType
             )
         )
     }
@@ -34,6 +38,7 @@ sealed interface Filter {
     val weight: Float
     val selection: Filterable
     val values: List<Filterable>
+    val onClickSelection: (Int) -> Unit
 
 
 //    data class Version(override val weight: Float) : Filter<PokemonGeneration>(weight)
@@ -41,13 +46,15 @@ sealed interface Filter {
     data class Generation(
         override val weight: Float,
         override val selection: PokemonGeneration,
-        override val values: List<PokemonGeneration>
+        override val values: List<PokemonGeneration>,
+        override val onClickSelection: (Int) -> Unit
     ) : Filter
 
     data class Type(
         override val weight: Float,
         override val selection: PokemonType,
-        override val values: List<PokemonType>
+        override val values: List<PokemonType>,
+        override val onClickSelection: (Int) -> Unit
     ) : Filter
 
 

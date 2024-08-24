@@ -51,7 +51,8 @@ fun FiltersRowPreview() {
                             id = 1,
                             name = "Gen I"
                         ),
-                        values = emptyList()
+                        values = emptyList(),
+                        onClickSelection = {},
                     ),
                     Filter.Type(
                         weight = 1.0f,
@@ -59,7 +60,8 @@ fun FiltersRowPreview() {
                             id = 10,
                             name = "Fire"
                         ),
-                        values = emptyList()
+                        values = emptyList(),
+                        onClickSelection = {},
                     )
                 )
             )

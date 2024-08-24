@@ -51,7 +51,8 @@ fun FilterButtonPreview() {
                         id = 10,
                         name = "Fire"
                     ),
-                    values = emptyList()
+                    values = emptyList(),
+                    onClickSelection = {},
                 )
             )
         }

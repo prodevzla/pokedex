@@ -41,21 +41,11 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
-    val onClickGeneration: (Int) -> Unit = remember(viewModel) {
-        return@remember viewModel::onClickGeneration
-    }
-
-    val onClickType: (Int) -> Unit = remember(viewModel) {
-        return@remember viewModel::onClickType
-    }
-
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
-        onClickGeneration = onClickGeneration,
-        onClickType = onClickType,
     )
 
 }
@@ -67,8 +57,6 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
-    onClickGeneration: (Int) -> Unit = {},
-    onClickType: (Int) -> Unit = {},
 ) {
     var showGenerations by remember { mutableStateOf(false) }
     var showTypes by remember { mutableStateOf(false) }
@@ -113,7 +101,7 @@ fun ListContent(
                         items = state.filters[1].values,//TODO improve this
                         onDismiss = { showTypes = false },
                         onClickType = {
-                            onClickType.invoke(it)
+                            state.filters[1].onClickSelection.invoke(it)
                             showTypes = false
                         }
                     )
@@ -124,7 +112,7 @@ fun ListContent(
                         items = state.filters[0].values,//TODO improve this
                         onDismiss = { showGenerations = false },
                         onClickType = {
-                            onClickGeneration.invoke(it)
+                            state.filters[0].onClickSelection.invoke(it)
                             showGenerations = false
                         }
                     )
@@ -163,7 +151,8 @@ fun ListScreenPreview() {
                     id = 1,
                     name = "Gen I"
                 ),
-                values = emptyList()
+                values = emptyList(),
+                onClickSelection = {}
             ),
             Filter.Type(
                 weight = 1.0f,
@@ -171,7 +160,8 @@ fun ListScreenPreview() {
                     id = 10,
                     name = "Fire"
                 ),
-                values = emptyList()
+                values = emptyList(),
+                onClickSelection = {}
             )
         ),
     )
