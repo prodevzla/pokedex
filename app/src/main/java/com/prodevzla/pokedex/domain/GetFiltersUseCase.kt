@@ -30,11 +30,11 @@ class GetFiltersUseCase {
     }
 }
 
-sealed class Filter(
-    open val weight: Float,
-    open val selection: Filterable,
-    open val values: List<Filterable>
-) {
+sealed interface Filter {
+    val weight: Float
+    val selection: Filterable
+    val values: List<Filterable>
+
 
 //    data class Version(override val weight: Float) : Filter<PokemonGeneration>(weight)
 
@@ -42,13 +42,13 @@ sealed class Filter(
         override val weight: Float,
         override val selection: PokemonGeneration,
         override val values: List<PokemonGeneration>
-    ) : Filter(weight, selection, values)
+    ) : Filter
 
     data class Type(
         override val weight: Float,
         override val selection: PokemonType,
         override val values: List<PokemonType>
-    ) : Filter(weight, selection, values)
+    ) : Filter
 
 
 }

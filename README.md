@@ -9,6 +9,9 @@
 
 --check get filter use case
 --create event pattern for onclick
+--pass the types and generations to the usecase (wrap them there)
+
+--create GitHub
 
 --create string util class
 
