@@ -1,8 +1,8 @@
 package com.prodevzla.pokedex
 
-import com.prodevzla.pokedex.domain.GetFiltersUseCase
-import com.prodevzla.pokedex.domain.GetPokemonGenerationsUseCase
-import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
+import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.model.Filter
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue

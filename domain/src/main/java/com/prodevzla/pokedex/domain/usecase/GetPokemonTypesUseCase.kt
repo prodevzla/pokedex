@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.domain
+package com.prodevzla.pokedex.domain.usecase
 
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
@@ -15,7 +15,7 @@ class GetPokemonTypesUseCase(
             name = "all types"
         )
         return repository.getPokemonTypes().map {
-            when(it) {
+            when (it) {
                 is Result.Error -> it
                 is Result.Success -> Result.Success(listOf(allTypesOption) + it.data)
             }

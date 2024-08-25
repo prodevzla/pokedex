@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.domain
+package com.prodevzla.pokedex.domain.usecase
 
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.data.Result

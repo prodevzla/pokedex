@@ -2,7 +2,7 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prodevzla.pokedex.domain.GetFiltersUseCase
+import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.Pokemon
