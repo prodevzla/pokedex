@@ -2,7 +2,7 @@ package com.prodevzla.pokedex
 
 import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.model.domain.Result
+import com.prodevzla.pokedex.data.Result
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.toList

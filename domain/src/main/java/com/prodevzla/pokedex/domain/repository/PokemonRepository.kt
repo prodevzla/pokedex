@@ -1,9 +1,9 @@
-package com.prodevzla.pokedex.domain
+package com.prodevzla.pokedex.domain.repository
 
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.Result
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.data.Result
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {

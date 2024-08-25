@@ -3,10 +3,10 @@ package com.prodevzla.pokedex.presentation.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.GetFiltersUseCase
-import com.prodevzla.pokedex.domain.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.model.domain.Result
+import com.prodevzla.pokedex.data.Result
 import com.prodevzla.pokedex.model.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

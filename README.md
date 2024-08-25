@@ -14,11 +14,15 @@
 
 ++create GitHub
 
+++create some unit tests
+
 
 
 --create event pattern for onclick (not needed yet)
 
---create some unit tests
+--create DB
+
+--CI/CD
 
 --create versions filter
 
@@ -27,5 +31,3 @@
 --add module for models
 
 --fetch all game versions
-
-

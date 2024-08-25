@@ -4,7 +4,7 @@ import com.prodevzla.pokedex.data.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.GetPokemonTypesUseCase
-import com.prodevzla.pokedex.domain.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

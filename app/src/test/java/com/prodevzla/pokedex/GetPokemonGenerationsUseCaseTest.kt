@@ -2,7 +2,7 @@ package com.prodevzla.pokedex
 
 import com.prodevzla.pokedex.domain.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.Result
+import com.prodevzla.pokedex.data.Result
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

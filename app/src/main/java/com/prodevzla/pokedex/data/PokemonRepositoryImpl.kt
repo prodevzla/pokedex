@@ -1,10 +1,9 @@
 package com.prodevzla.pokedex.data
 
 import com.apollographql.apollo.ApolloClient
-import com.prodevzla.pokedex.domain.PokemonRepository
+import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.Result
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.toDomain
 import kotlinx.coroutines.flow.Flow
