@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
