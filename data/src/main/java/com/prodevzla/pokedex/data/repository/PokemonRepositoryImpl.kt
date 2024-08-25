@@ -1,11 +1,15 @@
-package com.prodevzla.pokedex.data
+package com.prodevzla.pokedex.data.repository
 
 import com.apollographql.apollo.ApolloClient
-import com.prodevzla.pokedex.domain.repository.PokemonRepository
+import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
+import com.prodevzla.pokedex.data.GetPokemonListQuery
+import com.prodevzla.pokedex.data.GetPokemonTypesQuery
+import com.prodevzla.pokedex.data.mapper.toDomain
+import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.toDomain
+import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -17,14 +21,16 @@ class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
-        emit(executeApolloCall(
+        emit(
+            executeApolloCall(
             networkCall = {
                 apolloClient.query(GetPokemonListQuery())
             },
             processResponse = { body ->
                 body!!.pokemon_v2_pokemon.toDomain()
             },
-        ))
+        )
+        )
     }
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {

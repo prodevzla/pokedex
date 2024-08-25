@@ -1,7 +1,9 @@
-package com.prodevzla.pokedex.data
+package com.prodevzla.pokedex.data.repository
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Operation
+import com.prodevzla.pokedex.domain.model.DataError
+import com.prodevzla.pokedex.domain.model.Result
 import retrofit2.Response
 
 internal inline fun <T, R> executeNetworkCall(

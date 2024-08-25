@@ -2,7 +2,7 @@ package com.prodevzla.pokedex.di
 
 import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
-import com.prodevzla.pokedex.data.PokemonRepositoryImpl
+import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.Service
 import com.squareup.moshi.Moshi
 import dagger.Module

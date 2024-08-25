@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex
 
 import com.apollographql.apollo.ApolloClient
-import com.prodevzla.pokedex.data.PokemonRepositoryImpl
+import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 
 private val apolloClient = ApolloClient.Builder()
     .serverUrl("https://beta.pokeapi.co/graphql/v1beta")

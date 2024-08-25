@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.data
+package com.prodevzla.pokedex.domain.model
 
 sealed interface Error
 

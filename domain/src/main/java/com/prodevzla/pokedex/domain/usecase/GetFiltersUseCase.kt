@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex.domain.usecase
 
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.data.Result
+import com.prodevzla.pokedex.domain.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

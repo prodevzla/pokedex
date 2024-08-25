@@ -13,7 +13,14 @@ java {
 
 
 dependencies {
+    implementation(project(":domain"))
+
     implementation(libs.apollo.runtime)
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation("javax.inject:javax.inject:1")
+
 }
 
 apollo {

@@ -1,6 +1,6 @@
 package com.prodevzla.pokedex.di
 
-import com.prodevzla.pokedex.data.PokemonRepositoryImpl
+import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
