@@ -1,6 +1,7 @@
-package com.prodevzla.pokedex.model.domain
+package com.prodevzla.pokedex.domain.model
 
-import com.prodevzla.pokedex.GetPokemonGenerationsQuery
+import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
+
 
 data class PokemonGeneration(
     override val id: Int,

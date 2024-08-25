@@ -1,9 +1,5 @@
 package com.prodevzla.pokedex.domain.model
 
-import com.prodevzla.pokedex.model.domain.Filterable
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.PokemonType
-
 sealed interface Filter {
     val weight: Float
     val selection: Filterable

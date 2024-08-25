@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.model.domain.Pokemon
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.PokemonType
+import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonGeneration
+import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen

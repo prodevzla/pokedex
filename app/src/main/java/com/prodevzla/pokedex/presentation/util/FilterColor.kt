@@ -2,9 +2,9 @@ package com.prodevzla.pokedex.presentation.util
 
 import androidx.compose.ui.graphics.Color
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.model.domain.Filterable
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
-import com.prodevzla.pokedex.model.domain.PokemonType
+import com.prodevzla.pokedex.domain.model.Filterable
+import com.prodevzla.pokedex.domain.model.PokemonGeneration
+import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.ui.theme.NeutralGrey
 import com.prodevzla.pokedex.ui.theme.SelectedGrey
 import com.prodevzla.pokedex.ui.theme.typeBug

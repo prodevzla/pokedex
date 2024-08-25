@@ -1,6 +1,6 @@
-package com.prodevzla.pokedex.model.domain
+package com.prodevzla.pokedex.domain.model
 
-import com.prodevzla.pokedex.GetPokemonListQuery
+import com.prodevzla.pokedex.data.GetPokemonListQuery
 import java.net.URL
 
 data class Pokemon(

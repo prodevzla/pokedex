@@ -1,7 +1,7 @@
 package com.prodevzla.pokedex
 
 import com.prodevzla.pokedex.domain.GetPokemonGenerationsUseCase
-import com.prodevzla.pokedex.model.domain.PokemonGeneration
+import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.model.domain.Result
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse

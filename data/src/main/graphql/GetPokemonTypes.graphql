@@ -1,0 +1,6 @@
+query GetPokemonTypesQuery {
+    pokemon_v2_type {
+        id
+        name
+    }
+}

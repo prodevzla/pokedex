@@ -20,7 +20,7 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.model.domain.Pokemon
+import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 import com.prodevzla.pokedex.presentation.util.ThemePreviews

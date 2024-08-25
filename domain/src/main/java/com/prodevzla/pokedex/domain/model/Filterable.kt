@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.model.domain
+package com.prodevzla.pokedex.domain.model
 
 interface Filterable {
     val id: Int

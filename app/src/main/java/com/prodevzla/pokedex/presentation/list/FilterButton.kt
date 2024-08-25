@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.model.domain.PokemonType
+import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme

@@ -1,6 +1,7 @@
-package com.prodevzla.pokedex.model.domain
+package com.prodevzla.pokedex.domain.model
 
-import com.prodevzla.pokedex.GetPokemonTypesQuery
+import com.prodevzla.pokedex.data.GetPokemonTypesQuery
+
 
 data class PokemonType(
     override val id: Int,

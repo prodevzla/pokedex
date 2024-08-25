@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.model.api
 
-import com.prodevzla.pokedex.model.domain.Pokemon
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
