@@ -19,6 +19,8 @@
 
 --create DB
 
+--add logs to Apollo graphql
+
 --create event pattern for onclick (not needed yet)
 
 --CI/CD

@@ -3,7 +3,9 @@ package com.prodevzla.pokedex.domain.usecase
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import com.prodevzla.pokedex.domain.model.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class GetPokemonTypesUseCase(
@@ -19,6 +21,6 @@ class GetPokemonTypesUseCase(
                 is Result.Error -> it
                 is Result.Success -> Result.Success(listOf(allTypesOption) + it.data)
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

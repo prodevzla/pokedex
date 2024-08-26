@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.data.mapper
 
 import com.prodevzla.pokedex.data.GetPokemonListQuery
+import com.prodevzla.pokedex.data.source.model.PokemonEntity
 import com.prodevzla.pokedex.domain.model.Pokemon
 
 fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
@@ -15,4 +16,17 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
 
 fun List<GetPokemonListQuery.Pokemon_v2_pokemon>.toDomain(): List<Pokemon> {
     return this.map { it.toDomain() }
+}
+
+fun Pokemon.toEntity(): PokemonEntity {
+    return PokemonEntity(
+        uid = this.id,
+        name = this.name,
+        types = this.types.first(),
+        generation = this.generation
+    )
+}
+
+fun List<Pokemon>.toEntities(): List<PokemonEntity> {
+    return this.map { it.toEntity() }
 }

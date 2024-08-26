@@ -5,7 +5,12 @@ import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
 import com.prodevzla.pokedex.data.GetPokemonListQuery
 import com.prodevzla.pokedex.data.GetPokemonTypesQuery
 import com.prodevzla.pokedex.data.mapper.executeApolloCall
+import com.prodevzla.pokedex.data.mapper.fromEntityToDomain
 import com.prodevzla.pokedex.data.mapper.toDomain
+import com.prodevzla.pokedex.data.mapper.toEntities
+import com.prodevzla.pokedex.data.source.local.PokemonDao
+import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.data.source.model.PokemonTypeEntity
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
@@ -19,19 +24,28 @@ import javax.inject.Singleton
 @Singleton
 class PokemonRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
+    private val pokemonDao: PokemonDao,
+    private val pokemonTypeDao: PokemonTypeDao,
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
-        emit(
-            executeApolloCall(
-            networkCall = {
-                apolloClient.query(GetPokemonListQuery())
-            },
-            processResponse = { body ->
-                body!!.pokemon_v2_pokemon.toDomain()
-            },
-        )
-        )
+        if (pokemonDao.getAll().isEmpty()) {
+            emit(
+                executeApolloCall(
+                    networkCall = {
+                        apolloClient.query(GetPokemonListQuery())
+                    },
+                    processResponse = { body ->
+                        val response: List<Pokemon> = body!!.pokemon_v2_pokemon.toDomain()
+                        val entities = response.toEntities().toTypedArray()
+                        println(entities)
+                        //pokemonDao.insertAll()
+                        response
+                    },
+                )
+            )
+        }
+
     }
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {
@@ -48,13 +62,22 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonTypes(): Flow<Result<List<PokemonType>>> = flow {
+        val entities = pokemonTypeDao.getAll()
+        if (entities.isNotEmpty()) {
+            emit(Result.Success(entities.fromEntityToDomain()))
+            return@flow
+        }
+
         emit(
             executeApolloCall(
                 networkCall = {
                     apolloClient.query(GetPokemonTypesQuery())
                 },
                 processResponse = { body ->
-                    body!!.pokemon_v2_type.toDomain()
+                    val response: List<PokemonType> = body!!.pokemon_v2_type.toDomain()
+                    val entities = response.toEntities().toTypedArray()
+                    pokemonTypeDao.insertAll(*entities)
+                    response
                 }
             )
         )
