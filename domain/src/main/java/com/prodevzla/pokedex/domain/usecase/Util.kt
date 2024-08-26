@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.model
+package com.prodevzla.pokedex.domain.usecase
 
 inline fun <T> List<T>.filterIf(condition: Boolean, predicate: (T) -> Boolean): List<T> {
     return if (condition) {

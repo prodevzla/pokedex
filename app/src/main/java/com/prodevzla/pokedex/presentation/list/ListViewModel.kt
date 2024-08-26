@@ -7,7 +7,7 @@ import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.Result
-import com.prodevzla.pokedex.model.filterIf
+import com.prodevzla.pokedex.domain.usecase.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
