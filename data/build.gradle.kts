@@ -1,8 +1,6 @@
 plugins {
     id("java-library")
-
     kotlin("jvm")
-//    alias(libs.plugins.jetbrains.kotlin.jvm)
     alias(libs.plugins.apollo)
 }
 
@@ -18,8 +16,7 @@ dependencies {
     implementation(libs.apollo.runtime)
     implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
-
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.javax.inject)
 
 }
 

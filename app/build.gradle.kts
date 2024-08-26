@@ -57,7 +57,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":data")) //TODO REMOVE: app shouldn't depend on data. only here while migrating to multi-module
+    implementation(project(":data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
