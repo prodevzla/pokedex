@@ -6,6 +6,7 @@ import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.source.local.AppDatabase
 import com.prodevzla.pokedex.data.source.local.PokemonDao
+import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import dagger.Module
@@ -46,6 +47,12 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun providePokemonGenerationDao(appDatabase: AppDatabase): PokemonGenerationDao {
+        return appDatabase.pokemonGenerationDao()
+    }
+
+    @Provides
+    @Singleton
     fun providePokemonTypeDao(appDatabase: AppDatabase): PokemonTypeDao {
         return appDatabase.pokemonTypeDao()
     }
@@ -55,9 +62,14 @@ object DataModule {
     fun providePokemonRepository(
         apolloClient: ApolloClient,
         pokemonDao: PokemonDao,
+        pokemonGenerationDao: PokemonGenerationDao,
         pokemonTypeDao: PokemonTypeDao,
     ): PokemonRepository {
-        return PokemonRepositoryImpl(apolloClient, pokemonDao, pokemonTypeDao)
+        return PokemonRepositoryImpl(
+            apolloClient,
+            pokemonDao,
+            pokemonGenerationDao,
+            pokemonTypeDao)
     }
 
     @Provides

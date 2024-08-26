@@ -3,7 +3,9 @@ package com.prodevzla.pokedex.domain.usecase
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import com.prodevzla.pokedex.domain.model.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class GetPokemonGenerationsUseCase(
@@ -24,7 +26,7 @@ class GetPokemonGenerationsUseCase(
                     )
                 })
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
 }

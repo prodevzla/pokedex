@@ -9,6 +9,7 @@ import com.prodevzla.pokedex.data.mapper.fromEntityToDomain
 import com.prodevzla.pokedex.data.mapper.toDomain
 import com.prodevzla.pokedex.data.mapper.toEntities
 import com.prodevzla.pokedex.data.source.local.PokemonDao
+import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
 import com.prodevzla.pokedex.data.source.model.PokemonTypeEntity
 import com.prodevzla.pokedex.domain.model.Result
@@ -25,6 +26,7 @@ import javax.inject.Singleton
 class PokemonRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val pokemonDao: PokemonDao,
+    private val pokemonGenerationDao: PokemonGenerationDao,
     private val pokemonTypeDao: PokemonTypeDao,
 ) : PokemonRepository {
 
@@ -49,22 +51,30 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {
+        val generations = pokemonGenerationDao.getAll()
+        if (generations.isNotEmpty()) {
+            emit(Result.Success(generations.fromEntityToDomain()))
+            return@flow
+        }
         emit(
             executeApolloCall(
                 networkCall = {
                     apolloClient.query(GetPokemonGenerationsQuery())
                 },
                 processResponse = { body ->
-                    body!!.pokemon_v2_generation.toDomain()
+                    val response = body!!.pokemon_v2_generation.toDomain()
+                    val entities = response.toEntities().toTypedArray()
+                    pokemonGenerationDao.insertAll(*entities)
+                    response
                 }
             )
         )
     }
 
     override fun getPokemonTypes(): Flow<Result<List<PokemonType>>> = flow {
-        val entities = pokemonTypeDao.getAll()
-        if (entities.isNotEmpty()) {
-            emit(Result.Success(entities.fromEntityToDomain()))
+        val types = pokemonTypeDao.getAll()
+        if (types.isNotEmpty()) {
+            emit(Result.Success(types.fromEntityToDomain()))
             return@flow
         }
 
