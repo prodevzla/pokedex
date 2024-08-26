@@ -17,10 +17,9 @@
 ++create some unit tests
 
 
+--create DB
 
 --create event pattern for onclick (not needed yet)
-
---create DB
 
 --CI/CD
 

@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
 import com.prodevzla.pokedex.data.GetPokemonListQuery
 import com.prodevzla.pokedex.data.GetPokemonTypesQuery
+import com.prodevzla.pokedex.data.mapper.executeApolloCall
 import com.prodevzla.pokedex.data.mapper.toDomain
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Pokemon

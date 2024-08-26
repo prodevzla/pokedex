@@ -19,7 +19,7 @@ class GetPokemonsUseCase(
                     is Result.Success -> Result.Success(
                         response.data.map { pokemon ->
                             pokemon.apply {
-                                image = URL(IMAGE_URL + pokemon.id + ".svg")
+                                image = URL(IMAGE_URL.replace("{pokemonId}", pokemon.id.toString()))
                             }
                         }
                     )
@@ -30,7 +30,7 @@ class GetPokemonsUseCase(
 
     companion object {
         const val IMAGE_URL =
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/{pokemonId}.svg"
     }
 
 }

@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.data.repository
+package com.prodevzla.pokedex.data.mapper
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Operation
