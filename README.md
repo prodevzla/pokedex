@@ -20,10 +20,9 @@
 
 ++add module for models
 
+++add logs to Apollo graphql
 
 
-
---add logs to Apollo graphql
 
 --create event pattern for onclick (not needed yet)
 

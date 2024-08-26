@@ -3,6 +3,7 @@ package com.prodevzla.pokedex.di
 import android.content.Context
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.network.http.LoggingInterceptor
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.source.local.AppDatabase
 import com.prodevzla.pokedex.data.source.local.PokemonDao
@@ -77,6 +78,7 @@ object DataModule {
     fun provideApolloClient(): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+            .addHttpInterceptor(LoggingInterceptor())
             .build()
     }
 
