@@ -11,11 +11,10 @@ import com.prodevzla.pokedex.data.mapper.toEntities
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
-import com.prodevzla.pokedex.data.source.model.PokemonTypeEntity
-import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,22 +30,24 @@ class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
-        if (pokemonDao.getAll().isEmpty()) {
-            emit(
-                executeApolloCall(
-                    networkCall = {
-                        apolloClient.query(GetPokemonListQuery())
-                    },
-                    processResponse = { body ->
-                        val response: List<Pokemon> = body!!.pokemon_v2_pokemon.toDomain()
-                        val entities = response.toEntities().toTypedArray()
-                        println(entities)
-                        //pokemonDao.insertAll()
-                        response
-                    },
-                )
-            )
+        val pokemonList = pokemonDao.getAll()
+        if (pokemonList.isNotEmpty()) {
+            emit(Result.Success(pokemonList.fromEntityToDomain()))
+            return@flow
         }
+        emit(
+            executeApolloCall(
+                query = {
+                    apolloClient.query(GetPokemonListQuery())
+                },
+                processResponse = { body ->
+                    val response: List<Pokemon> = body!!.pokemon_v2_pokemon.toDomain()
+                    val entities = response.toEntities().toTypedArray()
+                    pokemonDao.insertAll(*entities)
+                    response
+                },
+            )
+        )
 
     }
 
@@ -58,7 +59,7 @@ class PokemonRepositoryImpl @Inject constructor(
         }
         emit(
             executeApolloCall(
-                networkCall = {
+                query = {
                     apolloClient.query(GetPokemonGenerationsQuery())
                 },
                 processResponse = { body ->
@@ -80,7 +81,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
         emit(
             executeApolloCall(
-                networkCall = {
+                query = {
                     apolloClient.query(GetPokemonTypesQuery())
                 },
                 processResponse = { body ->

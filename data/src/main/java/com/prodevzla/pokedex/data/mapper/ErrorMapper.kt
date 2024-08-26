@@ -37,11 +37,11 @@ import com.prodevzla.pokedex.domain.model.Result
 //}
 
 internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
-    networkCall: () -> ApolloCall<T>,
+    query: () -> ApolloCall<T>,
     processResponse: (T?) -> R
 ): Result<R> {
     return try {
-        val response = networkCall().execute()
+        val response = query().execute()
         if (response.hasErrors()) {
 //            val error = when (response.code()) {
 //                408 -> DataError.Network.REQUEST_TIMEOUT

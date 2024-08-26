@@ -16,8 +16,12 @@
 
 ++create some unit tests
 
+++create DB
 
---create DB
+++add module for models
+
+
+
 
 --add logs to Apollo graphql
 
@@ -29,6 +33,3 @@
 
 --create string util class
 
---add module for models
-
---fetch all game versions

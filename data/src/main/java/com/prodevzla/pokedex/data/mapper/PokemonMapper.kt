@@ -22,7 +22,7 @@ fun Pokemon.toEntity(): PokemonEntity {
     return PokemonEntity(
         uid = this.id,
         name = this.name,
-        types = this.types.first(),
+        types = this.types,
         generation = this.generation
     )
 }
@@ -30,3 +30,15 @@ fun Pokemon.toEntity(): PokemonEntity {
 fun List<Pokemon>.toEntities(): List<PokemonEntity> {
     return this.map { it.toEntity() }
 }
+
+fun PokemonEntity.fromEntityToDomain(): Pokemon {
+    return Pokemon(
+        id = this.uid,
+        name = this.name,
+        image = null,
+        types = this.types,
+        generation = this.generation
+    )
+}
+
+fun List<PokemonEntity>.fromEntityToDomain() = this.map { it.fromEntityToDomain() }
