@@ -22,7 +22,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PokemonRepositoryImpl @Inject constructor(
+open class PokemonRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val pokemonDao: PokemonDao,
     private val pokemonGenerationDao: PokemonGenerationDao,

@@ -80,10 +80,10 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.paging.compose)
     implementation(libs.apollo.runtime)
-
     implementation(libs.androidx.room.runtime)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -92,14 +92,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
+
 }
 
-apollo {
-    service("service") {
-        packageName.set("com.prodevzla.pokedex")
-        introspection {
-            endpointUrl.set("https://beta.pokeapi.co/graphql/v1beta")
-            schemaFile.set(file("src/main/graphql/schema.graphqls"))
-        }
-    }
-}
