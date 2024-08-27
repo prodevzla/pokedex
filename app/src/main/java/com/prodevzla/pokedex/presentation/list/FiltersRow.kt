@@ -43,10 +43,8 @@ fun FiltersRowPreview() {
         Surface {
             FiltersRow(
                 filters = listOf(
-//                    Filter.Version(
-//                        weight = 1.5f,
-//                    ),
                     Filter(
+                        title = UiText.DynamicString("select generation"),
                         weight = 1.0f,
                         selection = PokemonGeneration(
                             id = 1,
@@ -56,6 +54,7 @@ fun FiltersRowPreview() {
                         onClickSelection = {},
                     ),
                     Filter(
+                        title = UiText.DynamicString("select type"),
                         weight = 1.0f,
                         selection = PokemonType(
                             id = 10,

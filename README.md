@@ -26,7 +26,11 @@
 
 --create versions filter
 
+--show generations bottom sheet dialog properly with all the gens and all the versions per generation
 
+--filter list depending on selection
+
+--check if Filter model should change selection from item to integer
 
 --create event pattern for onclick (not needed yet)
 

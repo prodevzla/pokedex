@@ -48,6 +48,7 @@ fun FilterButtonPreview() {
         Surface {
             FilterButton(
                 filter = Filter(
+                    title = UiText.DynamicString("Select type"),
                     weight = 1.0f,
                     selection = PokemonType(
                         id = 10,

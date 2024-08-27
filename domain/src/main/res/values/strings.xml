@@ -2,5 +2,8 @@
 <resources>
     <string name="all_gens">all gens</string>
     <string name="all_types">all types</string>
-    <string name="all_versions">all versions</string>
+    <string name="all_versions">all game versions</string>
+    <string name="dialog_title_versions">Select game version</string>
+    <string name="dialog_title_generation">Select generation</string>
+    <string name="dialog_title_type">Select type</string>
 </resources>

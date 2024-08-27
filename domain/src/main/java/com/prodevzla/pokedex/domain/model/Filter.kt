@@ -27,8 +27,9 @@ package com.prodevzla.pokedex.domain.model
 //}
 
 data class Filter(
+    val title: UiText,//TODO change name?
     val weight: Float,
-    val selection: Filterable,
+    val selection: Filterable,//TODO should this be just a position??
     val values: List<Filterable>,
     val onClickSelection: (Int) -> Unit,
 )

@@ -105,12 +105,11 @@ fun ListContent(
 
                 showFilterDialog?.let { filter ->
                     FilterBottomSheet(
-                        items = filter.values,
+                        filter = filter,
                         onDismiss = {
                             showFilterDialog = null
                         },
-                        onClickType = {
-                            filter.onClickSelection.invoke(it)
+                        onClickItem = {
                             showFilterDialog = null
                         }
                     )
@@ -141,10 +140,8 @@ fun ListScreenPreview() {
             ),
         ),
         filters = listOf(
-//            Filter.Version(
-//                weight = 1.5f,
-//            ),
             Filter(
+                title = UiText.DynamicString("Select generation"),
                 weight = 1.0f,
                 selection = PokemonGeneration(
                     id = 1,
@@ -154,6 +151,7 @@ fun ListScreenPreview() {
                 onClickSelection = {}
             ),
             Filter(
+                title = UiText.DynamicString("Select type"),
                 weight = 1.0f,
                 selection = PokemonType(
                     id = 10,

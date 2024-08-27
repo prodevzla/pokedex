@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import com.prodevzla.pokedex.domain.model.Filterable
+import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -28,9 +28,9 @@ import com.prodevzla.pokedex.ui.theme.spacing
 @Composable
 fun FilterBottomSheet(
     modifier: Modifier = Modifier,
-    items: List<Filterable>,
+    filter: Filter,
     onDismiss: () -> Unit = {},
-    onClickType: (Int) -> Unit = {}
+    onClickItem: () -> Unit = {}
 ) {
 
     ModalBottomSheet(
@@ -38,8 +38,8 @@ fun FilterBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         FilterSheetContent(
-            items = items,
-            onClickType = onClickType
+            filter = filter,
+            onClickItem = onClickItem
         )
     }
 }
@@ -47,8 +47,8 @@ fun FilterBottomSheet(
 @Composable
 fun FilterSheetContent(
     modifier: Modifier = Modifier,
-    items: List<Filterable>,
-    onClickType: (Int) -> Unit = {}
+    filter: Filter,
+    onClickItem: () -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier
@@ -58,15 +58,18 @@ fun FilterSheetContent(
     ) {
         item {
             Text(
-                text = "Select type",
+                text = filter.title.asString(),
                 style = MaterialTheme.typography.titleMedium
             )
         }
 
-        items(items) {
+        items(filter.values) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { onClickType.invoke(it.id) },
+                onClick = {
+                    filter.onClickSelection.invoke(it.id)
+                    onClickItem()
+                },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors().copy(
                     containerColor = it.getColor()
@@ -88,11 +91,17 @@ fun FilterTypeBottomSheetPreview() {
     PokedexTheme {
         Surface {
             FilterSheetContent(
-                items = listOf(
-                    PokemonType(id = 1, name = UiText.DynamicString("normal")),
-                    PokemonType(id = 2, name = UiText.DynamicString("fighting")),
-                    PokemonType(id = 3, name = UiText.DynamicString("flying")),
-                    PokemonType(id = 4, name = UiText.DynamicString("poison"))
+                filter = Filter(
+                    title = UiText.DynamicString("Select type"),
+                    weight = 1f,
+                    selection = PokemonType(id = 1, name = UiText.DynamicString("normal")),
+                    values = listOf(
+                        PokemonType(id = 1, name = UiText.DynamicString("normal")),
+                        PokemonType(id = 2, name = UiText.DynamicString("fighting")),
+                        PokemonType(id = 3, name = UiText.DynamicString("flying")),
+                        PokemonType(id = 4, name = UiText.DynamicString("poison"))
+                    ),
+                    onClickSelection = {}
                 )
             )
         }

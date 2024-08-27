@@ -1,8 +1,10 @@
 package com.prodevzla.pokedex.domain.usecase
 
+import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.Filterable
 import com.prodevzla.pokedex.domain.model.Result
+import com.prodevzla.pokedex.domain.model.UiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -53,18 +55,21 @@ class GetFiltersUseCase(
             data?.let {
                 listOf(
                     Filter(
-                        weight = 1f,
+                        title = UiText.StringResource(R.string.dialog_title_versions),
+                        weight = 1.5f,
                         selection = data.versions.first { it.id == filterVersion },
                         values = data.versions,
                         onClickSelection = onClickVersion,
                     ),
                     Filter(
+                        title = UiText.StringResource(R.string.dialog_title_generation),
                         weight = 1f,
                         selection = data.generations.first { it.id == filterGeneration },
                         values = data.generations,
                         onClickSelection = onClickGeneration,
                     ),
                     Filter(
+                        title = UiText.StringResource(R.string.dialog_title_type),
                         weight = 1f,
                         selection = data.types.first { it.id == filterType },
                         values = data.types,
