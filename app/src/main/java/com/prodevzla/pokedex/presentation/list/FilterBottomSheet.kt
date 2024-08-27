@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import com.prodevzla.pokedex.domain.model.Filterable
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.asString
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -71,7 +73,7 @@ fun FilterSheetContent(
                 ),
             ) {
                 Text(
-                    text = it.name.uppercase(),
+                    text = it.name.asString().uppercase(),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -87,10 +89,10 @@ fun FilterTypeBottomSheetPreview() {
         Surface {
             FilterSheetContent(
                 items = listOf(
-                    PokemonType(id = 1, name = "normal"),
-                    PokemonType(id = 2, name = "fighting"),
-                    PokemonType(id = 3, name = "flying"),
-                    PokemonType(id = 4, name = "poison")
+                    PokemonType(id = 1, name = UiText.DynamicString("normal")),
+                    PokemonType(id = 2, name = UiText.DynamicString("fighting")),
+                    PokemonType(id = 3, name = UiText.DynamicString("flying")),
+                    PokemonType(id = 4, name = UiText.DynamicString("poison"))
                 )
             )
         }

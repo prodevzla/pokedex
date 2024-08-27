@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -49,7 +50,7 @@ fun FiltersRowPreview() {
                         weight = 1.0f,
                         selection = PokemonGeneration(
                             id = 1,
-                            name = "Gen I"
+                            name = UiText.DynamicString("Gen I")
                         ),
                         values = emptyList(),
                         onClickSelection = {},
@@ -58,7 +59,7 @@ fun FiltersRowPreview() {
                         weight = 1.0f,
                         selection = PokemonType(
                             id = 10,
-                            name = "Fire"
+                            name = UiText.DynamicString("Fire")
                         ),
                         values = emptyList(),
                         onClickSelection = {},

@@ -12,7 +12,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.asString
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
@@ -32,7 +34,7 @@ fun FilterButton(
         onClick = { onClick(filter) }
     ) {
         Text(
-            text = filter.selection.name.uppercase(),
+            text = filter.selection.name.asString().uppercase(),
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -49,7 +51,7 @@ fun FilterButtonPreview() {
                     weight = 1.0f,
                     selection = PokemonType(
                         id = 10,
-                        name = "Fire"
+                        name = UiText.DynamicString("Fire")
                     ),
                     values = emptyList(),
                     onClickSelection = {},

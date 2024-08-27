@@ -1,6 +1,6 @@
 package com.prodevzla.pokedex.domain.model
 
-data class PokemonGeneration(
+data class FilterDefault(
     override val id: Int,
-    override val name: UiText.DynamicString
+    override val name: UiText.StringResource,
 ): Filterable

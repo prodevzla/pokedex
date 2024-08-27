@@ -11,15 +11,15 @@ sealed interface Filter {
 
     data class Generation(
         override val weight: Float,
-        override val selection: PokemonGeneration,
-        override val values: List<PokemonGeneration>,
+        override val selection: Filterable,
+        override val values: List<Filterable>,
         override val onClickSelection: (Int) -> Unit
     ) : Filter
 
     data class Type(
         override val weight: Float,
-        override val selection: PokemonType,
-        override val values: List<PokemonType>,
+        override val selection: Filterable,
+        override val values: List<Filterable>,
         override val onClickSelection: (Int) -> Unit
     ) : Filter
 

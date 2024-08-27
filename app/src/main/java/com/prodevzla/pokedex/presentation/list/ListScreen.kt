@@ -24,6 +24,7 @@ import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
@@ -142,7 +143,7 @@ fun ListScreenPreview() {
                 weight = 1.0f,
                 selection = PokemonGeneration(
                     id = 1,
-                    name = "Gen I"
+                    name = UiText.DynamicString("Gen I")
                 ),
                 values = emptyList(),
                 onClickSelection = {}
@@ -151,7 +152,7 @@ fun ListScreenPreview() {
                 weight = 1.0f,
                 selection = PokemonType(
                     id = 10,
-                    name = "Fire"
+                    name = UiText.DynamicString("Fire")
                 ),
                 values = emptyList(),
                 onClickSelection = {}
