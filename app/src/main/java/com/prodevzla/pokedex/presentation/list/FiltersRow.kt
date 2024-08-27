@@ -46,7 +46,7 @@ fun FiltersRowPreview() {
 //                    Filter.Version(
 //                        weight = 1.5f,
 //                    ),
-                    Filter.Generation(
+                    Filter(
                         weight = 1.0f,
                         selection = PokemonGeneration(
                             id = 1,
@@ -55,7 +55,7 @@ fun FiltersRowPreview() {
                         values = emptyList(),
                         onClickSelection = {},
                     ),
-                    Filter.Type(
+                    Filter(
                         weight = 1.0f,
                         selection = PokemonType(
                             id = 10,

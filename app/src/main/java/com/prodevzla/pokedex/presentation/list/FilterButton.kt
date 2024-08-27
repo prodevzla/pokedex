@@ -47,7 +47,7 @@ fun FilterButtonPreview() {
     PokedexTheme {
         Surface {
             FilterButton(
-                filter = Filter.Type(
+                filter = Filter(
                     weight = 1.0f,
                     selection = PokemonType(
                         id = 10,

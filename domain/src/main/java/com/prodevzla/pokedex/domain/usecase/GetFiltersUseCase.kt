@@ -25,13 +25,13 @@ class GetFiltersUseCase(
         when {
             generations is Result.Success && types is Result.Success -> {
                 listOf(
-                    Filter.Generation(
+                    Filter(
                         weight = 1f,
                         selection = generations.data.first { it.id == filterGeneration },
                         values = generations.data,
                         onClickSelection = onClickGeneration,
                     ),
-                    Filter.Type(
+                    Filter(
                         weight = 1f,
                         selection = types.data.first { it.id == filterType },
                         values = types.data,
