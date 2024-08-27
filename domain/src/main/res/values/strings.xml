@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all_gens">all gens</string>
+    <string name="all_types">all types</string>
+    <string name="all_versions">all versions</string>
+</resources>
