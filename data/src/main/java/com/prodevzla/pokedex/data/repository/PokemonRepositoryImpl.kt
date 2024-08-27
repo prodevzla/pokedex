@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.data.repository
 
 import com.apollographql.apollo.ApolloClient
+import com.prodevzla.pokedex.data.GetGameVersionGroupsQuery
 import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
 import com.prodevzla.pokedex.data.GetPokemonListQuery
 import com.prodevzla.pokedex.data.GetPokemonTypesQuery
@@ -11,6 +12,7 @@ import com.prodevzla.pokedex.data.mapper.toEntities
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
@@ -49,6 +51,22 @@ open class PokemonRepositoryImpl @Inject constructor(
             )
         )
 
+    }
+
+    override fun getGameVersions(): Flow<Result<List<GameVersionGroup>>> = flow {
+        emit(
+            executeApolloCall(
+                query = {
+                    apolloClient.query(GetGameVersionGroupsQuery())
+                },
+                processResponse = { body ->
+                    val response: List<GameVersionGroup> = body!!.pokemon_v2_versiongroup.toDomain()
+//                    val entities = response.toEntities().toTypedArray()
+//                    pokemonDao.insertAll(*entities)
+                    response
+                },
+            )
+        )
     }
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {

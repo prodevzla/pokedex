@@ -23,6 +23,7 @@ class ListViewModel @Inject constructor(
     getFiltersUseCase: GetFiltersUseCase,
 ) : ViewModel() {
 
+    private val _versionFilter: MutableStateFlow<Int> = MutableStateFlow(DEFAULT_FILTER)
     private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(DEFAULT_FILTER)
     private val _typeFilter = MutableStateFlow(DEFAULT_FILTER)
 
@@ -30,8 +31,10 @@ class ListViewModel @Inject constructor(
         getPokemonsUseCase.invoke()
 
     private val _filters = getFiltersUseCase.invoke(
+        versionFilter = _versionFilter,
         generationFilter = _generationFilter,
         typeFilter = _typeFilter,
+        onClickVersion = ::onClickVersion,
         onClickGeneration = ::onClickGeneration,
         onClickType = ::onClickType
     )
@@ -74,6 +77,10 @@ class ListViewModel @Inject constructor(
                 typeFilter
             )
         }
+    }
+
+    private fun onClickVersion(version: Int) {
+        _versionFilter.value = version
     }
 
     private fun onClickGeneration(generation: Int) {

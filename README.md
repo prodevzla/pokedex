@@ -22,13 +22,15 @@
 
 ++add logs to Apollo graphql
 
+++create string util class
+
+--create versions filter
+
 
 
 --create event pattern for onclick (not needed yet)
 
 --CI/CD
 
---create versions filter
 
---create string util class
 

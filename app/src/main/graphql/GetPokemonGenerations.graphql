@@ -1,6 +1,0 @@
-query GetPokemonGenerations {
-    pokemon_v2_generation {
-        id
-        name
-    }
-}

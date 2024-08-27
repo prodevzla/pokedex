@@ -23,6 +23,10 @@ query GetPokemonListQuery {
              pokemon_v2_generation {
                id
                name
+                 pokemon_v2_versiongroups {
+                     id
+                     name
+                 }
              }
            }
          }

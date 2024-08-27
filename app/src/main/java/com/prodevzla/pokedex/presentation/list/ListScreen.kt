@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -87,6 +88,10 @@ fun ListContent(
                     )
                 }
 
+                Text(
+                    text = "count: ${state.pokemonList.count()}",
+                    modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
+                )
 
                 LazyVerticalGrid(
                     modifier = modifier,

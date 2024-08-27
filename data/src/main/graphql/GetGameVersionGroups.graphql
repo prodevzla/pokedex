@@ -1,0 +1,11 @@
+query GetGameVersionGroups {
+    pokemon_v2_versiongroup {
+        id,
+        name,
+        generation_id
+        pokemon_v2_versions {
+            id
+            name
+        }
+    }
+}

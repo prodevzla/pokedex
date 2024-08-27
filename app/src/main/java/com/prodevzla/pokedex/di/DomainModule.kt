@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.di
 
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
+import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
@@ -14,6 +15,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object DomainModule {
+
+    @Provides
+    @Singleton
+    fun provideGetGameVersionsUseCase(repository: PokemonRepositoryImpl): GetGameVersionsUseCase {
+        return GetGameVersionsUseCase(repository)
+    }
 
     @Provides
     @Singleton
@@ -30,9 +37,10 @@ object DomainModule {
     @Provides
     @Singleton
     fun provideGetFiltersUseCase(
+        getGameVersionsUseCase: GetGameVersionsUseCase,
         getPokemonGenerationsUseCase: GetPokemonGenerationsUseCase,
-        getPokemonTypesUseCase: GetPokemonTypesUseCase
-    ) = GetFiltersUseCase(getPokemonGenerationsUseCase, getPokemonTypesUseCase)
+        getPokemonTypesUseCase: GetPokemonTypesUseCase,
+    ) = GetFiltersUseCase(getGameVersionsUseCase, getPokemonGenerationsUseCase, getPokemonTypesUseCase)
 
     @Provides
     @Singleton
