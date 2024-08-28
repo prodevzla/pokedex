@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.domain.model.FilterOption
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -56,6 +57,7 @@ fun FilterButtonPreview() {
                     ),
                     values = emptyList(),
                     onClickSelection = {},
+                    filterOption = FilterOption.TYPE,
                 )
             )
         }

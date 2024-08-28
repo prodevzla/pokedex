@@ -49,6 +49,7 @@ class ListViewModel @Inject constructor(
                     ListState.Content(
                         pokemonList = filterPokemon(
                             pokemonList = pokemonList.data,
+                            versionFilter = _versionFilter.value,
                             generationFilter = _generationFilter.value,
                             typeFilter = _typeFilter.value
                         ),
@@ -67,6 +68,7 @@ class ListViewModel @Inject constructor(
 
     private fun filterPokemon(
         pokemonList: List<Pokemon>,
+        versionFilter: Int,
         generationFilter: Int,
         typeFilter: Int
     ): List<Pokemon> {
@@ -75,6 +77,10 @@ class ListViewModel @Inject constructor(
         }.filterIf(typeFilter != DEFAULT_FILTER) {
             it.types.contains(
                 typeFilter
+            )
+        }.filterIf(versionFilter != DEFAULT_FILTER) {
+            it.gameVersions.contains(
+                versionFilter
             )
         }
     }

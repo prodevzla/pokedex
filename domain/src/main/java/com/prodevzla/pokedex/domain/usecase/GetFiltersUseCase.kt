@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.domain.usecase
 
 import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.domain.model.FilterOption
 import com.prodevzla.pokedex.domain.model.Filterable
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
@@ -60,6 +61,7 @@ class GetFiltersUseCase(
                         selection = data.versions.first { it.id == filterVersion },
                         values = data.versions,
                         onClickSelection = onClickVersion,
+                        filterOption = FilterOption.VERSION
                     ),
                     Filter(
                         title = UiText.StringResource(R.string.dialog_title_generation),
@@ -67,13 +69,15 @@ class GetFiltersUseCase(
                         selection = data.generations.first { it.id == filterGeneration },
                         values = data.generations,
                         onClickSelection = onClickGeneration,
+                        filterOption = FilterOption.GENERATION
                     ),
                     Filter(
                         title = UiText.StringResource(R.string.dialog_title_type),
                         weight = 1f,
                         selection = data.types.first { it.id == filterType },
                         values = data.types,
-                        onClickSelection = onClickType
+                        onClickSelection = onClickType,
+                        filterOption = FilterOption.TYPE
                     )
                 )
             }

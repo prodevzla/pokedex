@@ -10,7 +10,21 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
         name = this.name,
         //image = URL(this.dreamworld!!)
         types = this.pokemon_v2_pokemontypes.map { it.type_id!! },
-        generation = this.pokemon_v2_pokemonforms.firstOrNull()?.pokemon_v2_pokemonformgenerations?.firstOrNull()?.generation_id
+        generation =
+            this.pokemon_v2_pokemonforms
+                .firstOrNull()
+                ?.pokemon_v2_pokemonformgenerations
+                ?.firstOrNull()
+                ?.generation_id,
+        gameVersions =
+            this.pokemon_v2_pokemonforms
+                .firstOrNull()
+                ?.pokemon_v2_pokemonformgenerations
+                ?.firstOrNull()
+                ?.pokemon_v2_generation
+                ?.pokemon_v2_versiongroups
+                ?.map { it.id }
+                ?: emptyList()
     )
 }
 
@@ -23,7 +37,8 @@ fun Pokemon.toEntity(): PokemonEntity {
         uid = this.id,
         name = this.name,
         types = this.types,
-        generation = this.generation
+        generation = this.generation,
+        gameVersions = this.gameVersions,
     )
 }
 
@@ -37,7 +52,8 @@ fun PokemonEntity.fromEntityToDomain(): Pokemon {
         name = this.name,
         image = null,
         types = this.types,
-        generation = this.generation
+        generation = this.generation,
+        gameVersions = this.gameVersions
     )
 }
 

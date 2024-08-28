@@ -8,4 +8,5 @@ data class Pokemon(
     var image: URL? = null,
     val types: List<Int>,
     val generation: Int?,
+    val gameVersions: List<Int>,
 )

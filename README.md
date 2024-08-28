@@ -32,6 +32,10 @@
 
 --check if Filter model should change selection from item to integer
 
+--add game version to pokemon entity
+
+--store game versions in db
+
 --create event pattern for onclick (not needed yet)
 
 --CI/CD

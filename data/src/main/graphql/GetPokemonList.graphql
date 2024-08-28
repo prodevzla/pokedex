@@ -17,7 +17,7 @@ query GetPokemonListQuery {
 #                }
 #            }
 #        }
-         pokemon_v2_pokemonforms {
+         pokemon_v2_pokemonforms(limit: 1) {
            pokemon_v2_pokemonformgenerations(limit: 1) {
              generation_id
              pokemon_v2_generation {

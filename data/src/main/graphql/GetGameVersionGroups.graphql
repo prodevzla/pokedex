@@ -6,6 +6,9 @@ query GetGameVersionGroups {
         pokemon_v2_versions {
             id
             name
+            pokemon_v2_versionnames(where: {language_id: {_eq: 9}}) {
+                name
+            }
         }
     }
 }

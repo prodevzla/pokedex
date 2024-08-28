@@ -32,4 +32,9 @@ data class Filter(
     val selection: Filterable,//TODO should this be just a position??
     val values: List<Filterable>,
     val onClickSelection: (Int) -> Unit,
+    val filterOption: FilterOption
 )
+
+enum class FilterOption {
+    VERSION, GENERATION, TYPE
+}

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.domain.model.FilterOption
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
@@ -129,14 +130,16 @@ fun ListScreenPreview() {
             Pokemon(
                 id = 6885,
                 name = "Charmander",
-                types = listOf(),
+                types = emptyList(),
                 generation = 1,
+                gameVersions = emptyList()
             ),
             Pokemon(
                 id = 6886,
                 name = "Charmeleon",
-                types = listOf(),
+                types = emptyList(),
                 generation = 1,
+                gameVersions = emptyList()
             ),
         ),
         filters = listOf(
@@ -148,7 +151,8 @@ fun ListScreenPreview() {
                     name = UiText.DynamicString("Gen I")
                 ),
                 values = emptyList(),
-                onClickSelection = {}
+                onClickSelection = {},
+                filterOption = FilterOption.GENERATION,
             ),
             Filter(
                 title = UiText.DynamicString("Select type"),
@@ -158,7 +162,8 @@ fun ListScreenPreview() {
                     name = UiText.DynamicString("Fire")
                 ),
                 values = emptyList(),
-                onClickSelection = {}
+                onClickSelection = {},
+                filterOption = FilterOption.TYPE,
             )
         ),
     )

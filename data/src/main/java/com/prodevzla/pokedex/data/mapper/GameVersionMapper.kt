@@ -21,6 +21,6 @@ fun GetGameVersionGroupsQuery.Pokemon_v2_versiongroup.toDomain(): GameVersionGro
 fun GetGameVersionGroupsQuery.Pokemon_v2_version.toDomain(): GameVersion {
     return GameVersion(
         id = this.id,
-        name = this.name
+        name = this.pokemon_v2_versionnames.first().name
     )
 }
