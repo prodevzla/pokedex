@@ -75,13 +75,7 @@ class ListViewModel @Inject constructor(
         return pokemonList.filterIf(generationFilter != DEFAULT_FILTER) {
             it.generation == generationFilter
         }.filterIf(typeFilter != DEFAULT_FILTER) {
-            it.types.contains(
-                typeFilter
-            )
-        }.filterIf(versionFilter != DEFAULT_FILTER) {
-            it.gameVersions.contains(
-                versionFilter
-            )
+            it.types.any { type -> type.id == typeFilter }
         }
     }
 

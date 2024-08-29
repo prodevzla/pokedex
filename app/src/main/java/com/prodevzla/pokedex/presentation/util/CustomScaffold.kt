@@ -60,13 +60,13 @@ fun CustomScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colorScheme.surface,
-                            Color(0xFF0000FF), // Darker blue
-                        )
-                    )
+                .background(MaterialTheme.colorScheme.surface
+//                    brush = Brush.verticalGradient(
+//                        colors = listOf(
+//                            MaterialTheme.colorScheme.surface,
+//                            Color(0xFF0000FF), // Darker blue
+//                        )
+//                    )
                 )
         ) {
             content()

@@ -39,7 +39,7 @@ fun ErrorScreen(modifier: Modifier = Modifier, tryAgain: () -> Unit = {}) {
 fun LoadingScreen(modifier: Modifier = Modifier) {
     GenericContent(modifier) {
         CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }

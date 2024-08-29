@@ -3,9 +3,11 @@ package com.prodevzla.pokedex.presentation.list
 import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
@@ -94,9 +96,18 @@ fun ListContent(
                     modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
                 )
 
-                LazyVerticalGrid(
+//                LazyVerticalGrid(
+//                    modifier = modifier,
+//                    columns = GridCells.Fixed(2),
+//                    contentPadding = PaddingValues(MaterialTheme.spacing.small),
+//                ) {
+//                    items(state.pokemonList, key = { it.id }) { item ->
+//                        PokemonCard(context = context, pokemon = item, onClickPokemon = onClickPokemon)
+//                    }
+//                }
+
+                LazyColumn(
                     modifier = modifier,
-                    columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(MaterialTheme.spacing.small),
                 ) {
                     items(state.pokemonList, key = { it.id }) { item ->
@@ -132,14 +143,14 @@ fun ListScreenPreview() {
                 name = "Charmander",
                 types = emptyList(),
                 generation = 1,
-                gameVersions = emptyList()
+                //gameVersions = emptyList()
             ),
             Pokemon(
                 id = 6886,
                 name = "Charmeleon",
                 types = emptyList(),
                 generation = 1,
-                gameVersions = emptyList()
+                //gameVersions = emptyList()
             ),
         ),
         filters = listOf(

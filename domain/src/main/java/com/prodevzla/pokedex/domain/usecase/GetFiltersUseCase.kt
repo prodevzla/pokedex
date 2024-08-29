@@ -55,14 +55,14 @@ class GetFiltersUseCase(
         ) { data, filterVersion, filterGeneration, filterType ->
             data?.let {
                 listOf(
-                    Filter(
-                        title = UiText.StringResource(R.string.dialog_title_versions),
-                        weight = 1.5f,
-                        selection = data.versions.first { it.id == filterVersion },
-                        values = data.versions,
-                        onClickSelection = onClickVersion,
-                        filterOption = FilterOption.VERSION
-                    ),
+//                    Filter(
+//                        title = UiText.StringResource(R.string.dialog_title_versions),
+//                        weight = 1.5f,
+//                        selection = data.versions.first { it.id == filterVersion },
+//                        values = data.versions,
+//                        onClickSelection = onClickVersion,
+//                        filterOption = FilterOption.VERSION
+//                    ),
                     Filter(
                         title = UiText.StringResource(R.string.dialog_title_generation),
                         weight = 1f,

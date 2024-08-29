@@ -35,7 +35,7 @@ fun Filter.getColor(): Color {
 fun Filterable.getColor(): Color {
     return when (this) {
         is PokemonGeneration -> getColor()
-        is PokemonType -> this.id.getPokemonTypeIdColor()
+        is PokemonType -> getColor()
 //        is Filter.Version -> NeutralGrey
         else -> NeutralGrey
     }
@@ -48,8 +48,8 @@ fun PokemonGeneration.getColor(): Color {
     }
 }
 
-fun Int.getPokemonTypeIdColor(): Color {
-    return when (this) {
+fun PokemonType.getColor(): Color {
+    return when (this.id) {
         1 -> typeNormal
         2 -> typeFighting
         3 -> typeFlying
