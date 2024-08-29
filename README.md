@@ -24,30 +24,17 @@
 
 ++create string util class
 
-
-
---clean ListViewModel
+++clean ListViewModel
 
 --add floating action button with (sort function, search function)
 
 --create game versions screen ?
 
-
---create versions filter
-
---show versions bottom sheet dialog properly with all the gens and all the versions per generation
-
---filter list depending on selection
+--check why pokemons from gen 9 are not coming through - gen array is empty
 
 --check if Filter model should change selection from item to integer
 
---add game version to pokemon entity
-
 --check error handling inside repository
-
---store game versions in db
-
---get sprites from getpokemonsquery
 
 --create event pattern for onclick (not needed yet)
 

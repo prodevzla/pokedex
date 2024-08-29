@@ -37,10 +37,9 @@ object DomainModule {
     @Provides
     @Singleton
     fun provideGetFiltersUseCase(
-        getGameVersionsUseCase: GetGameVersionsUseCase,
         getPokemonGenerationsUseCase: GetPokemonGenerationsUseCase,
         getPokemonTypesUseCase: GetPokemonTypesUseCase,
-    ) = GetFiltersUseCase(getGameVersionsUseCase, getPokemonGenerationsUseCase, getPokemonTypesUseCase)
+    ) = GetFiltersUseCase(getPokemonGenerationsUseCase, getPokemonTypesUseCase)
 
     @Provides
     @Singleton
