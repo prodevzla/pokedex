@@ -18,6 +18,7 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -72,7 +73,7 @@ fun PokemonCard(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "#" + String.format("%04d", pokemon.id) + "     " + pokemon.name.capitalize(),
+                    text = "#${pokemon.id.toString().padStart(4, '0')} ${pokemon.name.replaceFirstChar { it.uppercase() }}",
                     style = MaterialTheme.typography.titleMedium,
                 )
 
@@ -85,7 +86,7 @@ fun PokemonCard(
                                 .weight(1f)
 
                                 .border(
-                                    width = 1.dp, // border width
+                                    width = 0.5.dp, // border width
                                     color = Color.Black,
                                     shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
                                 ),
@@ -112,7 +113,8 @@ fun PokemonCard(
                         color = Color.White,
                         shape = shape
                     )
-                    .fillMaxHeight()
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
                     model = ImageRequest
@@ -130,28 +132,9 @@ fun PokemonCard(
                                 .copy(alpha = 0.6f),
                             shape = shape
                         )
-                        .fillMaxHeight()
-                        .padding(MaterialTheme.spacing.small)
+                    //.padding(MaterialTheme.spacing.small)
                 )
             }
-
-
-//
-//            Text(
-//                modifier = Modifier
-//                    .align(Alignment.BottomStart)
-//                    .padding(bottom = MaterialTheme.spacing.small),
-//                text = pokemon.name,
-//                style = MaterialTheme.typography.bodyMedium
-//            )
-//
-//            Text(
-//                modifier = Modifier
-//                    .align(Alignment.CenterEnd)
-//                    .padding(bottom = MaterialTheme.spacing.small),
-//                text = "#" + pokemon.id.toString(),
-//                style = MaterialTheme.typography.bodyMedium
-//            )
         }
     }
 }

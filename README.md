@@ -26,6 +26,13 @@
 
 
 
+--clean ListViewModel
+
+--add floating action button with (sort function, search function)
+
+--create game versions screen ?
+
+
 --create versions filter
 
 --show versions bottom sheet dialog properly with all the gens and all the versions per generation

@@ -36,8 +36,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val window: Window = this.window
-            window.navigationBarColor = RoyalBlue.toArgb()
+//            val window: Window = this.window
+//            window.navigationBarColor = RoyalBlue.toArgb()
 
             PokedexTheme {
                 val navController = rememberNavController()
