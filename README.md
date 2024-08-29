@@ -26,7 +26,7 @@
 
 --create versions filter
 
---show generations bottom sheet dialog properly with all the gens and all the versions per generation
+--show versions bottom sheet dialog properly with all the gens and all the versions per generation
 
 --filter list depending on selection
 
@@ -34,7 +34,11 @@
 
 --add game version to pokemon entity
 
+--check error handling inside repository
+
 --store game versions in db
+
+--get sprites from getpokemonsquery
 
 --create event pattern for onclick (not needed yet)
 

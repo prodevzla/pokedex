@@ -7,6 +7,6 @@ data class Pokemon(
     val name: String,
     var image: URL? = null,
     val types: List<Int>,
-    val generation: Int?,
+    val generation: Int,
     val gameVersions: List<Int>,
 )

@@ -10,7 +10,7 @@ data class PokemonEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "types")
     @androidx.room.TypeConverters(PokemonTypeConverter::class) val types: List<Int>,
-    @ColumnInfo(name = "generation") val generation: Int?,
+    @ColumnInfo(name = "generation") val generation: Int,
     @androidx.room.TypeConverters(PokemonTypeConverter::class) val gameVersions: List<Int>,
 )
 

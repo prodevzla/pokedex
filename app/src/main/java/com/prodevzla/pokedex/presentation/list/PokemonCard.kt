@@ -68,7 +68,7 @@ fun PokemonCard(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = MaterialTheme.spacing.small),
-                text = pokemon.name,
+                text = "#" + pokemon.id.toString() + " " + pokemon.name,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -83,7 +83,7 @@ fun PokemonCardPreview() {
             pokemon = Pokemon(
                 id = 4,
                 name = "Charmander",
-                types = emptyList(),
+                types = listOf(12,4),
                 generation = 1,
                 gameVersions = emptyList()
             ),

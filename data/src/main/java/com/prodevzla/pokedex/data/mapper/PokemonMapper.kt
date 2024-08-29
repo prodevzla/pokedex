@@ -4,7 +4,7 @@ import com.prodevzla.pokedex.data.GetPokemonListQuery
 import com.prodevzla.pokedex.data.source.model.PokemonEntity
 import com.prodevzla.pokedex.domain.model.Pokemon
 
-fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
+fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon? {
     return Pokemon(
         id = this.id,
         name = this.name,
@@ -15,7 +15,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
                 .firstOrNull()
                 ?.pokemon_v2_pokemonformgenerations
                 ?.firstOrNull()
-                ?.generation_id,
+                ?.generation_id ?: return null,
         gameVersions =
             this.pokemon_v2_pokemonforms
                 .firstOrNull()
@@ -29,7 +29,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon {
 }
 
 fun List<GetPokemonListQuery.Pokemon_v2_pokemon>.toDomain(): List<Pokemon> {
-    return this.map { it.toDomain() }
+    return this.mapNotNull { it.toDomain() }
 }
 
 fun Pokemon.toEntity(): PokemonEntity {
