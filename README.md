@@ -26,7 +26,7 @@
 
 ++clean ListViewModel
 
---add floating action button with (sort function, search function)
+++add floating action button with (sort function, search function)
 
 --create game versions screen ?
 

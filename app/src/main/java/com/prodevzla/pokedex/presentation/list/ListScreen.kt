@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -136,7 +137,7 @@ fun ListContent(
 
                 val focusRequester = remember { FocusRequester() }
 
-                if (showSearchBar) {
+                AnimatedVisibility(showSearchBar) {
                     SearchBar(
                         modifier = Modifier
                             .fillMaxWidth()

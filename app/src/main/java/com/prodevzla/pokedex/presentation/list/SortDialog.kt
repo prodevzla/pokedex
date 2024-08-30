@@ -11,6 +11,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -40,6 +41,13 @@ fun SortDialog(
     val (selectedSortByOption: SortBy, onSortByOptionSelected: (SortBy) -> Unit) = remember { mutableStateOf(value.sortBy) }
     val (selectedOrderOption, onSortOrderOptionSelected) = remember { mutableStateOf(value.sortOrder) }
 
+    val rbColors = RadioButtonColors(
+        selectedColor = MaterialTheme.colorScheme.onSurface,
+        unselectedColor = MaterialTheme.colorScheme.onSurface,
+        disabledSelectedColor = MaterialTheme.colorScheme.onSurface,
+        disabledUnselectedColor = MaterialTheme.colorScheme.onSurface
+    )
+
     AlertDialog(
         modifier = modifier,
         title = {
@@ -57,6 +65,7 @@ fun SortDialog(
                         RadioButton(
                             selected = it == selectedSortByOption,
                             onClick = { onSortByOptionSelected(it) },
+                            colors = rbColors,
                         )
                         Text(
                             modifier = Modifier
@@ -82,6 +91,7 @@ fun SortDialog(
                         RadioButton(
                             selected = it == selectedOrderOption,
                             onClick = { onSortOrderOptionSelected(it) },
+                            colors = rbColors,
                         )
                         Text(
                             text = it.name,
@@ -99,7 +109,8 @@ fun SortDialog(
             TextButton(onClick = { onConfirm(Sort(selectedSortByOption, selectedOrderOption)) }) {
                 Text(
                     text = stringResource(R.string.sort_dialog_button_confirm).uppercase(),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
@@ -107,7 +118,8 @@ fun SortDialog(
             TextButton(onClick = onDismiss) {
                 Text(
                     text = stringResource(R.string.sort_dialog_button_cancel).uppercase(),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
