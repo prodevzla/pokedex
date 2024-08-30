@@ -2,12 +2,16 @@ package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +24,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,12 +58,17 @@ fun ListScreen(
         return@remember viewModel::onSortChange
     }
 
+    val onSearchChange: (String) -> Unit = remember(viewModel) {
+        return@remember viewModel::onSearchChange
+    }
+
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
         onSortChange = onSortChange,
+        onSearchChange = onSearchChange,
     )
 
 }
@@ -69,11 +80,14 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
-    onSortChange: (Sort) -> Unit = {}
+    onSortChange: (Sort) -> Unit = {},
+    onSearchChange: (String) -> Unit = {},
 ) {
 
+    var showSearchBar by remember { mutableStateOf(false) }
+
     var showFilterDialog: Filter? by remember { mutableStateOf(null) }
-    var showSortDialog: Boolean by remember { mutableStateOf(false) }
+    var showSortDialog by remember { mutableStateOf(false) }
 
     CustomScaffold(
         modifier = modifier,
@@ -90,9 +104,25 @@ fun ListContent(
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_filter),
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = if (state.sort.isDefault()) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            Color.Red
+                        },
                         contentDescription = "menu"
                     )
+                }
+            }
+        },
+        floatingActionButton = {
+            if (state is ListState.Content) {
+                FloatingActionButton(
+                    shape = CircleShape,
+                    onClick = {
+                        showSearchBar = true
+                    },
+                ) {
+                    Icon(Icons.Filled.Search, "search.")
                 }
             }
         }
@@ -103,6 +133,28 @@ fun ListContent(
             ListState.Loading -> LoadingScreen()
             ListState.Error -> ErrorScreen()
             is ListState.Content -> {
+
+                val focusRequester = remember { FocusRequester() }
+
+                if (showSearchBar) {
+                    SearchBar(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = MaterialTheme.spacing.medium),
+                        search = state.search,
+                        onSearchChange = onSearchChange,
+                        focusRequester = focusRequester,
+                        onClickClose = {
+                            onSearchChange("")
+                            showSearchBar = false
+                        }
+                    )
+
+                    LaunchedEffect(Unit) {
+                        focusRequester.requestFocus()
+                    }
+                }
+
                 state.filters?.let { filters ->
                     FiltersRow(
                         modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
@@ -218,6 +270,7 @@ fun ListScreenPreview() {
             )
         ),
         sort = Sort(),
+        search = ""
     )
     PokedexTheme {
         ListContent(

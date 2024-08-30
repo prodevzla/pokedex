@@ -1,21 +1,24 @@
 package com.prodevzla.pokedex.presentation.list
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import com.prodevzla.pokedex.ui.theme.spacing
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
 fun SearchBar(
@@ -23,33 +26,39 @@ fun SearchBar(
     focusRequester: FocusRequester = FocusRequester(),
     search: String,
     onSearchChange: (String) -> Unit = {},
+    onClickClose: () -> Unit = {},
 ) {
     val shape = RoundedCornerShape(
-        topStartPercent = 50,
-        topEndPercent = 5,
-        bottomEndPercent = 50,
+        topStartPercent = 25,
+        topEndPercent = 25,
+        bottomEndPercent = 5,
         bottomStartPercent = 5,
     )
 
-    OutlinedTextField(
+    TextField(
         modifier = modifier
             .focusRequester(focusRequester)
-            .padding(horizontal = MaterialTheme.spacing.medium)
-            .background(
-                color = Color.Blue,
-                shape = shape,
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface,
+                shape = shape
             ),
         value = search,
         shape = shape,
         onValueChange = onSearchChange,
         maxLines = 1,
-        textStyle = LocalTextStyle.current.copy(
-            textAlign = TextAlign.Center,
-            color = Color.White,
-        ),
+        textStyle = MaterialTheme.typography.titleMedium,
         colors = OutlinedTextFieldDefaults.colors().copy(
-            cursorColor = Color.White,
+            cursorColor = MaterialTheme.colorScheme.onSurface,
         ),
+        leadingIcon = {
+            Image(painter = painterResource(id = R.drawable.pokeball), contentDescription = "close")
+        },
+        trailingIcon = {
+            IconButton(onClick = onClickClose) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = "close")
+            }
+        }
     )
 }
 

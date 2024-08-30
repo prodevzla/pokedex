@@ -31,6 +31,8 @@ class ListViewModel @Inject constructor(
 
     private val _sort = MutableStateFlow(Sort())
 
+    private val _search = MutableStateFlow("")
+
     private val _pokemonList: Flow<Result<List<Pokemon>>> =
         getPokemonsUseCase.invoke()
 
@@ -45,8 +47,9 @@ class ListViewModel @Inject constructor(
         combine(
             _pokemonList,
             _filters,
-            _sort
-        ) { pokemonList, filters, sort ->
+            _sort,
+            _search
+        ) { pokemonList, filters, sort, search ->
             when {
                 pokemonList is Result.Success -> {
                     ListState.Content(
@@ -55,9 +58,11 @@ class ListViewModel @Inject constructor(
                             generationFilter = _generationFilter.value,
                             typeFilter = _typeFilter.value,
                             sort = _sort.value,
+                            search = _search.value
                         ),
                         filters = filters,
                         sort = sort,
+                        search = search
                     )
                 }
 
@@ -74,7 +79,8 @@ class ListViewModel @Inject constructor(
         pokemonList: List<Pokemon>,
         generationFilter: Int,
         typeFilter: Int,
-        sort: Sort
+        sort: Sort,
+        search: String,
     ): List<Pokemon> {
         return pokemonList
             .filterIf(generationFilter != DEFAULT_FILTER) {
@@ -90,7 +96,7 @@ class ListViewModel @Inject constructor(
                 }
             }.let {
                 if (sort.sortOrder == SortOrder.Descending) it.reversed() else it
-            })
+            }).filter { it.name.contains(search) }
     }
 
     private fun onClickGeneration(generation: Int) {
@@ -103,6 +109,10 @@ class ListViewModel @Inject constructor(
 
     fun onSortChange(sort: Sort) {
         _sort.value = sort
+    }
+
+    fun onSearchChange(input: String) {
+        _search.value = input
     }
 
     companion object {
@@ -132,6 +142,7 @@ sealed interface ListState {
         val pokemonList: List<Pokemon>,
         val filters: List<Filter>?,
         val sort: Sort,
+        val search: String,
     ) : ListState
 
     /**

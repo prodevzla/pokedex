@@ -27,6 +27,7 @@ fun CustomScaffold(
     title: String,
     navIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Scaffold(
@@ -58,7 +59,9 @@ fun CustomScaffold(
                 navigationIcon = navIcon,
                 actions = actions,
             )
-        }) { innerPadding ->
+        },
+        floatingActionButton = floatingActionButton
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
