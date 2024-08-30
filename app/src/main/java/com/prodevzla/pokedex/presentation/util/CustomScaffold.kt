@@ -3,6 +3,7 @@ package com.prodevzla.pokedex.presentation.util
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -25,7 +26,8 @@ fun CustomScaffold(
     modifier: Modifier = Modifier,
     title: String,
     navIcon: @Composable () -> Unit = {},
-    content: @Composable ColumnScope.() -> Unit
+    actions: @Composable RowScope.() -> Unit = {},
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -53,7 +55,8 @@ fun CustomScaffold(
                     actionIconContentColor = Color.White
 
                 ),
-                navigationIcon = navIcon
+                navigationIcon = navIcon,
+                actions = actions,
             )
         }) { innerPadding ->
         Column(

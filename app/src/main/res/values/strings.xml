@@ -3,4 +3,7 @@
     <string name="home">Home</string>
     <string name="favourites">Favourites</string>
     <string name="gen">Gen %d</string>
+    <string name="sort_dialog_title">Sort by...</string>
+    <string name="sort_dialog_button_confirm">Confirm</string>
+    <string name="sort_dialog_button_cancel">Cancel</string>
 </resources>

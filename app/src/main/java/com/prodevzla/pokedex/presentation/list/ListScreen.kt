@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
@@ -15,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,12 +21,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.FilterOption
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.Sort
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
@@ -46,12 +48,16 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
+    val onSortChange: (Sort) -> Unit = remember(viewModel) {
+        return@remember viewModel::onSortChange
+    }
 
     ListContent(
         state = state,
         context = context,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
+        onSortChange = onSortChange,
     )
 
 }
@@ -63,7 +69,11 @@ fun ListContent(
     context: Context,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Int) -> Unit = {},
+    onSortChange: (Sort) -> Unit = {}
 ) {
+
+    var showFilterDialog: Filter? by remember { mutableStateOf(null) }
+    var showSortDialog: Boolean by remember { mutableStateOf(false) }
 
     CustomScaffold(
         modifier = modifier,
@@ -72,10 +82,22 @@ fun ListContent(
             IconButton(onClick = onClickNavIcon) {
                 Icon(Icons.Filled.Menu, contentDescription = "menu")
             }
+        },
+        actions = {
+            if (state is ListState.Content) {
+                IconButton(onClick = {
+                    showSortDialog = true
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_filter),
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = "menu"
+                    )
+                }
+            }
         }
     ) {
 
-        var showFilterDialog: Filter? by remember { mutableStateOf(null) }
 
         when (state) {
             ListState.Loading -> LoadingScreen()
@@ -106,7 +128,14 @@ fun ListContent(
 //                    }
 //                }
 
+                val lazyListState = rememberLazyListState()
+
+                LaunchedEffect(state.sort, state.filters) {
+                    lazyListState.scrollToItem(0)
+                }
+
                 LazyColumn(
+                    state = lazyListState,
                     modifier = modifier,
                     contentPadding = PaddingValues(MaterialTheme.spacing.small),
                 ) {
@@ -124,6 +153,17 @@ fun ListContent(
                         onClickItem = {
                             showFilterDialog = null
                         }
+                    )
+                }
+
+                if (showSortDialog) {
+                    SortDialog(
+                        onConfirm = { sort ->
+                            onSortChange.invoke(sort)
+                            showSortDialog = false
+                        },
+                        value = state.sort,
+                        onDismiss = { showSortDialog = false }
                     )
                 }
 
@@ -177,6 +217,7 @@ fun ListScreenPreview() {
                 filterOption = FilterOption.TYPE,
             )
         ),
+        sort = Sort(),
     )
     PokedexTheme {
         ListContent(
