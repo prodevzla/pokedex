@@ -28,17 +28,17 @@
 
 ++add floating action button with (sort function, search function)
 
+++CI/CD (implemented GitHub actions)
+
+++search input field visibility must be inside the uiState from the viewModel. bug: when searching for a name and clicking a pokemon,
+when coming back, the list is still filtered but the input field is not visible. fixed with rememberSaveable
+
+++check if Filter model should change selection from item to integer
+
 --create game versions screen ?
 
 --check why pokemons from gen 9 are not coming through - gen array is empty
 
---check if Filter model should change selection from item to integer
-
 --check error handling inside repository
 
 --create event pattern for onclick (not needed yet)
-
---CI/CD
-
-
-

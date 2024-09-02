@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -43,11 +45,16 @@ fun SearchBar(
                 color = MaterialTheme.colorScheme.onSurface,
                 shape = shape
             ),
-        value = search,
         shape = shape,
-        onValueChange = onSearchChange,
         maxLines = 1,
         textStyle = MaterialTheme.typography.titleMedium,
+        value = TextFieldValue(
+            text = search,
+            selection = TextRange(search.length) // TextRange(0, textValue.length) -> Select that text in a color
+        ),
+        onValueChange = {
+            onSearchChange.invoke(it.text)
+        },
         colors = OutlinedTextFieldDefaults.colors().copy(
             cursorColor = MaterialTheme.colorScheme.onSurface,
         ),
@@ -58,7 +65,7 @@ fun SearchBar(
             IconButton(onClick = onClickClose) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = "close")
             }
-        }
+        },
     )
 }
 

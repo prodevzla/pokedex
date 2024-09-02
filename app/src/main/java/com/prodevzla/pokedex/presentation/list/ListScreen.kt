@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -85,7 +86,7 @@ fun ListContent(
     onSearchChange: (String) -> Unit = {},
 ) {
 
-    var showSearchBar by remember { mutableStateOf(false) }
+    var showSearchBar by rememberSaveable { mutableStateOf(false) }
 
     var showFilterDialog: Filter? by remember { mutableStateOf(null) }
     var showSortDialog by remember { mutableStateOf(false) }
