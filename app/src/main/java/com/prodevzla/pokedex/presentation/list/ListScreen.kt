@@ -1,7 +1,13 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +57,9 @@ import com.prodevzla.pokedex.ui.theme.spacing
 fun ListScreen(
     viewModel: ListViewModel = hiltViewModel(),
     onClickNavIcon: () -> Unit,
-    onClickPokemon: (Int) -> Unit,
+    onClickPokemon: (Pokemon) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val context = LocalContext.current
 
@@ -67,6 +76,8 @@ fun ListScreen(
     ListContent(
         state = state,
         context = context,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
         onSortChange = onSortChange,
@@ -74,14 +85,17 @@ fun ListScreen(
     )
 
 }
+
 //TODO use events pattern
 @Composable
 fun ListContent(
     modifier: Modifier = Modifier,
     state: ListState,
     context: Context,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     onClickNavIcon: () -> Unit = {},
-    onClickPokemon: (Int) -> Unit = {},
+    onClickPokemon: (Pokemon) -> Unit = {},
     onSortChange: (Sort) -> Unit = {},
     onSearchChange: (String) -> Unit = {},
 ) {
@@ -194,7 +208,13 @@ fun ListContent(
                     contentPadding = PaddingValues(MaterialTheme.spacing.small),
                 ) {
                     items(state.pokemonList, key = { it.id }) { item ->
-                        PokemonCard(context = context, pokemon = item, onClickPokemon = onClickPokemon)
+                        PokemonCard(
+                            context = context,
+                            pokemon = item,
+                            onClickPokemon = onClickPokemon,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
                     }
                 }
 
@@ -278,11 +298,20 @@ fun ListScreenPreview() {
         sort = Sort(),
         search = ""
     )
+
     PokedexTheme {
-        ListContent(
-            state = state,
-            context = LocalContext.current,
-        )
+        Surface {
+            SharedTransitionLayout {
+                AnimatedVisibility(visible = true) {
+                    ListContent(
+                        state = state,
+                        context = LocalContext.current,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -291,9 +320,17 @@ fun ListScreenPreview() {
 fun ListScreenLoadingPreview() {
     val state = ListState.Loading
     PokedexTheme {
-        ListContent(
-            state = state,
-            context = LocalContext.current,
-        )
+        Surface {
+            SharedTransitionLayout {
+                AnimatedVisibility(visible = true) {
+                    ListContent(
+                        state = state,
+                        context = LocalContext.current,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
+                    )
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,11 @@
 package com.prodevzla.pokedex.presentation.list
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,17 +36,21 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemon
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun PokemonCard(
     modifier: Modifier = Modifier,
     context: Context,
     pokemon: Pokemon,
-    onClickPokemon: (Int) -> Unit = {},
+    onClickPokemon: (Pokemon) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     Card(
         modifier = modifier
@@ -55,7 +65,7 @@ fun PokemonCard(
 
         ),
         onClick = {
-            onClickPokemon.invoke(pokemon.id)
+            onClickPokemon.invoke(pokemon)
         }
     ) {
         Row(
@@ -116,47 +126,63 @@ fun PokemonCard(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = ImageRequest
-                        .Builder(context)
-                        .data(pokemon.image.toString())
-                        //.placeholder(R.drawable.charmeleon)
-                        .decoderFactory(SvgDecoder.Factory())
-                        .build(),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = pokemon.types[0]
-                                .getColor()
-                                .copy(alpha = 0.6f),
-                            shape = shape
-                        )
-                    //.padding(MaterialTheme.spacing.small)
-                )
+                with(sharedTransitionScope) {
+                    AsyncImage(
+                        model = ImageRequest
+                            .Builder(context)
+                            .data(pokemon.image.toString())
+                            //.placeholder(R.drawable.charmeleon)
+                            .decoderFactory(SvgDecoder.Factory())
+                            .build(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                color = pokemon.types[0]
+                                    .getColor()
+                                    .copy(alpha = 0.6f),
+                                shape = shape
+                            )
+                            .sharedElement(
+                                state = rememberSharedContentState(key = sharedKeyPokemon+pokemon.id),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                            )
+                    )
+                }
+
             }
         }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
 fun PokemonCardPreview() {
     PokedexTheme {
-        PokemonCard(
-            pokemon = Pokemon(
-                id = 4,
-                name = "Charmander",
-                types = listOf(
-                    PokemonType(
-                        id = 10,
-                        name = UiText.DynamicString("Fire")
+        Surface {
+            SharedTransitionLayout {
+                AnimatedVisibility(visible = true) {
+                    PokemonCard(
+                        pokemon = Pokemon(
+                            id = 4,
+                            name = "Charmander",
+                            types = listOf(
+                                PokemonType(
+                                    id = 10,
+                                    name = UiText.DynamicString("Fire")
+                                )
+                            ),
+                            generation = 1,
+                            //gameVersions = emptyList()
+                        ),
+                        context = LocalContext.current,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
                     )
-                ),
-                generation = 1,
-                //gameVersions = emptyList()
-            ),
-            context = LocalContext.current,
-        )
+                }
+            }
+        }
+
     }
 }

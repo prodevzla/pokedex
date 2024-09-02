@@ -21,7 +21,7 @@ class GetPokemonsUseCase(
                     is Result.Success -> Result.Success(
                         response.data.map { pokemon ->
                             pokemon.apply {
-                                image = URL(IMAGE_URL.replace("{pokemonId}", pokemon.id.toString()))
+                                image = IMAGE_URL.replace("{pokemonId}", pokemon.id.toString())
                             }
                         }
                     )

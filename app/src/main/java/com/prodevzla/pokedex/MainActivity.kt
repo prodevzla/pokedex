@@ -1,36 +1,39 @@
 package com.prodevzla.pokedex
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.graphics.toArgb
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.prodevzla.pokedex.presentation.Favourites
-import com.prodevzla.pokedex.presentation.Home
-import com.prodevzla.pokedex.presentation.Pokemon
+import androidx.navigation.toRoute
+import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.list.ListScreen
+import com.prodevzla.pokedex.presentation.navigation.Favourites
+import com.prodevzla.pokedex.presentation.navigation.HomeRoute
+import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
+import com.prodevzla.pokedex.presentation.navigation.PokemonNavType
+import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import com.prodevzla.pokedex.ui.theme.RoyalBlue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.reflect.typeOf
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,23 +50,45 @@ class MainActivity : ComponentActivity() {
 
                 ModalNavigationDrawer(
                     drawerState = drawerState,
-                    drawerContent = { AppDrawer() },
+                    drawerContent = {
+                        AppDrawer()
+                    },
                 ) {
-                    NavHost(navController = navController, startDestination = Home) {
-                        composable<Home> {
-                            ListScreen(
-                                onClickPokemon = { navController.navigate(Pokemon) },
-                                onClickNavIcon = { toggleDrawer(scope, drawerState) }
-                            )
-                        }
-                        composable<Pokemon> { backStackEntry ->
-                            Text(text = "Pokemon Details")
-                        }
 
-                        composable<Favourites> {
-                            Text(text = "Favourites")
+                    SharedTransitionLayout {
+                        NavHost(navController = navController, startDestination = HomeRoute) {
+                            composable<HomeRoute> {
+                                ListScreen(
+                                    onClickPokemon = { pokemon ->
+                                        navController.navigate(PokemonDetailRoute(pokemon))
+                                    },
+                                    onClickNavIcon = {
+                                        toggleDrawer(scope, drawerState)
+                                    },
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = this
+                                )
+                            }
+                            composable<PokemonDetailRoute>(
+                                typeMap = mapOf(
+                                    typeOf<Pokemon>() to PokemonNavType.PokemonType
+                                )
+                            ) { backStackEntry ->
+                                val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
+
+                                PokemonScreen(
+                                    pokemon = arguments.pokemon,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = this
+                                )
+                            }
+
+                            composable<Favourites> {
+                                Text(text = "Favourites")
+                            }
                         }
                     }
+
                 }
 
             }
