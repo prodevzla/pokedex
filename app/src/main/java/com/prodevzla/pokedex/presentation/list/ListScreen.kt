@@ -248,24 +248,28 @@ fun ListScreenPreview() {
         ),
         filters = listOf(
             Filter(
-                title = UiText.DynamicString("Select generation"),
+                dialogTitle = UiText.DynamicString("Select generation"),
                 weight = 1.0f,
-                selection = PokemonGeneration(
-                    id = 1,
-                    name = UiText.DynamicString("Gen I")
+                selection = 1,
+                values = listOf(
+                    PokemonGeneration(
+                        id = 1,
+                        name = UiText.DynamicString("Gen I")
+                    )
                 ),
-                values = emptyList(),
                 onClickSelection = {},
                 filterOption = FilterOption.GENERATION,
             ),
             Filter(
-                title = UiText.DynamicString("Select type"),
+                dialogTitle = UiText.DynamicString("Select type"),
                 weight = 1.0f,
-                selection = PokemonType(
-                    id = 10,
-                    name = UiText.DynamicString("Fire")
+                selection = 1,
+                values = listOf(
+                    PokemonType(
+                        id = 10,
+                        name = UiText.DynamicString("Fire")
+                    )
                 ),
-                values = emptyList(),
                 onClickSelection = {},
                 filterOption = FilterOption.TYPE,
             )

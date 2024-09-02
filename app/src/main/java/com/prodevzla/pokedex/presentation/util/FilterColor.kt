@@ -28,7 +28,7 @@ import com.prodevzla.pokedex.ui.theme.typeWater
 
 //used in the filter
 fun Filter.getColor(): Color {
-    return this.selection.getColor()
+    return this.selectedItem.getColor()
 }
 
 //used inside the bottom sheet

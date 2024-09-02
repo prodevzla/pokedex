@@ -35,7 +35,7 @@ fun FilterButton(
         onClick = { onClick(filter) }
     ) {
         Text(
-            text = filter.selection.name.asString().uppercase(),
+            text = filter.selectedItem.name.asString().uppercase(),
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -49,13 +49,15 @@ fun FilterButtonPreview() {
         Surface {
             FilterButton(
                 filter = Filter(
-                    title = UiText.DynamicString("Select type"),
+                    dialogTitle = UiText.DynamicString("Select type"),
                     weight = 1.0f,
-                    selection = PokemonType(
-                        id = 10,
-                        name = UiText.DynamicString("Fire")
+                    selection = 0,
+                    values = listOf(
+                        PokemonType(
+                            id = 10,
+                            name = UiText.DynamicString("Fire")
+                        )
                     ),
-                    values = emptyList(),
                     onClickSelection = {},
                     filterOption = FilterOption.TYPE,
                 )

@@ -27,13 +27,16 @@ package com.prodevzla.pokedex.domain.model
 //}
 
 data class Filter(
-    val title: UiText,//TODO change name?
+    val dialogTitle: UiText,
     val weight: Float,
-    val selection: Filterable,//TODO should this be just a position??
+    val selection: Int,
     val values: List<Filterable>,
     val onClickSelection: (Int) -> Unit,
     val filterOption: FilterOption
-)
+) {
+    val selectedItem: Filterable
+        get() = values.first { it.id == selection }
+}
 
 enum class FilterOption {
     VERSION, GENERATION, TYPE

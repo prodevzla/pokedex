@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.stringResource
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.FilterDefault
@@ -69,7 +68,7 @@ fun FilterSheetContent(
     ) {
         item {
             Text(
-                text = filter.title.asString(),
+                text = filter.dialogTitle.asString(),
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -169,9 +168,9 @@ fun FilterTypeBottomSheetPreview() {
         Surface {
             FilterSheetContent(
                 filter = Filter(
-                    title = UiText.DynamicString("Select type"),
+                    dialogTitle = UiText.DynamicString("Select type"),
                     weight = 1f,
-                    selection = PokemonType(id = 1, name = UiText.DynamicString("normal")),
+                    selection = 1,
                     values = listOf(
                         PokemonType(id = 1, name = UiText.DynamicString("normal")),
                         PokemonType(id = 2, name = UiText.DynamicString("fighting")),

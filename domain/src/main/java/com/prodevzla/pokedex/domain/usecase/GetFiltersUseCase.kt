@@ -37,17 +37,17 @@ class GetFiltersUseCase(
 //                        filterOption = FilterOption.VERSION
 //                    ),
                     Filter(
-                        title = UiText.StringResource(R.string.dialog_title_generation),
+                        dialogTitle = UiText.StringResource(R.string.dialog_title_generation),
                         weight = 1f,
-                        selection = generations.data.first { it.id == selectedGeneration },
+                        selection = selectedGeneration,//generations.data.first { it.id == selectedGeneration },
                         values = generations.data,
                         onClickSelection = onClickGeneration,
                         filterOption = FilterOption.GENERATION
                     ),
                     Filter(
-                        title = UiText.StringResource(R.string.dialog_title_type),
+                        dialogTitle = UiText.StringResource(R.string.dialog_title_type),
                         weight = 1f,
-                        selection = types.data.first { it.id == selectedType },
+                        selection = selectedType,//types.data.first { it.id == selectedType },
                         values = types.data,
                         onClickSelection = onClickType,
                         filterOption = FilterOption.TYPE

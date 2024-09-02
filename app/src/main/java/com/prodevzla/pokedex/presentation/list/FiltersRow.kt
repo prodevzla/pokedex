@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.FilterOption
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
@@ -45,24 +44,28 @@ fun FiltersRowPreview() {
             FiltersRow(
                 filters = listOf(
                     Filter(
-                        title = UiText.DynamicString("select generation"),
+                        dialogTitle = UiText.DynamicString("select generation"),
                         weight = 1.0f,
-                        selection = PokemonGeneration(
-                            id = 1,
-                            name = UiText.DynamicString("Gen I")
+                        selection = 0,
+                        values = listOf(
+                            PokemonGeneration(
+                                id = 1,
+                                name = UiText.DynamicString("Gen I")
+                            )
                         ),
-                        values = emptyList(),
                         onClickSelection = {},
                         filterOption = FilterOption.GENERATION,
                     ),
                     Filter(
-                        title = UiText.DynamicString("select type"),
+                        dialogTitle = UiText.DynamicString("select type"),
                         weight = 1.0f,
-                        selection = PokemonType(
-                            id = 10,
-                            name = UiText.DynamicString("Fire")
+                        selection = 0,
+                        values = listOf(
+                            PokemonGeneration(
+                                id = 1,
+                                name = UiText.DynamicString("Gen I")
+                            )
                         ),
-                        values = emptyList(),
                         onClickSelection = {},
                         filterOption = FilterOption.TYPE,
                     )
