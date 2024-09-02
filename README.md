@@ -33,6 +33,8 @@
 ++search input field visibility must be inside the uiState from the viewModel. bug: when searching for a name and clicking a pokemon,
 when coming back, the list is still filtered but the input field is not visible. fixed with rememberSaveable
 
+--start working on the design of the pokemonDetails screen
+
 ++check if Filter model should change selection from item to integer
 
 --create game versions screen ?

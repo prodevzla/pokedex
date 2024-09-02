@@ -103,6 +103,7 @@ fun ListContent(
     var showSearchBar by rememberSaveable { mutableStateOf(false) }
 
     var showFilterDialog: Filter? by remember { mutableStateOf(null) }
+
     var showSortDialog by remember { mutableStateOf(false) }
 
     CustomScaffold(
@@ -152,6 +153,11 @@ fun ListContent(
 
                 val focusRequester = remember { FocusRequester() }
 
+                var scrollToTop by remember { mutableStateOf(false) }
+
+                val lazyListState = rememberLazyListState()
+
+
                 AnimatedVisibility(showSearchBar) {
                     SearchBar(
                         modifier = Modifier
@@ -186,20 +192,11 @@ fun ListContent(
                     modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)
                 )
 
-//                LazyVerticalGrid(
-//                    modifier = modifier,
-//                    columns = GridCells.Fixed(2),
-//                    contentPadding = PaddingValues(MaterialTheme.spacing.small),
-//                ) {
-//                    items(state.pokemonList, key = { it.id }) { item ->
-//                        PokemonCard(context = context, pokemon = item, onClickPokemon = onClickPokemon)
-//                    }
-//                }
-
-                val lazyListState = rememberLazyListState()
-
-                LaunchedEffect(state.sort, state.filters) {
-                    lazyListState.scrollToItem(0)
+                LaunchedEffect(scrollToTop) {
+                    if (scrollToTop) {
+                        lazyListState.scrollToItem(0)
+                        scrollToTop = false
+                    }
                 }
 
                 LazyColumn(
@@ -226,6 +223,7 @@ fun ListContent(
                         },
                         onClickItem = {
                             showFilterDialog = null
+                            scrollToTop = true
                         }
                     )
                 }
@@ -235,6 +233,7 @@ fun ListContent(
                         onConfirm = { sort ->
                             onSortChange.invoke(sort)
                             showSortDialog = false
+                            scrollToTop = true
                         },
                         value = state.sort,
                         onDismiss = { showSortDialog = false }
