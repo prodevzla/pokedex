@@ -35,6 +35,8 @@ when coming back, the list is still filtered but the input field is not visible.
 
 --start working on the design of the pokemonDetails screen
 
+--add Firebase (analytics, distribution, crashlytics)
+
 ++check if Filter model should change selection from item to integer
 
 --create game versions screen ?
