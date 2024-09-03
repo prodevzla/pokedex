@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.apollo)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -81,6 +82,9 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.apollo.runtime)
     implementation(libs.androidx.room.runtime)
+
+    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
