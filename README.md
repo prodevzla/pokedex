@@ -33,16 +33,20 @@
 ++search input field visibility must be inside the uiState from the viewModel. bug: when searching for a name and clicking a pokemon,
 when coming back, the list is still filtered but the input field is not visible. fixed with rememberSaveable
 
---start working on the design of the pokemonDetails screen
-
---add Firebase (analytics, distribution, crashlytics, distribution)
-
 ++check if Filter model should change selection from item to integer
 
---create game versions screen ?
+++add Firebase Analytics
+
+--refactor events handling in the listScreen
+
+--create event for pageView and track when the bottomSheetDialog appears
+
+--start working on the design of the pokemonDetails screen
+
+--add Firebase (crashlytics, distribution, distribution)
 
 --check why pokemons from gen 9 are not coming through - gen array is empty
 
 --check error handling inside repository
 
---create event pattern for onclick (not needed yet)
+--create game versions screen ?
