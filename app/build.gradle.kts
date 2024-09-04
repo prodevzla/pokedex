@@ -83,7 +83,7 @@ dependencies {
     implementation(libs.apollo.runtime)
     implementation(libs.androidx.room.runtime)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
+//    implementation(libs.firebase.analytics)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

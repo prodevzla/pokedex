@@ -2,7 +2,9 @@ package com.prodevzla.pokedex.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.prodevzla.pokedex.domain.AnalyticsEvent.ClickEvent
 import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.domain.model.FirebaseAnalytics.ListScreen
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Sort
@@ -10,6 +12,7 @@ import com.prodevzla.pokedex.domain.model.SortBy
 import com.prodevzla.pokedex.domain.model.SortOrder
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import com.prodevzla.pokedex.domain.usecase.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +27,7 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     getPokemonsUseCase: GetPokemonsUseCase,
     getFiltersUseCase: GetFiltersUseCase,
+    private val trackEventUseCase: TrackEventUseCase,
 ) : ViewModel() {
 
     private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(DEFAULT_FILTER)
@@ -100,14 +104,20 @@ class ListViewModel @Inject constructor(
     }
 
     private fun onClickGeneration(generation: Int) {
+        trackEventUseCase.invoke(
+            ClickEvent(ListScreen.CHANGED_FILTER_GENERATION))
         _generationFilter.value = generation
     }
 
     private fun onClickType(type: Int) {
+        trackEventUseCase.invoke(
+            ClickEvent(ListScreen.CHANGED_FILTER_TYPE))
         _typeFilter.value = type
     }
 
     fun onSortChange(sort: Sort) {
+        trackEventUseCase.invoke(
+            ClickEvent(ListScreen.CHANGED_SORTING))
         _sort.value = sort
     }
 

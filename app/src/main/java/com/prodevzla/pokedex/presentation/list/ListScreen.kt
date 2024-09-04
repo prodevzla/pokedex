@@ -157,7 +157,6 @@ fun ListContent(
 
                 val lazyListState = rememberLazyListState()
 
-
                 AnimatedVisibility(showSearchBar) {
                     SearchBar(
                         modifier = Modifier

@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.LoggingInterceptor
+import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.source.local.AppDatabase
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.data.source.remote.AnalyticsService
+import com.prodevzla.pokedex.domain.repository.AnalyticsRepository
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import dagger.Module
 import dagger.Provides
@@ -80,6 +83,18 @@ object DataModule {
             .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
             .addHttpInterceptor(LoggingInterceptor())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnalyticsTracker(): AnalyticsService {
+        return AnalyticsService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnalyticsTrackerRepository(analyticsService: AnalyticsService): AnalyticsRepository {
+        return AnalyticsRepositoryImpl(analyticsService)
     }
 
 }

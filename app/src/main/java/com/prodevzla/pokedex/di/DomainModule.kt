@@ -1,11 +1,13 @@
 package com.prodevzla.pokedex.di
 
+import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +47,12 @@ object DomainModule {
     @Singleton
     fun provideGetPokemonGenerationsUseCase(repository: PokemonRepositoryImpl): GetPokemonGenerationsUseCase {
         return GetPokemonGenerationsUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTrackEventUseCase(repository: AnalyticsRepositoryImpl): TrackEventUseCase {
+        return TrackEventUseCase(repository)
     }
 
 }
