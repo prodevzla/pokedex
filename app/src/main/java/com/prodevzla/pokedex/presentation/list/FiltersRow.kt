@@ -8,7 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterOption
+import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -53,8 +53,7 @@ fun FiltersRowPreview() {
                                 name = UiText.DynamicString("Gen I")
                             )
                         ),
-                        onClickSelection = {},
-                        filterOption = FilterOption.GENERATION,
+                        type = FilterType.GENERATION,
                     ),
                     Filter(
                         dialogTitle = UiText.DynamicString("select type"),
@@ -66,8 +65,7 @@ fun FiltersRowPreview() {
                                 name = UiText.DynamicString("Gen I")
                             )
                         ),
-                        onClickSelection = {},
-                        filterOption = FilterOption.TYPE,
+                        type = FilterType.TYPE,
                     )
                 )
             )

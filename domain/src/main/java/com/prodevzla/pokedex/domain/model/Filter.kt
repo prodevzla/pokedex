@@ -31,13 +31,12 @@ data class Filter(
     val weight: Float,
     val selection: Int,
     val values: List<Filterable>,
-    val onClickSelection: (Int) -> Unit,
-    val filterOption: FilterOption
+    val type: FilterType
 ) {
     val selectedItem: Filterable
         get() = values.first { it.id == selection }
 }
 
-enum class FilterOption {
-    VERSION, GENERATION, TYPE
+enum class FilterType {
+    GENERATION, TYPE
 }

@@ -40,7 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterOption
+import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
@@ -147,6 +147,7 @@ fun ListContent(
 
                 val focusRequester = remember { FocusRequester() }
 
+                //shall I use derivedState?
                 var scrollToTop by remember { mutableStateOf(false) }
 
                 val lazyListState = rememberLazyListState()
@@ -216,7 +217,8 @@ fun ListContent(
                         onDismiss = {
                             showFilterDialog = null
                         },
-                        onClickItem = {
+                        onClickItem = { filterable ->
+                            onEvent(ListScreenEvent.SelectFilter(filterable))
                             showFilterDialog = null
                             scrollToTop = true
                         }
@@ -249,14 +251,24 @@ fun ListScreenPreview() {
             Pokemon(
                 id = 6885,
                 name = "Charmander",
-                types = emptyList(),
+                types = listOf(
+                    PokemonType(
+                        id = 10,
+                        name = UiText.DynamicString("Fire")
+                    )
+                ),
                 generation = 1,
                 //gameVersions = emptyList()
             ),
             Pokemon(
                 id = 6886,
                 name = "Charmeleon",
-                types = emptyList(),
+                types = listOf(
+                    PokemonType(
+                        id = 10,
+                        name = UiText.DynamicString("Fire")
+                    )
+                ),
                 generation = 1,
                 //gameVersions = emptyList()
             ),
@@ -272,21 +284,19 @@ fun ListScreenPreview() {
                         name = UiText.DynamicString("Gen I")
                     )
                 ),
-                onClickSelection = {},
-                filterOption = FilterOption.GENERATION,
+                type = FilterType.GENERATION,
             ),
             Filter(
                 dialogTitle = UiText.DynamicString("Select type"),
                 weight = 1.0f,
-                selection = 1,
+                selection = 10,
                 values = listOf(
                     PokemonType(
                         id = 10,
                         name = UiText.DynamicString("Fire")
                     )
                 ),
-                onClickSelection = {},
-                filterOption = FilterOption.TYPE,
+                type = FilterType.TYPE,
             )
         ),
         sort = Sort(),

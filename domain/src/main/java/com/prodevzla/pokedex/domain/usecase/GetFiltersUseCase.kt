@@ -2,7 +2,7 @@ package com.prodevzla.pokedex.domain.usecase
 
 import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterOption
+import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
 import kotlinx.coroutines.flow.Flow
@@ -17,8 +17,6 @@ class GetFiltersUseCase(
     operator fun invoke(
         generationFilter: MutableStateFlow<Int>,
         typeFilter: MutableStateFlow<Int>,
-        onClickGeneration: (Int) -> Unit,
-        onClickType: (Int) -> Unit,
     ): Flow<List<Filter>?> = combine(
         getPokemonGenerationsUseCase.invoke(),
         getPokemonTypesUseCase.invoke(),
@@ -41,16 +39,14 @@ class GetFiltersUseCase(
                         weight = 1f,
                         selection = selectedGeneration,//generations.data.first { it.id == selectedGeneration },
                         values = generations.data,
-                        onClickSelection = onClickGeneration,
-                        filterOption = FilterOption.GENERATION
+                        type = FilterType.GENERATION
                     ),
                     Filter(
                         dialogTitle = UiText.StringResource(R.string.dialog_title_type),
                         weight = 1f,
                         selection = selectedType,//types.data.first { it.id == selectedType },
                         values = types.data,
-                        onClickSelection = onClickType,
-                        filterOption = FilterOption.TYPE
+                        type = FilterType.TYPE
                     )
                 )
             }

@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.AnalyticsEvent.ClickEvent
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FirebaseAnalytics.ListScreen
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonGeneration
+import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Sort
 import com.prodevzla.pokedex.domain.model.SortBy
@@ -43,8 +44,6 @@ class ListViewModel @Inject constructor(
     private val _filters = getFiltersUseCase.invoke(
         generationFilter = _generationFilter,
         typeFilter = _typeFilter,
-        onClickGeneration = ::onClickGeneration,
-        onClickType = ::onClickType
     )
 
     val uiState: StateFlow<ListState> =
@@ -103,34 +102,18 @@ class ListViewModel @Inject constructor(
             }).filter { it.name.contains(search) }
     }
 
-    private fun onClickGeneration(generation: Int) {
-        trackEventUseCase.invoke(
-            ClickEvent(ListScreen.CHANGED_FILTER_GENERATION))
-        _generationFilter.value = generation
-    }
-
-    private fun onClickType(type: Int) {
-        trackEventUseCase.invoke(
-            ClickEvent(ListScreen.CHANGED_FILTER_TYPE))
-        _typeFilter.value = type
-    }
-
-
-
     fun onEvent(event: ListScreenEvent) {
         trackEventUseCase.invoke(ClickEvent(event.eventTag))
         when (event) {
-            is ListScreenEvent.ClickFilter -> TODO()
-            is ListScreenEvent.ClickPokemon -> TODO()
-            ListScreenEvent.ClickSearch -> TODO()
-            ListScreenEvent.ClickSort -> TODO()
-            is ListScreenEvent.SelectFilter -> TODO()
-            is ListScreenEvent.SelectSort -> {
-                _sort.value = event.selection
+            is ListScreenEvent.SelectFilter -> {
+                when (event.selection) {
+                    is PokemonGeneration -> _generationFilter.value = event.selection.id
+                    is PokemonType -> _typeFilter.value = event.selection.id
+                }
             }
-            is ListScreenEvent.SearchPokemon -> {
-                _search.value = event.input
-            }
+            is ListScreenEvent.SelectSort -> _sort.value = event.selection
+            is ListScreenEvent.SearchPokemon -> _search.value = event.input
+            else -> {}
         }
     }
 

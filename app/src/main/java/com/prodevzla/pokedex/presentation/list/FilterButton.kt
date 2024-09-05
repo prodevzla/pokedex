@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterOption
+import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -51,15 +51,14 @@ fun FilterButtonPreview() {
                 filter = Filter(
                     dialogTitle = UiText.DynamicString("Select type"),
                     weight = 1.0f,
-                    selection = 0,
+                    selection = 10,
                     values = listOf(
                         PokemonType(
                             id = 10,
                             name = UiText.DynamicString("Fire")
                         )
                     ),
-                    onClickSelection = {},
-                    filterOption = FilterOption.TYPE,
+                    type = FilterType.TYPE,
                 )
             )
         }
