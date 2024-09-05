@@ -22,7 +22,8 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
-import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemon
+import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
+import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
@@ -54,7 +55,7 @@ fun PokemonScreen(
                         //shape = shape
                     )
                     .sharedElement(
-                        state = rememberSharedContentState(key = sharedKeyPokemon +pokemon.id),
+                        state = rememberSharedContentState(key = sharedKeyPokemonImage + pokemon.id),
                         animatedVisibilityScope = animatedVisibilityScope,
 //                        boundsTransform = BoundsTransform { initialBounds, targetBounds ->
 //                            tween(3000)
@@ -62,9 +63,17 @@ fun PokemonScreen(
                     )
                 //.padding(MaterialTheme.spacing.small)
             )
+
+            Text(
+                text = pokemon.name,
+                modifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(key = sharedKeyPokemonName + pokemon.id),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
+            )
+
         }
 
-        Text(text = "Pokemon Details")
     }
 
 

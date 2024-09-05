@@ -61,8 +61,6 @@ fun ListScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-    val context = LocalContext.current
-
     val state by viewModel.uiState.collectAsState()
 
     val onEvent: (ListScreenEvent) -> Unit = remember(viewModel) {
@@ -71,7 +69,6 @@ fun ListScreen(
 
     ListContent(
         state = state,
-        context = context,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         onEvent = {
@@ -92,7 +89,6 @@ fun ListScreen(
 fun ListContent(
     modifier: Modifier = Modifier,
     state: ListState,
-    context: Context,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     onEvent: (ListScreenEvent) -> Unit = {}
@@ -210,7 +206,6 @@ fun ListContent(
                 ) {
                     items(state.pokemonList, key = { it.id }) { item ->
                         PokemonCard(
-                            context = context,
                             pokemon = item,
                             onClickPokemon = {
                                 onEvent(ListScreenEvent.ClickPokemon(it))
@@ -319,7 +314,6 @@ fun ListScreenPreview() {
                 AnimatedVisibility(visible = true) {
                     ListContent(
                         state = state,
-                        context = LocalContext.current,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )
@@ -339,7 +333,6 @@ fun ListScreenLoadingPreview() {
                 AnimatedVisibility(visible = true) {
                     ListContent(
                         state = state,
-                        context = LocalContext.current,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )

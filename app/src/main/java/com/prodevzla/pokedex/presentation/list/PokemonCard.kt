@@ -36,7 +36,8 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
-import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemon
+import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
+import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
@@ -46,7 +47,6 @@ import com.prodevzla.pokedex.ui.theme.spacing
 @Composable
 fun PokemonCard(
     modifier: Modifier = Modifier,
-    context: Context,
     pokemon: Pokemon,
     onClickPokemon: (Pokemon) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -68,68 +68,75 @@ fun PokemonCard(
             onClickPokemon.invoke(pokemon)
         }
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = pokemon.types[0].getColor())
-                .padding(start = MaterialTheme.spacing.medium)
-        ) {
+        with(sharedTransitionScope) {
 
-            Column(
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 modifier = Modifier
-                    .weight(0.75f)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxSize()
+                    .background(color = pokemon.types[0].getColor())
+                    .padding(start = MaterialTheme.spacing.medium)
             ) {
-                Text(
-                    text = "#${pokemon.id.toString().padStart(4, '0')} ${pokemon.name.replaceFirstChar { it.uppercase() }}",
-                    style = MaterialTheme.typography.titleMedium,
-                )
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
-                    pokemon.types.forEach { type ->
-                        Text(
-                            modifier = Modifier
-                                .weight(1f)
-
-                                .border(
-                                    width = 0.5.dp, // border width
-                                    color = Color.Black,
-                                    shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
-                                ),
-                            text = type.name.value.uppercase(),
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
+                Column(
+                    modifier = Modifier
+                        .weight(0.75f)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = "#${
+                            pokemon.id.toString().padStart(4, '0')
+                        } ${pokemon.name.replaceFirstChar { it.uppercase() }}",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.sharedElement(
+                            state = rememberSharedContentState(key = sharedKeyPokemonName + pokemon.id),
+                            animatedVisibilityScope = animatedVisibilityScope,
                         )
+
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
+                        pokemon.types.forEach { type ->
+                            Text(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .border(
+                                        width = 0.5.dp, // border width
+                                        color = Color.Black,
+                                        shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
+                                    ),
+                                text = type.name.value.uppercase(),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
+
                 }
 
-            }
+                val shape = RoundedCornerShape(
+                    topStartPercent = 50,
+                    topEndPercent = 5,
+                    bottomEndPercent = 50,
+                    bottomStartPercent = 50,
+                )
 
-            val shape = RoundedCornerShape(
-                topStartPercent = 50,
-                topEndPercent = 5,
-                bottomEndPercent = 50,
-                bottomStartPercent = 50,
-            )
-
-            Box(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .background(
-                        color = Color.White,
-                        shape = shape
-                    )
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                with(sharedTransitionScope) {
+                Box(
+                    modifier = Modifier
+                        .weight(0.25f)
+                        .background(
+                            color = Color.White,
+                            shape = shape
+                        )
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     AsyncImage(
                         model = ImageRequest
-                            .Builder(context)
+                            .Builder(LocalContext.current)
                             .data(pokemon.image.toString())
                             //.placeholder(R.drawable.charmeleon)
                             .decoderFactory(SvgDecoder.Factory())
@@ -144,7 +151,7 @@ fun PokemonCard(
                                 shape = shape
                             )
                             .sharedElement(
-                                state = rememberSharedContentState(key = sharedKeyPokemon+pokemon.id),
+                                state = rememberSharedContentState(key = sharedKeyPokemonImage + pokemon.id),
                                 animatedVisibilityScope = animatedVisibilityScope,
                             )
                     )
@@ -176,7 +183,6 @@ fun PokemonCardPreview() {
                             generation = 1,
                             //gameVersions = emptyList()
                         ),
-                        context = LocalContext.current,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )
