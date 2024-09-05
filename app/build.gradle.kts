@@ -6,7 +6,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.apollo)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -83,7 +84,7 @@ dependencies {
     implementation(libs.apollo.runtime)
     implementation(libs.androidx.room.runtime)
     implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

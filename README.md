@@ -37,13 +37,13 @@ when coming back, the list is still filtered but the input field is not visible.
 
 ++add Firebase Analytics
 
---refactor events handling in the listScreen
+++refactor events handling in the listScreen
 
---create event for pageView and track when the bottomSheetDialog appears
 
---start working on the design of the pokemonDetails screen
 
 --add Firebase (crashlytics, distribution, distribution)
+
+--start working on the design of the pokemonDetails screen
 
 --check why pokemons from gen 9 are not coming through - gen array is empty
 
