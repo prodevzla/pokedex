@@ -2,6 +2,8 @@ package com.prodevzla.pokedex.data.mapper
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Operation
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.prodevzla.pokedex.domain.model.DataError
 import com.prodevzla.pokedex.domain.model.Result
 
@@ -43,6 +45,7 @@ internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
     return try {
         val response = query().execute()
         if (response.hasErrors()) {
+            Firebase.crashlytics.recordException(Throwable("custom exception + ${response.errors?.first()?.message}"))
 //            val error = when (response.code()) {
 //                408 -> DataError.Network.REQUEST_TIMEOUT
 //                429 -> DataError.Network.TOO_MANY_REQUESTS
@@ -55,6 +58,7 @@ internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
             Result.Success(processResponse(response.data))
         }
     } catch (e: Exception) {
+        Firebase.crashlytics.recordException(e)
         val error = when (e) {
             is java.net.UnknownHostException -> DataError.Network.NO_INTERNET
             is java.net.SocketTimeoutException -> DataError.Network.REQUEST_TIMEOUT
