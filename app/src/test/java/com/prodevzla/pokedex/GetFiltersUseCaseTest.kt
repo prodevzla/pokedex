@@ -67,8 +67,6 @@ class GetFiltersUseCaseTest {
         val filters: List<Filter>? = useCase.invoke(
             generationFilter = MutableStateFlow(0),
             typeFilter = MutableStateFlow(0),
-            onClickGeneration = {},
-            onClickType = {}
 
         ).first()
 
