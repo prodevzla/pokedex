@@ -19,6 +19,9 @@ class AnalyticsService {
     private fun trackClickEvent(event: AnalyticsEvent.ClickEvent) {
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
             param(FirebaseAnalytics.Param.ITEM_NAME, event.name)
+            event.value?.let {
+                param(FirebaseAnalytics.Param.VALUE, it)
+            }
         }
 
     }

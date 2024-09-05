@@ -14,6 +14,8 @@ object FirebaseAnalytics {
 
         const val CLICK_POKEMON = "click_pokemon"
 
+        const val CLICK_NAV_ICON = "click_nav_icon"
+
         const val CHANGED_FILTER_GENERATION = "changed_filter_generation"
 
         const val CHANGED_FILTER_TYPE = "changed_filter_type"

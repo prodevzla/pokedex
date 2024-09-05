@@ -32,7 +32,7 @@ fun FilterBottomSheet(
     modifier: Modifier = Modifier,
     filter: Filter,
     onDismiss: () -> Unit = {},
-    onClickItem: (Filterable) -> Unit = {}
+    onClickItem: (Filterable, FilterType) -> Unit = { _,_ -> }
 ) {
 
     ModalBottomSheet(
@@ -50,7 +50,7 @@ fun FilterBottomSheet(
 fun FilterSheetContent(
     modifier: Modifier = Modifier,
     filter: Filter,
-    onClickItem: (Filterable) -> Unit = {}
+    onClickItem: (Filterable, FilterType) -> Unit = { _,_ -> }
 ) {
     LazyColumn(
         modifier = modifier
@@ -68,6 +68,7 @@ fun FilterSheetContent(
         items(filter.values) {
             FilterOptionsDefault(
                 item = it,
+                filter = filter,
                 onClickItem = onClickItem
             )
         }
@@ -76,11 +77,11 @@ fun FilterSheetContent(
 }
 
 @Composable
-fun FilterOptionsDefault(item: Filterable, onClickItem: (Filterable) -> Unit) {
+fun FilterOptionsDefault(item: Filterable, filter: Filter, onClickItem: (Filterable, FilterType) -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            onClickItem(item)
+            onClickItem(item, filter.type)
         },
         shape = RectangleShape,
         colors = ButtonDefaults.buttonColors().copy(

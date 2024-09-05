@@ -103,7 +103,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun onEvent(event: ListScreenEvent) {
-        trackEventUseCase.invoke(ClickEvent(event.eventTag))
+        trackEventUseCase.invoke(ClickEvent(event.eventTag, event.value))
         when (event) {
             is ListScreenEvent.SelectFilter -> {
                 when (event.selection) {

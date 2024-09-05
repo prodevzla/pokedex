@@ -74,9 +74,15 @@ fun ListScreen(
         context = context,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
-        onClickNavIcon = onClickNavIcon,
-        onClickPokemon = onClickPokemon,
-        onEvent = onEvent,
+        onEvent = {
+            when (it) {
+                //for these 2 events, we don't need to do anything on the viewModel apart from tracking with Firebase Analytics
+                is ListScreenEvent.ClickPokemon -> onClickPokemon.invoke(it.pokemon)
+                ListScreenEvent.ClickNavIcon -> onClickNavIcon()
+                else -> Unit
+            }
+            onEvent.invoke(it)
+        },
     )
 
 }
@@ -89,8 +95,6 @@ fun ListContent(
     context: Context,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    onClickNavIcon: () -> Unit = {},
-    onClickPokemon: (Pokemon) -> Unit = {},
     onEvent: (ListScreenEvent) -> Unit = {}
 ) {
 
@@ -104,13 +108,16 @@ fun ListContent(
         modifier = modifier,
         title = "Pokedex",
         navIcon = {
-            IconButton(onClick = onClickNavIcon) {
+            IconButton(onClick = {
+                onEvent(ListScreenEvent.ClickNavIcon)
+            }) {
                 Icon(Icons.Filled.Menu, contentDescription = "menu")
             }
         },
         actions = {
             if (state is ListState.Content) {
                 IconButton(onClick = {
+                    onEvent(ListScreenEvent.ClickSort)
                     showSortDialog = true
                 }) {
                     Icon(
@@ -130,15 +137,15 @@ fun ListContent(
                 FloatingActionButton(
                     shape = CircleShape,
                     onClick = {
+                        onEvent(ListScreenEvent.ClickSearch)
                         showSearchBar = true
                     },
                 ) {
-                    Icon(Icons.Filled.Search, "search.")
+                    Icon(Icons.Filled.Search, "search")
                 }
             }
         }
     ) {
-
 
         when (state) {
             ListState.Loading -> LoadingScreen()
@@ -178,6 +185,7 @@ fun ListContent(
                         modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
                         filters = filters,
                         onClickFilter = {
+                            onEvent(ListScreenEvent.ClickFilter(it))
                             showFilterDialog = it
                         },
                     )
@@ -204,7 +212,9 @@ fun ListContent(
                         PokemonCard(
                             context = context,
                             pokemon = item,
-                            onClickPokemon = onClickPokemon,
+                            onClickPokemon = {
+                                onEvent(ListScreenEvent.ClickPokemon(it))
+                            },
                             sharedTransitionScope = sharedTransitionScope,
                             animatedVisibilityScope = animatedVisibilityScope
                         )
@@ -217,8 +227,8 @@ fun ListContent(
                         onDismiss = {
                             showFilterDialog = null
                         },
-                        onClickItem = { filterable ->
-                            onEvent(ListScreenEvent.SelectFilter(filterable))
+                        onClickItem = { filterable, filterType ->
+                            onEvent(ListScreenEvent.SelectFilter(filterable, filterType))
                             showFilterDialog = null
                             scrollToTop = true
                         }
