@@ -65,12 +65,8 @@ fun ListScreen(
 
     val state by viewModel.uiState.collectAsState()
 
-    val onSortChange: (Sort) -> Unit = remember(viewModel) {
-        return@remember viewModel::onSortChange
-    }
-
-    val onSearchChange: (String) -> Unit = remember(viewModel) {
-        return@remember viewModel::onSearchChange
+    val onEvent: (ListScreenEvent) -> Unit = remember(viewModel) {
+        return@remember viewModel::onEvent
     }
 
     ListContent(
@@ -80,8 +76,7 @@ fun ListScreen(
         animatedVisibilityScope = animatedVisibilityScope,
         onClickNavIcon = onClickNavIcon,
         onClickPokemon = onClickPokemon,
-        onSortChange = onSortChange,
-        onSearchChange = onSearchChange,
+        onEvent = onEvent,
     )
 
 }
@@ -96,8 +91,7 @@ fun ListContent(
     animatedVisibilityScope: AnimatedVisibilityScope,
     onClickNavIcon: () -> Unit = {},
     onClickPokemon: (Pokemon) -> Unit = {},
-    onSortChange: (Sort) -> Unit = {},
-    onSearchChange: (String) -> Unit = {},
+    onEvent: (ListScreenEvent) -> Unit = {}
 ) {
 
     var showSearchBar by rememberSaveable { mutableStateOf(false) }
@@ -163,10 +157,12 @@ fun ListContent(
                             .fillMaxWidth()
                             .padding(horizontal = MaterialTheme.spacing.medium),
                         search = state.search,
-                        onSearchChange = onSearchChange,
+                        onSearchChange = {
+                            onEvent(ListScreenEvent.SearchPokemon(it))
+                        },
                         focusRequester = focusRequester,
                         onClickClose = {
-                            onSearchChange("")
+                            onEvent(ListScreenEvent.SearchPokemon(""))
                             showSearchBar = false
                         }
                     )
@@ -230,7 +226,7 @@ fun ListContent(
                 if (showSortDialog) {
                     SortDialog(
                         onConfirm = { sort ->
-                            onSortChange.invoke(sort)
+                            onEvent(ListScreenEvent.SelectSort(sort))
                             showSortDialog = false
                             scrollToTop = true
                         },

@@ -115,14 +115,23 @@ class ListViewModel @Inject constructor(
         _typeFilter.value = type
     }
 
-    fun onSortChange(sort: Sort) {
-        trackEventUseCase.invoke(
-            ClickEvent(ListScreen.CHANGED_SORTING))
-        _sort.value = sort
-    }
 
-    fun onSearchChange(input: String) {
-        _search.value = input
+
+    fun onEvent(event: ListScreenEvent) {
+        trackEventUseCase.invoke(ClickEvent(event.eventTag))
+        when (event) {
+            is ListScreenEvent.ClickFilter -> TODO()
+            is ListScreenEvent.ClickPokemon -> TODO()
+            ListScreenEvent.ClickSearch -> TODO()
+            ListScreenEvent.ClickSort -> TODO()
+            is ListScreenEvent.SelectFilter -> TODO()
+            is ListScreenEvent.SelectSort -> {
+                _sort.value = event.selection
+            }
+            is ListScreenEvent.SearchPokemon -> {
+                _search.value = event.input
+            }
+        }
     }
 
     companion object {
