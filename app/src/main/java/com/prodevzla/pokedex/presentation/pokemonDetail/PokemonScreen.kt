@@ -26,6 +26,7 @@ import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
+import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -39,45 +40,40 @@ fun PokemonScreen(
 
     Column {
         with(sharedTransitionScope) {
-            AsyncImage(
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(pokemon.image.toString())
-                    .decoderFactory(SvgDecoder.Factory())
-                    .build(),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(150.dp)
-                    .background(
-                        color = pokemon.types[0]
-                            .getColor()
-                            .copy(alpha = 0.6f),
-                        //shape = shape
-                    )
-                    .sharedElement(
-                        state = rememberSharedContentState(key = sharedKeyPokemonImage + pokemon.id),
-                        animatedVisibilityScope = animatedVisibilityScope,
-//                        boundsTransform = BoundsTransform { initialBounds, targetBounds ->
-//                            tween(3000)
-//                        }
-                    )
-                //.padding(MaterialTheme.spacing.small)
-            )
-
-            Text(
-                text = pokemon.name,
-                modifier = Modifier.sharedElement(
-                    state = rememberSharedContentState(key = sharedKeyPokemonName + pokemon.id),
-                    animatedVisibilityScope = animatedVisibilityScope,
+            with(animatedVisibilityScope) {
+                AsyncImage(
+                    model = ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(pokemon.image.toString())
+                        .decoderFactory(SvgDecoder.Factory())
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .background(
+                            color = pokemon.types[0]
+                                .getColor()
+                                .copy(alpha = 0.6f),
+                            //shape = shape
+                        )
+                        .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id),
+                    //.padding(MaterialTheme.spacing.small)
                 )
-            )
 
+                Text(
+                    text = pokemon.name,
+                    modifier = Modifier.sharedElement(
+                        state = rememberSharedContentState(key = sharedKeyPokemonName + pokemon.id),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    )
+                )
+            }
         }
 
     }
 
-
 }
+
 
 @ThemePreviews
 @Composable

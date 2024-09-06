@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.presentation.list
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -40,17 +39,17 @@ import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
+import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
+context(SharedTransitionScope, AnimatedVisibilityScope)
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun PokemonCard(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
     onClickPokemon: (Pokemon) -> Unit = {},
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     Card(
         modifier = modifier
@@ -68,7 +67,6 @@ fun PokemonCard(
             onClickPokemon.invoke(pokemon)
         }
     ) {
-        with(sharedTransitionScope) {
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
@@ -89,11 +87,7 @@ fun PokemonCard(
                             pokemon.id.toString().padStart(4, '0')
                         } ${pokemon.name.replaceFirstChar { it.uppercase() }}",
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.sharedElement(
-                            state = rememberSharedContentState(key = sharedKeyPokemonName + pokemon.id),
-                            animatedVisibilityScope = animatedVisibilityScope,
-                        )
-
+                        modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -150,12 +144,8 @@ fun PokemonCard(
                                     .copy(alpha = 0.6f),
                                 shape = shape
                             )
-                            .sharedElement(
-                                state = rememberSharedContentState(key = sharedKeyPokemonImage + pokemon.id),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                            )
+                            .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
                     )
-                }
 
             }
         }
@@ -183,8 +173,6 @@ fun PokemonCardPreview() {
                             generation = 1,
                             //gameVersions = emptyList()
                         ),
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
                     )
                 }
             }

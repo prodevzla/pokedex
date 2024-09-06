@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalSharedTransitionApi::class)
 
 package com.prodevzla.pokedex.presentation.list
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -35,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prodevzla.pokedex.R
@@ -205,14 +203,17 @@ fun ListContent(
                     contentPadding = PaddingValues(MaterialTheme.spacing.small),
                 ) {
                     items(state.pokemonList, key = { it.id }) { item ->
-                        PokemonCard(
-                            pokemon = item,
-                            onClickPokemon = {
-                                onEvent(ListScreenEvent.ClickPokemon(it))
-                            },
-                            sharedTransitionScope = sharedTransitionScope,
-                            animatedVisibilityScope = animatedVisibilityScope
-                        )
+                        with(sharedTransitionScope) {
+                            with(animatedVisibilityScope) {
+                                PokemonCard(
+                                    pokemon = item,
+                                    onClickPokemon = {
+                                        onEvent(ListScreenEvent.ClickPokemon(it))
+                                    },
+                                )
+                            }
+                        }
+
                     }
                 }
 
