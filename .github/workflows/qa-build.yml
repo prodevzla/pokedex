@@ -28,8 +28,11 @@ jobs:
       with:
         name: release-artifacts
         path: ${{ steps.releaseApk.outputs.apkfile }}
+    # - name: Export Firebase Token
+      # run: export FIREBASE_TOKEN=${{secrets.FIREBASE_TOKEN}}
     - name: Export Firebase Token
-      run: export FIREBASE_TOKEN=${{secrets.FIREBASE_TOKEN}}
+      run: | 
+        echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> $GITHUB_ENV
     - name: Upload APK to Firebase Distribution
       run: ./gradlew appDistributionUploadRelease
  
