@@ -37,11 +37,13 @@ when coming back, the list is still filtered but the input field is not visible.
 
 ++add Firebase Analytics
 
+++add Firebase Crashlytics
+
 ++refactor events handling in the listScreen
 
 
 
---add Firebase (crashlytics, distribution)
+--add Firebase Distribution
 
 --start working on the design of the pokemonDetails screen
 

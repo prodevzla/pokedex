@@ -67,90 +67,88 @@ fun PokemonCard(
             onClickPokemon.invoke(pokemon)
         }
     ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = pokemon.types[0].getColor())
+                .padding(start = MaterialTheme.spacing.medium)
+        ) {
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = pokemon.types[0].getColor())
-                    .padding(start = MaterialTheme.spacing.medium)
+                    .weight(0.75f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
             ) {
-
-                Column(
-                    modifier = Modifier
-                        .weight(0.75f)
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Text(
-                        text = "#${
-                            pokemon.id.toString().padStart(4, '0')
-                        } ${pokemon.name.replaceFirstChar { it.uppercase() }}",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
-                        pokemon.types.forEach { type ->
-                            Text(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .border(
-                                        width = 0.5.dp, // border width
-                                        color = Color.Black,
-                                        shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
-                                    ),
-                                text = type.name.value.uppercase(),
-                                style = MaterialTheme.typography.titleMedium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-
-                }
-
-                val shape = RoundedCornerShape(
-                    topStartPercent = 50,
-                    topEndPercent = 5,
-                    bottomEndPercent = 50,
-                    bottomStartPercent = 50,
+                Text(
+                    text = "#${
+                        pokemon.id.toString().padStart(4, '0')
+                    } ${pokemon.name.replaceFirstChar { it.uppercase() }}",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
                 )
 
-                Box(
-                    modifier = Modifier
-                        .weight(0.25f)
-                        .background(
-                            color = Color.White,
-                            shape = shape
-                        )
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AsyncImage(
-                        model = ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(pokemon.image.toString())
-                            //.placeholder(R.drawable.charmeleon)
-                            .decoderFactory(SvgDecoder.Factory())
-                            .build(),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = pokemon.types[0]
-                                    .getColor()
-                                    .copy(alpha = 0.6f),
-                                shape = shape
-                            )
-                            .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
-                    )
+                Spacer(modifier = Modifier.height(10.dp))
 
+                Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
+                    pokemon.types.forEach { type ->
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .border(
+                                    width = 0.5.dp, // border width
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
+                                ),
+                            text = type.name.value.uppercase(),
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(0.25f)
+                    .background(
+                        color = Color.White,
+                        shape = imageBackgroundShape
+                    )
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(pokemon.image.toString())
+                        //.placeholder(R.drawable.charmeleon)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = pokemon.types[0]
+                                .getColor()
+                                .copy(alpha = 0.6f),
+                            shape = imageBackgroundShape
+                        )
+                        .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
+                )
             }
         }
     }
 }
+
+private val imageBackgroundShape = RoundedCornerShape(
+    topStartPercent = 50,
+    topEndPercent = 5,
+    bottomEndPercent = 50,
+    bottomStartPercent = 50,
+)
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
