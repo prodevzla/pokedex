@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.android.application)
@@ -9,7 +9,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.apollo)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.distribution)
 }
 
 android {
@@ -37,6 +38,13 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("debug")
+
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotes = "Third release"
+                //serviceCredentialsFile = "pokedex-434802-49122391c637.json"
+                testers = "rgferranteg@gmail.com"
+            }
         }
     }
     compileOptions {
@@ -58,9 +66,10 @@ android {
         }
     }
 }
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
+
+tasks.withType<KotlinJvmCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-receivers")
     }
 }
 
