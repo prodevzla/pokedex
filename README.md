@@ -1,53 +1,19 @@
-++install apollo
+<img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_1.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_2.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_3.png" alt="Sample Image" width="300" />
+<img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_4.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_5.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_6.png" alt="Sample Image" width="300" />
 
-++fetch all pokemon types
+This is a small Android project that have been developed for training purposes. The main goal is to build a Pokémon Pokédex using some of the latest technologies available for Android.
 
-++show pokemon types filter below the toolbar
+## Architecture
+The architecture is MVVM + Clean. I have created 3 modules:
 
-++create bottom sheet dialog
+1) App module: The main module of the app. It contains all the UI logic (composables + viewmodels). 
+2) Domain module: Contains all the business logic (use cases + domain models).
+3) Data module: Responsible for data management. It contains a repository that pulls data from a free GraphQL instance and stores it in a local database using Room. It also contains mappers/transformers responsible for transforming entities and GraphQL models into domain models.
 
-++re-check how to get the color for each type (get from veekun)
-
-++verify what's the best place for the getColor extension and all the new logic related to colors
-
-++pass the types and generations to the usecase (wrap them there)
-
-++create GitHub
-
-++create some unit tests
-
-++create DB
-
-++add module for models
-
-++add logs to Apollo graphql
-
-++create string util class
-
-++clean ListViewModel
-
-++add floating action button with (sort function, search function)
-
-++CI/CD (implemented GitHub actions)
-
-++search input field visibility must be inside the uiState from the viewModel. bug: when searching for a name and clicking a pokemon,
-when coming back, the list is still filtered but the input field is not visible. fixed with rememberSaveable
-
-++check if Filter model should change selection from item to integer
-
-++add Firebase Analytics
-
-++add Firebase Crashlytics
-
-++refactor events handling in the listScreen
-
-++add Firebase Distribution
-
-
---start working on the design of the pokemonDetails screen
-
---check why pokemons from gen 9 are not coming through - gen array is empty
-
---check error handling inside repository
-
---create game versions screen ?
+## Comments
+1) Using shared element transitions between composables (Pokémon list and Pokémon details composables).
+2) Using context receivers.
+3) Using the latest beta version of the Navigation Compose library, which allows navigation between composables using objects and data classes instead of string paths.
+4) Created a custom NavType to send the selected Pokémon instance to the details screen.
+5) Using flows in the data and domain layers.
+6) Using StateFlow in my viewmodels.
