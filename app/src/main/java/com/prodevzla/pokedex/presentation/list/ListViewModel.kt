@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.AnalyticsEvent.ClickEvent
 import com.prodevzla.pokedex.domain.model.Filter
+import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.Sort
 import com.prodevzla.pokedex.domain.model.SortBy
@@ -106,9 +105,9 @@ class ListViewModel @Inject constructor(
         trackEventUseCase.invoke(ClickEvent(event.eventTag, event.value))
         when (event) {
             is ListScreenEvent.SelectFilter -> {
-                when (event.selection) {
-                    is PokemonGeneration -> _generationFilter.value = event.selection.id
-                    is PokemonType -> _typeFilter.value = event.selection.id
+                when (event.filterType) {
+                    FilterType.GENERATION -> _generationFilter.value = event.selection.id
+                    FilterType.TYPE -> _typeFilter.value = event.selection.id
                 }
             }
             is ListScreenEvent.SelectSort -> _sort.value = event.selection
