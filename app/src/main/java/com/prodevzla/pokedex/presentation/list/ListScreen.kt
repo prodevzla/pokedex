@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class)
 
 package com.prodevzla.pokedex.presentation.list
 
@@ -100,7 +100,9 @@ fun ListContent(
 
     CustomScaffold(
         modifier = modifier,
-        title = "Pokedex",
+        title = {
+            ListAppBarTitle()
+        },
         navIcon = {
             IconButton(onClick = {
                 onEvent(ListScreenEvent.ClickNavIcon)

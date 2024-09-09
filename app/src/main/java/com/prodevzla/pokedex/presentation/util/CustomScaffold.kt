@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,8 +25,9 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 @Composable
 fun CustomScaffold(
     modifier: Modifier = Modifier,
-    title: String,
+    title: @Composable () -> Unit = {},
     navIcon: @Composable () -> Unit = {},
+    topBarColor: Color = MaterialTheme.colorScheme.surface,
     actions: @Composable RowScope.() -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
@@ -34,26 +36,13 @@ fun CustomScaffold(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            shadow = Shadow(
-                                color = Color.Blue,
-                                offset = Offset(5.0f, 10.0f),
-                                blurRadius = 3f
-                            )
-                        )
-                    )
-
-                },
+                title = title,
                 colors = TopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    containerColor = topBarColor,
                     scrolledContainerColor = Color.Black,
-                    navigationIconContentColor = Color.Blue,
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurface
 
                 ),
                 navigationIcon = navIcon,
@@ -66,7 +55,8 @@ fun CustomScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.surface
+                .background(
+                    MaterialTheme.colorScheme.surface
 //                    brush = Brush.verticalGradient(
 //                        colors = listOf(
 //                            MaterialTheme.colorScheme.surface,
@@ -84,7 +74,7 @@ fun CustomScaffold(
 @Composable
 fun CustomScaffoldPreview() {
     PokedexTheme {
-        CustomScaffold(modifier = Modifier, title = "Pokedex") {
+        CustomScaffold(modifier = Modifier, title = { Text("Pokedex") }) {
             Text(text = "Hello")
         }
     }

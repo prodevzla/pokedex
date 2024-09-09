@@ -79,7 +79,10 @@ class MainActivity : ComponentActivity() {
                                 PokemonScreen(
                                     pokemon = arguments.pokemon,
                                     sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedVisibilityScope = this
+                                    animatedVisibilityScope = this,
+                                    onClickBack = {
+                                        navController.navigateUp()
+                                    }
                                 )
                             }
 

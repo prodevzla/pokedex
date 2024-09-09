@@ -40,6 +40,7 @@ import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
+import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -82,9 +83,7 @@ fun PokemonCard(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "#${
-                        pokemon.id.toString().padStart(4, '0')
-                    } ${pokemon.name.replaceFirstChar { it.uppercase() }}",
+                    text = pokemon.toTitle(),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
                 )
