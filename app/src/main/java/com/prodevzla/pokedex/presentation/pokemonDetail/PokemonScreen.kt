@@ -33,12 +33,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.list.ListViewModel
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
@@ -55,6 +57,7 @@ context(SharedTransitionScope, AnimatedVisibilityScope)
 fun PokemonScreen(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
+    viewModel: PokemonDetailsViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
 ) {
     CustomScaffold(

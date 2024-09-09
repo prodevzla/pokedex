@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.data.repository
 
 import com.apollographql.apollo.ApolloClient
 import com.prodevzla.pokedex.data.GetGameVersionGroupsQuery
+import com.prodevzla.pokedex.data.GetPokemonDetailsQuery
 import com.prodevzla.pokedex.data.GetPokemonGenerationsQuery
 import com.prodevzla.pokedex.data.GetPokemonListQuery
 import com.prodevzla.pokedex.data.GetPokemonTypesQuery
@@ -14,6 +15,7 @@ import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
 import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonDetails
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
@@ -106,6 +108,20 @@ open class PokemonRepositoryImpl @Inject constructor(
                     val response: List<PokemonType> = body!!.pokemon_v2_type.toDomain()
                     val entities = response.toEntities().toTypedArray()
                     pokemonTypeDao.insertAll(*entities)
+                    response
+                }
+            )
+        )
+    }
+
+    override fun getPokemonDetails(id: Int): Flow<Result<PokemonDetails>> = flow {
+        emit(
+            executeApolloCall(
+                query = {
+                    apolloClient.query(GetPokemonDetailsQuery(id))
+                },
+                processResponse = { body ->
+                    val response = body!!.pokemon_v2_pokemon.toDomain()
                     response
                 }
             )

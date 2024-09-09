@@ -4,6 +4,7 @@ import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonDetailsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
@@ -53,6 +54,12 @@ object DomainModule {
     @Singleton
     fun provideTrackEventUseCase(repository: AnalyticsRepositoryImpl): TrackEventUseCase {
         return TrackEventUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPokemonDetailsUseCase(repository: PokemonRepositoryImpl): GetPokemonDetailsUseCase {
+        return GetPokemonDetailsUseCase(repository)
     }
 
 }
