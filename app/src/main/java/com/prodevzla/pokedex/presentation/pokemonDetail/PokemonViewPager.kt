@@ -1,0 +1,82 @@
+package com.prodevzla.pokedex.presentation.pokemonDetail
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
+
+@Composable
+fun PokemonViewPager(modifier: Modifier = Modifier, indicatorColor: Color) {
+    var tabIndex by remember { mutableIntStateOf(0) }
+
+    val tabs = listOf(
+        R.string.tab_info,
+        R.string.tab_stats,
+        R.string.tab_moves,
+        R.string.tab_more
+    )
+
+    Column(modifier = modifier) {
+        TabRow(
+            selectedTabIndex = tabIndex,
+            indicator = { tabPositions ->
+                Box(
+                    modifier = Modifier
+                        .tabIndicatorOffset(tabPositions[tabIndex])
+                        .height(4.dp)
+                        .background(indicatorColor)
+                )
+            }) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = stringResource(title).uppercase(),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    },
+                    selected = tabIndex == index,
+                    onClick = { tabIndex = index },
+                )
+            }
+        }
+
+        when (tabIndex) {
+            0 -> InfoContent()
+
+            1 -> StatsContent()
+
+            2 -> MovesContent()
+
+            3 -> MoreContent()
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun PokemonViewPagerPreview() {
+    PokedexTheme {
+        Surface {
+            PokemonViewPager(indicatorColor = Color.Red)
+        }
+    }
+}

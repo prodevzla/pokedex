@@ -72,7 +72,7 @@ fun PokemonCard(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = pokemon.types[0].getColor())
+                .background(color = pokemon.types.first().getColor())
                 .padding(start = MaterialTheme.spacing.medium)
         ) {
 
@@ -130,9 +130,7 @@ fun PokemonCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
-                            color = pokemon.types[0]
-                                .getColor()
-                                .copy(alpha = 0.6f),
+                            color = pokemon.types.first().getColor().copy(alpha = 0.6f),
                             shape = imageBackgroundShape
                         )
                         .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)

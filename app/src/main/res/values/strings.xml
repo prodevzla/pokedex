@@ -8,7 +8,7 @@
     <string name="sort_dialog_button_cancel">Cancel</string>
 
 <!--    Pokemon screen-->
-    <string name="tab_about">about</string>
+    <string name="tab_info">info</string>
     <string name="tab_stats">stats</string>
     <string name="tab_moves">moves</string>
     <string name="tab_more">more</string>
