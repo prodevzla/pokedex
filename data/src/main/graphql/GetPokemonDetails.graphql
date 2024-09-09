@@ -1,0 +1,29 @@
+query GetPokemonQuery($pokemonId: Int!) {
+    pokemon_v2_pokemon(where: {id: {_eq: $pokemonId}}) {
+        id
+        name
+        height
+        weight
+        pokemon_v2_pokemontypes {
+            pokemon_v2_type {
+                id
+                name
+            }
+        }
+        pokemon_v2_pokemonspecy {
+            id
+            gender_rate
+            pokemon_v2_pokemonspeciesflavortexts(where: {pokemon_v2_language: {name: {_like: "en"}}}, order_by: {version_id: desc}, limit: 1) {
+                version_id
+                flavor_text
+                pokemon_v2_version {
+                    name
+                }
+            }
+        }
+        pokemon_v2_pokemoncries {
+            id
+            cries
+        }
+    }
+}
