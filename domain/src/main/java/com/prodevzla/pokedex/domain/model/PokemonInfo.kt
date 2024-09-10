@@ -1,6 +1,6 @@
 package com.prodevzla.pokedex.domain.model
 
-data class PokemonDetails(
+data class PokemonInfo(
     val height: Int,
     val wight: Int,
     val genderRate: Int,

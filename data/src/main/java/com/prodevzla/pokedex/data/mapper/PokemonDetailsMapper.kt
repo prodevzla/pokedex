@@ -1,15 +1,15 @@
 package com.prodevzla.pokedex.data.mapper
 
-import com.prodevzla.pokedex.data.GetPokemonDetailsQuery
-import com.prodevzla.pokedex.domain.model.PokemonDetails
+import com.prodevzla.pokedex.data.GetPokemonInfoQuery
+import com.prodevzla.pokedex.domain.model.PokemonInfo
 
 
-fun List<GetPokemonDetailsQuery.Pokemon_v2_pokemoncry>.toDomain(): String {
+fun List<GetPokemonInfoQuery.Pokemon_v2_pokemoncry>.toDomain(): String {
     return (this.first().cries as LinkedHashMap<String, String>)["latest"]!!
 }
 
-fun GetPokemonDetailsQuery.Pokemon_v2_pokemon.toDomain(): PokemonDetails {
-    return PokemonDetails(
+fun GetPokemonInfoQuery.Pokemon_v2_pokemon.toDomain(): PokemonInfo {
+    return PokemonInfo(
         height = this.height!!,
         wight = this.weight!!,
         genderRate = this.pokemon_v2_pokemonspecy?.gender_rate!!,
@@ -18,6 +18,6 @@ fun GetPokemonDetailsQuery.Pokemon_v2_pokemon.toDomain(): PokemonDetails {
     )
 }
 
-fun List<GetPokemonDetailsQuery.Pokemon_v2_pokemon>.toDomain(): PokemonDetails {
+fun List<GetPokemonInfoQuery.Pokemon_v2_pokemon>.toDomain(): PokemonInfo {
     return this.map { it.toDomain() }.first()
 }

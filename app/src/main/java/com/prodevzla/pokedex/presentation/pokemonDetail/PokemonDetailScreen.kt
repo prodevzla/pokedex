@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,23 +25,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
-import com.prodevzla.pokedex.presentation.list.ListViewModel
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
@@ -54,12 +55,15 @@ import kotlin.math.roundToInt
 context(SharedTransitionScope, AnimatedVisibilityScope)
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun PokemonScreen(
+fun PokemonDetailScreen(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
-    viewModel: PokemonDetailsViewModel = hiltViewModel(),
+    viewModel: PokemonDetailViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
 ) {
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     CustomScaffold(
         modifier = modifier,
         topBarColor = pokemon.types.first().getColor(),
@@ -67,7 +71,9 @@ fun PokemonScreen(
             //the preview is showing a warning related to this composable I am passing to the customScaffold
             Text(
                 text = pokemon.toTitle(),
-                color = Color.Black,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
             )
 
@@ -124,7 +130,8 @@ fun PokemonScreen(
                     .offset {
                         IntOffset(0, offset.roundToInt())
                     },
-                pokemon.types.first().getColor()
+                indicatorColor = pokemon.types.first().getColor(),
+                state = state,
             )
         }
     }
@@ -133,12 +140,12 @@ fun PokemonScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
-fun PokemonScreenPreview() {
+fun PokemonDetailScreenPreview() {
     PokedexTheme {
         Surface {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
-                    PokemonScreen(
+                    PokemonDetailScreen(
                         pokemon = Pokemon(
                             id = 4,
                             name = "Charmander",

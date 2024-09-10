@@ -4,7 +4,7 @@ import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
-import com.prodevzla.pokedex.domain.usecase.GetPokemonDetailsUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
@@ -58,8 +58,8 @@ object DomainModule {
 
     @Provides
     @Singleton
-    fun provideGetPokemonDetailsUseCase(repository: PokemonRepositoryImpl): GetPokemonDetailsUseCase {
-        return GetPokemonDetailsUseCase(repository)
+    fun provideGetPokemonInfoUseCase(repository: PokemonRepositoryImpl): GetPokemonInfoUseCase {
+        return GetPokemonInfoUseCase(repository)
     }
 
 }

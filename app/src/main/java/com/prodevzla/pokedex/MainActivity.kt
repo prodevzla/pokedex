@@ -23,7 +23,7 @@ import com.prodevzla.pokedex.presentation.navigation.Favourites
 import com.prodevzla.pokedex.presentation.navigation.HomeRoute
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
 import com.prodevzla.pokedex.presentation.navigation.PokemonNavType
-import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonScreen
+import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonDetailScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                             ) { backStackEntry ->
                                 val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
 
-                                PokemonScreen(
+                                PokemonDetailScreen(
                                     pokemon = arguments.pokemon,
                                     onClickBack = {
                                         navController.navigateUp()

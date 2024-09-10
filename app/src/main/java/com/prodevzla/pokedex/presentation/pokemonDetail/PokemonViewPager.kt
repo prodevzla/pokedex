@@ -20,11 +20,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
-fun PokemonViewPager(modifier: Modifier = Modifier, indicatorColor: Color) {
+fun PokemonViewPager(
+    modifier: Modifier = Modifier,
+    indicatorColor: Color,
+    state: DetailUiState
+) {
     var tabIndex by remember { mutableIntStateOf(0) }
 
     val tabs = listOf(
@@ -60,7 +67,7 @@ fun PokemonViewPager(modifier: Modifier = Modifier, indicatorColor: Color) {
         }
 
         when (tabIndex) {
-            0 -> InfoContent()
+            0 -> InfoContent(state = state.info)
 
             1 -> StatsContent()
 
@@ -76,7 +83,22 @@ fun PokemonViewPager(modifier: Modifier = Modifier, indicatorColor: Color) {
 fun PokemonViewPagerPreview() {
     PokedexTheme {
         Surface {
-            PokemonViewPager(indicatorColor = Color.Red)
+            PokemonViewPager(
+                indicatorColor = Color.Red,
+                state = DetailUiState(
+                    pokemon = Pokemon(
+                        id = 4,
+                        name = "Charmander",
+                        types = listOf(
+                            PokemonType(
+                                id = 10,
+                                name = UiText.DynamicString("Fire")
+                            )
+                        ),
+                        generation = 1,
+                    ),
+                )
+            )
         }
     }
 }

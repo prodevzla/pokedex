@@ -23,7 +23,7 @@ object FirebaseAnalytics {
         const val CHANGED_SORTING = "changed_sorting"
     }
 
-    object PokemonDetailsScreen {
+    object PokemonDetailScreen {
 
     }
 

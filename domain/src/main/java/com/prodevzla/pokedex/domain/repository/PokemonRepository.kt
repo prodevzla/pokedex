@@ -2,7 +2,7 @@ package com.prodevzla.pokedex.domain.repository
 
 import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonDetails
+import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
@@ -18,6 +18,7 @@ interface PokemonRepository {
 
     fun getPokemonTypes(): Flow<Result<List<PokemonType>>>
 
-    fun getPokemonDetails(id: Int): Flow<Result<PokemonDetails>>
+    fun getPokemonInfo(id: Int): Flow<Result<PokemonInfo>>
+
 
 }
