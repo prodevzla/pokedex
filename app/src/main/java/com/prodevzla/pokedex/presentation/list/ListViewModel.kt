@@ -14,14 +14,13 @@ import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import com.prodevzla.pokedex.domain.usecase.filterIf
+import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
+import com.prodevzla.pokedex.presentation.util.retryableFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -39,13 +38,7 @@ class ListViewModel @Inject constructor(
 
     private val _search = MutableStateFlow("")
 
-    private val _retryTrigger = MutableStateFlow(1)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val _pokemonList: Flow<Result<List<Pokemon>>> = _retryTrigger
-        .flatMapLatest {
-            getPokemonsUseCase.invoke()
-        }
+    private val retryableFlowTrigger = RetryableFlowTrigger()
 
     private val _filters = getFiltersUseCase.invoke(
         generationFilter = _generationFilter,
@@ -54,7 +47,9 @@ class ListViewModel @Inject constructor(
 
     val uiState: StateFlow<ListState> =
         combine(
-            _pokemonList,
+            retryableFlowTrigger.retryableFlow {
+                getPokemonsUseCase.invoke()
+            },
             _filters,
             _sort,
             _search
@@ -74,9 +69,7 @@ class ListViewModel @Inject constructor(
                         search = search
                     )
                 }
-                is Result.Loading -> {
-                    ListState.Loading
-                }
+                is Result.Loading -> ListState.Loading
 
                 else -> ListState.Error
             }
@@ -122,7 +115,7 @@ class ListViewModel @Inject constructor(
 
             is ListScreenEvent.SelectSort -> _sort.value = event.selection
             is ListScreenEvent.SearchPokemon -> _search.value = event.input
-            is ListScreenEvent.ClickTryAgain -> _retryTrigger.value = _retryTrigger.value++
+            is ListScreenEvent.ClickTryAgain -> retryableFlowTrigger.retry()
             else -> {}
         }
     }
