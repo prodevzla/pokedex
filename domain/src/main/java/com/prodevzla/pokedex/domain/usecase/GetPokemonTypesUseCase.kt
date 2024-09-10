@@ -22,8 +22,8 @@ class GetPokemonTypesUseCase(
         )
         return repository.getPokemonTypes().map {
             when (it) {
-                is Result.Error -> it
                 is Result.Success -> Result.Success(listOf(allTypesOption) + it.data)
+                else -> it
             }
         }.flowOn(Dispatchers.IO)
     }

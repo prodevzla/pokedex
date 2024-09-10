@@ -145,7 +145,9 @@ fun ListContent(
 
         when (state) {
             ListState.Loading -> LoadingScreen()
-            ListState.Error -> ErrorScreen()
+            ListState.Error -> ErrorScreen(tryAgain = {
+                onEvent(ListScreenEvent.ClickTryAgain)
+            })
             is ListState.Content -> {
 
                 val focusRequester = remember { FocusRequester() }

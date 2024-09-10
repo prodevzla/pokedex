@@ -7,6 +7,7 @@ sealed interface Result<out D> {
         Result<D>
     data class Error<out D>(val error: DataError.Network):
         Result<D>
+    data object Loading : Result<Nothing>
 }
 
 sealed interface DataError: Error {

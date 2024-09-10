@@ -23,8 +23,8 @@ class GetGameVersionsUseCase(
 
         return repository.getGameVersions().map {
             when (it) {
-                is Result.Error -> it
                 is Result.Success -> Result.Success(listOf(allVersionsOption) + it.data)
+                else -> it
             }
         }.flowOn(Dispatchers.IO)
 

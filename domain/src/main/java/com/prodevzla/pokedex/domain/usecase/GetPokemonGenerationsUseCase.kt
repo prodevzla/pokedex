@@ -23,13 +23,13 @@ class GetPokemonGenerationsUseCase(
         )
         return repository.getPokemonGenerations().map {
             when (it) {
-                is Result.Error -> it
                 is Result.Success -> Result.Success(listOf(allTypesOption) + it.data.map { generation ->
                     PokemonGeneration(
                         generation.id,
                         UiText.DynamicString(generation.name.value.replace("generation", "gen"))
                     )
                 })
+                else -> it
             }
         }.flowOn(Dispatchers.IO)
     }

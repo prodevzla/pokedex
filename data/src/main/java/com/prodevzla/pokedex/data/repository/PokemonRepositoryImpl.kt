@@ -13,6 +13,7 @@ import com.prodevzla.pokedex.data.mapper.toEntities
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.domain.model.DataError
 import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
@@ -20,6 +21,7 @@ import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -34,6 +36,7 @@ open class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
+        emit(Result.Loading)
         val pokemonList = pokemonDao.getAll()
         if (pokemonList.isNotEmpty()) {
             emit(Result.Success(pokemonList.fromEntityToDomain()))
@@ -56,6 +59,7 @@ open class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getGameVersions(): Flow<Result<List<GameVersionGroup>>> = flow {
+        emit(Result.Loading)
         emit(
             executeApolloCall(
                 query = {
@@ -72,6 +76,7 @@ open class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {
+        emit(Result.Loading)
         val generations = pokemonGenerationDao.getAll()
         if (generations.isNotEmpty()) {
             emit(Result.Success(generations.fromEntityToDomain()))
@@ -93,6 +98,7 @@ open class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonTypes(): Flow<Result<List<PokemonType>>> = flow {
+        emit(Result.Loading)
         val types = pokemonTypeDao.getAll()
         if (types.isNotEmpty()) {
             emit(Result.Success(types.fromEntityToDomain()))
@@ -115,6 +121,7 @@ open class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonInfo(id: Int): Flow<Result<PokemonInfo>> = flow {
+        emit(Result.Loading)
         emit(
             executeApolloCall(
                 query = {

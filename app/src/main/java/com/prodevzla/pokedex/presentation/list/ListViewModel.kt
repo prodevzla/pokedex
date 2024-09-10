@@ -15,11 +15,13 @@ import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
 import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import com.prodevzla.pokedex.domain.usecase.filterIf
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -37,8 +39,13 @@ class ListViewModel @Inject constructor(
 
     private val _search = MutableStateFlow("")
 
-    private val _pokemonList: Flow<Result<List<Pokemon>>> =
-        getPokemonsUseCase.invoke()
+    private val _retryTrigger = MutableStateFlow(1)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _pokemonList: Flow<Result<List<Pokemon>>> = _retryTrigger
+        .flatMapLatest {
+            getPokemonsUseCase.invoke()
+        }
 
     private val _filters = getFiltersUseCase.invoke(
         generationFilter = _generationFilter,
@@ -52,8 +59,8 @@ class ListViewModel @Inject constructor(
             _sort,
             _search
         ) { pokemonList, filters, sort, search ->
-            when {
-                pokemonList is Result.Success -> {
+            when(pokemonList) {
+                is Result.Success -> {
                     ListState.Content(
                         pokemonList = filterPokemon(
                             pokemonList = pokemonList.data,
@@ -67,15 +74,17 @@ class ListViewModel @Inject constructor(
                         search = search
                     )
                 }
+                is Result.Loading -> {
+                    ListState.Loading
+                }
 
                 else -> ListState.Error
             }
-        }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = ListState.Loading
-            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ListState.Loading
+        )
 
     private fun filterPokemon(
         pokemonList: List<Pokemon>,
@@ -110,8 +119,10 @@ class ListViewModel @Inject constructor(
                     FilterType.TYPE -> _typeFilter.value = event.selection.id
                 }
             }
+
             is ListScreenEvent.SelectSort -> _sort.value = event.selection
             is ListScreenEvent.SearchPokemon -> _search.value = event.input
+            is ListScreenEvent.ClickTryAgain -> _retryTrigger.value = _retryTrigger.value++
             else -> {}
         }
     }

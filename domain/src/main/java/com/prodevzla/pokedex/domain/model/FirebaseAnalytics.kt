@@ -2,7 +2,7 @@ package com.prodevzla.pokedex.domain.model
 
 object FirebaseAnalytics {
 
-    object ListScreen {
+    object List {
 
         const val CLICK_FILTER_GEN = "click_filter_gen"
 
@@ -21,10 +21,14 @@ object FirebaseAnalytics {
         const val CHANGED_FILTER_TYPE = "changed_filter_type"
 
         const val CHANGED_SORTING = "changed_sorting"
+
+        const val CLICK_TRY_AGAIN = "click_try_again"
+
     }
 
-    object PokemonDetailScreen {
+    object PokemonDetail {
 
     }
 
 }
+
