@@ -7,7 +7,10 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -31,6 +34,7 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.list.PokemonTypesRow
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
@@ -39,6 +43,7 @@ import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
+import com.prodevzla.pokedex.ui.theme.spacing
 
 //https://medium.com/@tunahan.bozkurt/custom-scroll-behavior-in-jetpack-compose-2d5a0e57d742
 
@@ -90,6 +95,10 @@ fun PokemonDetailScreen(
                     .align(Alignment.CenterHorizontally)
                     .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
             )
+            PokemonTypesRow(modifier = Modifier.padding(MaterialTheme.spacing.medium), pokemon = pokemon)
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+
             PokemonViewPager(
                 modifier = Modifier.fillMaxWidth(),
                 indicatorColor = pokemon.types.first().getColor(),

@@ -90,22 +90,7 @@ fun PokemonCard(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
-                    pokemon.types.forEach { type ->
-                        Text(
-                            modifier = Modifier
-                                .weight(1f)
-                                .border(
-                                    width = 0.5.dp, // border width
-                                    color = Color.Black,
-                                    shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
-                                ),
-                            text = type.name.value.uppercase(),
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
+                PokemonTypesRow(pokemon = pokemon)
 
             }
 
@@ -136,6 +121,26 @@ fun PokemonCard(
                         .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun PokemonTypesRow(modifier: Modifier = Modifier, pokemon: Pokemon) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
+        pokemon.types.forEach { type ->
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .border(
+                        width = 0.5.dp, // border width
+                        color = Color.Black,
+                        shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
+                    ),
+                text = type.name.value.uppercase(),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

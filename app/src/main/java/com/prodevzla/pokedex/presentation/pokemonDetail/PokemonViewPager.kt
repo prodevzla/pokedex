@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonAdditionalInfo
@@ -63,7 +64,9 @@ fun PokemonViewPager(
                     text = {
                         Text(
                             text = stringResource(title).uppercase(),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            lineHeight = 25.sp,
+                            letterSpacing = 1.sp
                         )
                     },
                     selected = tabIndex == index,

@@ -12,4 +12,5 @@
     <string name="tab_stats">stats</string>
     <string name="tab_moves">moves</string>
     <string name="tab_more">more</string>
+    <string name="tab_pokemon_info_species">Species</string>
 </resources>

@@ -41,7 +41,6 @@ val PokemonTypography = Typography(
         fontFamily = standardFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
@@ -49,6 +48,12 @@ val PokemonTypography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = standardFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
         letterSpacing = 0.5.sp
     ),
 //    titleLarge = TextStyle(
