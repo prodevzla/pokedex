@@ -40,7 +40,7 @@ object DataModule {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java, "pokemon-db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

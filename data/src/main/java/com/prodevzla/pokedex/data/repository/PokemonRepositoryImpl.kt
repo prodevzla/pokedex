@@ -10,10 +10,10 @@ import com.prodevzla.pokedex.data.mapper.executeApolloCall
 import com.prodevzla.pokedex.data.mapper.fromEntityToDomain
 import com.prodevzla.pokedex.data.mapper.toDomain
 import com.prodevzla.pokedex.data.mapper.toEntities
+import com.prodevzla.pokedex.data.mapper.toEntity
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
-import com.prodevzla.pokedex.domain.model.DataError
 import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
@@ -36,26 +36,28 @@ open class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override fun getPokemonList(): Flow<Result<List<Pokemon>>> = flow {
-        emit(Result.Loading)
-        val pokemonList = pokemonDao.getAll()
-        if (pokemonList.isNotEmpty()) {
-            emit(Result.Success(pokemonList.fromEntityToDomain()))
-            return@flow
-        }
-        emit(
-            executeApolloCall(
-                query = {
-                    apolloClient.query(GetPokemonListQuery())
-                },
-                processResponse = { body ->
-                    val response: List<Pokemon> = body!!.pokemon_v2_pokemon.toDomain()
-                    val entities = response.toEntities().toTypedArray()
-                    pokemonDao.insertAll(*entities)
-                    response
-                },
-            )
-        )
+//        emit(Result.Loading)
+//        delay(1200)
+//        emit(Result.Error(DataError.Network.SERVER_ERROR))
 
+        pokemonDao.getAll().takeIf { it.isNotEmpty() }
+            ?.let {
+                emit(Result.Success(it.fromEntityToDomain()))
+            } ?: run {
+            emit(
+                executeApolloCall(
+                    query = {
+                        apolloClient.query(GetPokemonListQuery())
+                    },
+                    processResponse = { body ->
+                        val response: List<Pokemon> = body!!.pokemon_v2_pokemon.toDomain()
+                        val entities = response.toEntities().toTypedArray()
+                        pokemonDao.insertAll(*entities)
+                        response
+                    },
+                )
+            )
+        }
     }
 
     override fun getGameVersions(): Flow<Result<List<GameVersionGroup>>> = flow {
@@ -77,58 +79,63 @@ open class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonGenerations(): Flow<Result<List<PokemonGeneration>>> = flow {
         emit(Result.Loading)
-        val generations = pokemonGenerationDao.getAll()
-        if (generations.isNotEmpty()) {
-            emit(Result.Success(generations.fromEntityToDomain()))
-            return@flow
-        }
-        emit(
-            executeApolloCall(
-                query = {
-                    apolloClient.query(GetPokemonGenerationsQuery())
-                },
-                processResponse = { body ->
-                    val response = body!!.pokemon_v2_generation.toDomain()
-                    val entities = response.toEntities().toTypedArray()
-                    pokemonGenerationDao.insertAll(*entities)
-                    response
-                }
+        pokemonGenerationDao.getAll().takeIf { it.isNotEmpty() }
+            ?.let {
+                emit(Result.Success(it.fromEntityToDomain()))
+            } ?: run {
+            emit(
+                executeApolloCall(
+                    query = {
+                        apolloClient.query(GetPokemonGenerationsQuery())
+                    },
+                    processResponse = { body ->
+                        val response = body!!.pokemon_v2_generation.toDomain()
+                        val entities = response.toEntities().toTypedArray()
+                        pokemonGenerationDao.insertAll(*entities)
+                        response
+                    }
+                )
             )
-        )
+        }
     }
 
     override fun getPokemonTypes(): Flow<Result<List<PokemonType>>> = flow {
         emit(Result.Loading)
-        val types = pokemonTypeDao.getAll()
-        if (types.isNotEmpty()) {
-            emit(Result.Success(types.fromEntityToDomain()))
-            return@flow
-        }
-
-        emit(
-            executeApolloCall(
-                query = {
-                    apolloClient.query(GetPokemonTypesQuery())
-                },
-                processResponse = { body ->
-                    val response: List<PokemonType> = body!!.pokemon_v2_type.toDomain()
-                    val entities = response.toEntities().toTypedArray()
-                    pokemonTypeDao.insertAll(*entities)
-                    response
-                }
+        pokemonTypeDao.getAll().takeIf { it.isNotEmpty() }
+            ?.let {
+                emit(Result.Success(it.fromEntityToDomain()))
+            } ?: run {
+            emit(
+                executeApolloCall(
+                    query = {
+                        apolloClient.query(GetPokemonTypesQuery())
+                    },
+                    processResponse = { body ->
+                        val response: List<PokemonType> = body!!.pokemon_v2_type.toDomain()
+                        val entities = response.toEntities().toTypedArray()
+                        pokemonTypeDao.insertAll(*entities)
+                        response
+                    }
+                )
             )
-        )
+        }
     }
 
     override fun getPokemonInfo(id: Int): Flow<Result<PokemonInfo>> = flow {
         emit(Result.Loading)
-        emit(
+        //delay(1500)
+        pokemonDao.getPokemonInfo(id)?.let {
+            emit(Result.Success(it.fromEntityToDomain()))
+            return@flow
+        } ?: emit(
             executeApolloCall(
                 query = {
                     apolloClient.query(GetPokemonInfoQuery(id))
                 },
                 processResponse = { body ->
                     val response = body!!.pokemon_v2_pokemon.toDomain()
+                    val entity = response.toEntity(id)
+                    pokemonDao.insertPokemonInfo(entity)
                     response
                 }
             )

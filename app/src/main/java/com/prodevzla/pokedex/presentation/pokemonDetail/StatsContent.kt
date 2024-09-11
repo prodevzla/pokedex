@@ -8,11 +8,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.prodevzla.pokedex.domain.model.PokemonInfo
+import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
-fun StatsContent() {
+fun StatsContent(modifier: Modifier = Modifier, state: PokemonStats) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,7 +29,7 @@ fun StatsContent() {
 fun StatsContentPreview() {
     PokedexTheme {
         Surface {
-            StatsContent()
+            StatsContent(state = PokemonStats())
         }
     }
 }

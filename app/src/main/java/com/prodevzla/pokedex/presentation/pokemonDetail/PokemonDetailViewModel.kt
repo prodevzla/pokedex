@@ -5,10 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonAdditionalInfo
-import com.prodevzla.pokedex.domain.model.PokemonInfo
-import com.prodevzla.pokedex.domain.model.PokemonMoves
-import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
@@ -28,8 +24,7 @@ class PokemonDetailViewModel @Inject constructor(
     pokemonInfoUseCase: GetPokemonInfoUseCase
 ) : ViewModel() {
 
-    val pokemon: Pokemon =
-        savedStateHandle.toRoute<PokemonDetailRoute>(typeMap = mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
+    val pokemon = savedStateHandle.toRoute<PokemonDetailRoute>(mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
 
     private val _uiState: MutableStateFlow<DetailUiState> = MutableStateFlow(
         DetailUiState(
@@ -45,7 +40,11 @@ class PokemonDetailViewModel @Inject constructor(
             pokemonInfoUseCase.invoke(pokemon.id).collect { info ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        info = if (info is Result.Success) CategoryUiState.Content(content = info.data) else CategoryUiState.Error,
+                        info = when (info) {
+                            Result.Loading -> CategoryUiState.Loading
+                            is Result.Error -> CategoryUiState.Error
+                            is Result.Success -> CategoryUiState.Content(content = info.data)
+                        }
                     )
                 }
             }
@@ -64,59 +63,7 @@ data class DetailUiState(
 )
 
 sealed interface CategoryUiState {
-
     data object Loading : CategoryUiState
     data object Error : CategoryUiState
-
-    data class Content<T>(val content: T): CategoryUiState
-
-//    sealed interface Info : CategoryUiState {
-//        data class Content(val info: PokemonInfo) : Info
-//    }
-//
-//    sealed interface Stats : CategoryUiState {
-//        data class Content(val stats: PokemonStats) : Stats
-//    }
-//
-//    sealed interface Moves : CategoryUiState {
-//        data class Content(val moves: PokemonMoves) : Moves
-//    }
-//
-//    sealed interface AdditionalInfo : CategoryUiState {
-//        data class Content(val additionalInfo: PokemonAdditionalInfo) : AdditionalInfo
-//    }
-
+    data class Content<T>(val content: T) : CategoryUiState
 }
-
-/*
-query GetPokemonQuery($pokemonId: Int!) {
-    pokemon_v2_pokemon(where: {id: {_eq: $pokemonId}}) {
-        id
-        name
-        height
-        weight
-        pokemon_v2_pokemontypes {
-            pokemon_v2_type {
-                id
-                name
-            }
-        }
-        pokemon_v2_pokemonspecy {
-            id
-            gender_rate
-            pokemon_v2_pokemonspeciesflavortexts(where: {pokemon_v2_language: {name: {_like: "en"}}}, order_by: {version_id: desc}, limit: 1) {
-                version_id
-                flavor_text
-                pokemon_v2_version {
-                    name
-                }
-            }
-        }
-        pokemon_v2_pokemoncries {
-            id
-            cries
-        }
-    }
-}
-
- */

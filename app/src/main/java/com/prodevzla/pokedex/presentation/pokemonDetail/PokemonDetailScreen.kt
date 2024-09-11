@@ -6,9 +6,8 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,20 +18,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,7 +39,8 @@ import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import kotlin.math.roundToInt
+
+//https://medium.com/@tunahan.bozkurt/custom-scroll-behavior-in-jetpack-compose-2d5a0e57d742
 
 context(SharedTransitionScope, AnimatedVisibilityScope)
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -85,29 +75,8 @@ fun PokemonDetailScreen(
         }
 
     ) {
-        val marginTopInPx = LocalDensity.current.run { 0.dp.toPx() }
-
-        val imageHeightInPx = LocalDensity.current.run { 150.dp.toPx() }
-
-        var offset by remember { mutableFloatStateOf(0f) }
-
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    val delta = available.y
-                    offset = (offset + delta).coerceIn(marginTopInPx, imageHeightInPx)
-                    return Offset(
-                        0f,
-                        if (offset < imageHeightInPx && offset > marginTopInPx) delta else 0f
-                    )
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .background(color = pokemon.types.first().getColor())
-                .nestedScroll(nestedScrollConnection)
+        Column(
+            modifier = Modifier.background(color = pokemon.types.first().getColor())
         ) {
             AsyncImage(
                 model = ImageRequest
@@ -118,18 +87,11 @@ fun PokemonDetailScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .size(125.dp)
-                    .align(Alignment.TopCenter)
-                    .onGloballyPositioned {
-                        offset = imageHeightInPx
-                    }
+                    .align(Alignment.CenterHorizontally)
                     .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
             )
             PokemonViewPager(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .offset {
-                        IntOffset(0, offset.roundToInt())
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 indicatorColor = pokemon.types.first().getColor(),
                 state = state,
             )

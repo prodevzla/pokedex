@@ -21,8 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonAdditionalInfo
+import com.prodevzla.pokedex.domain.model.PokemonInfo
+import com.prodevzla.pokedex.domain.model.PokemonMoves
+import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.util.ErrorScreen
+import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
@@ -67,13 +73,38 @@ fun PokemonViewPager(
         }
 
         when (tabIndex) {
-            0 -> InfoContent(state = state.info)
+            0 -> GenericViewPagerContent<PokemonInfo>(state.info) {
+                InfoContent(state = it)
+            }
 
-            1 -> StatsContent()
+            1 -> GenericViewPagerContent<PokemonStats>(state.stats)  {
+                StatsContent(state = it)
+            }
 
-            2 -> MovesContent()
+            2 -> GenericViewPagerContent<PokemonMoves>(state.moves)  {
+                MovesContent(state = it)
+            }
 
-            3 -> MoreContent()
+            3 -> GenericViewPagerContent<PokemonAdditionalInfo>(state.additionalInfo)  {
+                MoreContent(state = it)
+            }
+        }
+    }
+}
+
+@Composable
+fun <T>GenericViewPagerContent(state: CategoryUiState, content: @Composable (T) -> Unit) {
+    when (state) {
+        is CategoryUiState.Content<*> -> {
+            content(state.content as T)
+        }
+
+        CategoryUiState.Error -> {
+            ErrorScreen()
+        }
+
+        CategoryUiState.Loading -> {
+            LoadingScreen()
         }
     }
 }
