@@ -13,4 +13,8 @@
     <string name="tab_moves">moves</string>
     <string name="tab_more">more</string>
     <string name="tab_pokemon_info_species">Species</string>
+    <string name="tab_pokemon_info_height">Height</string>
+    <string name="tab_pokemon_info_weight">Weight</string>
+    <string name="tab_pokemon_info_voiceover">Voiceover</string>
+    <string name="tab_pokemon_info_cry">Cry</string>
 </resources>

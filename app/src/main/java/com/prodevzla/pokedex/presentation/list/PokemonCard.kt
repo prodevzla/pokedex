@@ -38,6 +38,7 @@ import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.darken
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.presentation.util.toTitle
@@ -85,12 +86,13 @@ fun PokemonCard(
                 Text(
                     text = pokemon.toTitle(),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id)
+                    modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id),
+                    color = pokemon.types.first().getColor().darken(0.5f)
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                PokemonTypesRow(pokemon = pokemon)
+                PokemonTypesRow(types = pokemon.types)
 
             }
 
@@ -126,20 +128,22 @@ fun PokemonCard(
 }
 
 @Composable
-fun PokemonTypesRow(modifier: Modifier = Modifier, pokemon: Pokemon) {
+fun PokemonTypesRow(modifier: Modifier = Modifier, types: List<PokemonType>) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
-        pokemon.types.forEach { type ->
+        types.forEach { type ->
             Text(
                 modifier = Modifier
                     .weight(1f)
                     .border(
                         width = 0.5.dp, // border width
-                        color = Color.Black,
+                        color = types.first().getColor().darken(0.5f),
                         shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
-                    ),
+                    ).padding(4.dp),
+
                 text = type.name.value.uppercase(),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center,
+                color = types.first().getColor().darken(0.5f),
             )
         }
     }

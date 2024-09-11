@@ -71,3 +71,19 @@ fun PokemonType.getColor(): Color {
         else -> NeutralGrey
     }
 }
+
+fun Color.darken(factor: Float): Color {
+    return copy(
+        red = red * factor,
+        green = green * factor,
+        blue = blue * factor
+    )
+}
+
+fun Color.lighten(factor: Float): Color {
+    return copy(
+        red = red + (1f - red) * factor,
+        green = green + (1f - green) * factor,
+        blue = blue + (1f - blue) * factor
+    )
+}

@@ -32,6 +32,10 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonAdditionalInfo
+import com.prodevzla.pokedex.domain.model.PokemonInfo
+import com.prodevzla.pokedex.domain.model.PokemonMoves
+import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.list.PokemonTypesRow
@@ -40,6 +44,7 @@ import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.getColor
+import com.prodevzla.pokedex.presentation.util.lighten
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
@@ -52,13 +57,29 @@ context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
 fun PokemonDetailScreen(
     modifier: Modifier = Modifier,
-    pokemon: Pokemon,
     viewModel: PokemonDetailViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    PokemonDetailScreenContent(
+        modifier = modifier,
+        state = state,
+        onClickBack = onClickBack
+    )
+
+}
+
+context(SharedTransitionScope, AnimatedVisibilityScope)
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun PokemonDetailScreenContent(
+    modifier: Modifier = Modifier,
+    state: DetailUiState,
+    onClickBack: () -> Unit
+) {
+    val pokemon = state.pokemon
     CustomScaffold(
         modifier = modifier,
         topBarColor = pokemon.types.first().getColor(),
@@ -95,12 +116,22 @@ fun PokemonDetailScreen(
                     .align(Alignment.CenterHorizontally)
                     .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
             )
-            PokemonTypesRow(modifier = Modifier.padding(MaterialTheme.spacing.medium), pokemon = pokemon)
+            PokemonTypesRow(
+                modifier = Modifier.padding(MaterialTheme.spacing.medium),
+                types = pokemon.types
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
             PokemonViewPager(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        state.pokemon.types
+                            .first()
+                            .getColor()
+                            .lighten(0.8f)
+                    ),
                 indicatorColor = pokemon.types.first().getColor(),
                 state = state,
             )
@@ -116,18 +147,32 @@ fun PokemonDetailScreenPreview() {
         Surface {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
-                    PokemonDetailScreen(
-                        pokemon = Pokemon(
-                            id = 4,
-                            name = "Charmander",
-                            types = listOf(
-                                PokemonType(
-                                    id = 10,
-                                    name = UiText.DynamicString("Fire")
+                    PokemonDetailScreenContent(
+                        state = DetailUiState(
+                            pokemon = Pokemon(
+                                id = 4,
+                                name = "Charmander",
+                                types = listOf(
+                                    PokemonType(
+                                        id = 10,
+                                        name = UiText.DynamicString("Fire")
+                                    )
+                                ),
+                                generation = 1,
+                            ),
+                            info = CategoryUiState.Content(
+                                PokemonInfo(
+                                    height = 4733,
+                                    weight = 8327,
+                                    genderRate = 8498,
+                                    flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                                    cries = "vero"
                                 )
                             ),
-                            generation = 1,
-                        ),
+                            stats = CategoryUiState.Content(PokemonStats()),
+                            moves = CategoryUiState.Content(PokemonMoves()),
+                            additionalInfo = CategoryUiState.Content(PokemonAdditionalInfo()
+                            )),
                         onClickBack = {}
                     )
                 }
