@@ -3,10 +3,12 @@ package com.prodevzla.pokedex.presentation.pokemonDetail
 import android.media.MediaPlayer
 import android.net.Uri
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -24,44 +26,87 @@ import java.util.Locale
 @Composable
 fun PlayAudioContent(uri: Uri) {
     if (LocalInspectionMode.current) {
-        PlayAudioContent(onClickPlay = {})
+        PlayAudioContent(state = AudioPlay.IDLE, onClickPlay = {})
         return
     }
 
-    val mediaPlayer = MediaPlayer.create(LocalContext.current, uri)
-    PlayAudioContent {
-        mediaPlayer.start()
+    var audioPlayState by remember { mutableStateOf(AudioPlay.IDLE) }
+
+    val mediaPlayer = MediaPlayer().apply {
+        setDataSource(LocalContext.current, uri)
+        prepare()
+        setOnCompletionListener {
+            audioPlayState = AudioPlay.IDLE
+        }
     }
+
+    PlayAudioContent(
+        state = audioPlayState,
+        onClickPlay = {
+            audioPlayState = AudioPlay.PLAYING
+            mediaPlayer.start()
+        },
+        onClickStop = {
+            mediaPlayer.stop()
+        }
+    )
 }
 
 @Composable
 fun PlayAudioContent(value: String) {
     if (LocalInspectionMode.current) {
-        PlayAudioContent(onClickPlay = {})
+        PlayAudioContent(state = AudioPlay.IDLE, onClickPlay = {})
         return
     }
 
     val context = LocalContext.current
-    var tts: TextToSpeech? by remember { mutableStateOf<TextToSpeech?>(null) }
+    var tts by remember { mutableStateOf<TextToSpeech?>(null) }
+
+    var audioPlayState by remember { mutableStateOf(AudioPlay.IDLE) }
 
     DisposableEffect(context) {
         tts = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
+
+                tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {
+                        audioPlayState = AudioPlay.PLAYING
+                    }
+
+                    override fun onDone(utteranceId: String?) {
+                        audioPlayState = AudioPlay.IDLE
+                    }
+
+                    override fun onError(utteranceId: String?) {}
+
+                    override fun onStop(utteranceId: String?, interrupted: Boolean) {
+                        audioPlayState = AudioPlay.IDLE
+                    }
+
+                })
             }
+
         }
         onDispose {
             tts?.shutdown()
         }
+
     }
 
-    PlayAudioContent {
-        tts?.speak(value, TextToSpeech.QUEUE_FLUSH, null, null)
-    }
+    PlayAudioContent(
+        state = audioPlayState,
+        onClickPlay = {
+            tts?.speak(value, TextToSpeech.QUEUE_FLUSH, null, "utteranceId")
+        },
+        onClickStop = {
+            tts?.stop()
+        }
+    )
 }
 
 @Composable
-fun PlayAudioContent(onClickPlay: () -> Unit) {
+fun PlayAudioContent(state: AudioPlay, onClickPlay: () -> Unit = {}, onClickStop: () -> Unit = {}) {
 
     SubcomposeLayout { constraints ->
         val textPlaceable = subcompose("Text") {
@@ -72,12 +117,20 @@ fun PlayAudioContent(onClickPlay: () -> Unit) {
 
         val iconButtonPlaceable = subcompose("IconButton") {
             IconButton(
-                onClick = onClickPlay,
-                modifier = Modifier
+                onClick = when (state) {
+                    AudioPlay.IDLE -> onClickPlay
+                    AudioPlay.PLAYING -> onClickStop
+                }, modifier = Modifier
                     .fillMaxWidth()
                     .height(textHeightDp)
             ) {
-                Icon(Icons.Default.PlayArrow, contentDescription = "play")
+                when (state) {
+                    AudioPlay.IDLE -> Icon(Icons.Default.PlayArrow, contentDescription = "play")
+                    AudioPlay.PLAYING -> Icon(
+                        Icons.Filled.ShoppingCart, contentDescription = "stop"
+                    )
+                }
+
             }
         }[0].measure(constraints)
 
@@ -88,3 +141,6 @@ fun PlayAudioContent(onClickPlay: () -> Unit) {
 
 }
 
+enum class AudioPlay {
+    IDLE, PLAYING,
+}
