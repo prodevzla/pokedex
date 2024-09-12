@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -21,6 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
+import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import java.util.Locale
 
 @Composable
@@ -32,11 +38,30 @@ fun PlayAudioContent(uri: Uri) {
 
     var audioPlayState by remember { mutableStateOf(AudioPlay.IDLE) }
 
-    val mediaPlayer = MediaPlayer().apply {
-        setDataSource(LocalContext.current, uri)
-        prepare()
-        setOnCompletionListener {
-            audioPlayState = AudioPlay.IDLE
+    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+
+    val context = LocalContext.current
+    DisposableEffect(context) {
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(context, uri)
+
+            // Use prepareAsync to avoid blocking the UI thread
+            prepareAsync()
+
+            // Listener for when preparation is complete
+            setOnPreparedListener {
+                // Media is prepared, can update the UI if needed
+            }
+
+            // Listener for when playback is complete
+            setOnCompletionListener {
+                audioPlayState = AudioPlay.IDLE
+            }
+        }
+
+        // Dispose the MediaPlayer when the composable leaves the composition
+        onDispose {
+            mediaPlayer?.release()
         }
     }
 
@@ -44,10 +69,12 @@ fun PlayAudioContent(uri: Uri) {
         state = audioPlayState,
         onClickPlay = {
             audioPlayState = AudioPlay.PLAYING
-            mediaPlayer.start()
+            mediaPlayer?.start()
         },
         onClickStop = {
-            mediaPlayer.stop()
+            audioPlayState = AudioPlay.IDLE
+            mediaPlayer?.stop()
+            mediaPlayer?.prepareAsync()
         }
     )
 }
@@ -65,6 +92,7 @@ fun PlayAudioContent(value: String) {
     var audioPlayState by remember { mutableStateOf(AudioPlay.IDLE) }
 
     DisposableEffect(context) {
+        if (tts == null) {
         tts = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
@@ -86,12 +114,12 @@ fun PlayAudioContent(value: String) {
 
                 })
             }
+        }
 
         }
         onDispose {
             tts?.shutdown()
         }
-
     }
 
     PlayAudioContent(
@@ -125,9 +153,9 @@ fun PlayAudioContent(state: AudioPlay, onClickPlay: () -> Unit = {}, onClickStop
                     .height(textHeightDp)
             ) {
                 when (state) {
-                    AudioPlay.IDLE -> Icon(Icons.Default.PlayArrow, contentDescription = "play")
+                    AudioPlay.IDLE -> Icon(Icons.Rounded.PlayArrow, contentDescription = "play")
                     AudioPlay.PLAYING -> Icon(
-                        Icons.Filled.ShoppingCart, contentDescription = "stop"
+                        painterResource(R.drawable.ic_stop), contentDescription = "stop"
                     )
                 }
 
@@ -144,3 +172,4 @@ fun PlayAudioContent(state: AudioPlay, onClickPlay: () -> Unit = {}, onClickStop
 enum class AudioPlay {
     IDLE, PLAYING,
 }
+
