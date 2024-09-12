@@ -4,10 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.PrimaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,21 +54,28 @@ fun PokemonViewPager(
         TabRow(
             selectedTabIndex = tabIndex,
             indicator = { tabPositions ->
-                Box(
-                    modifier = Modifier
-                        .tabIndicatorOffset(tabPositions[tabIndex])
-                        .height(4.dp)
-                        .background(indicatorColor)
+                PrimaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
+                    color = MaterialTheme.colorScheme.surface,
+                    width = 40.dp,
+                    height = 8.dp
                 )
             }) {
             tabs.forEachIndexed { index, title ->
                 Tab(
+                    modifier = Modifier.background(indicatorColor),
+
                     text = {
                         Text(
                             text = stringResource(title).uppercase(),
                             color = MaterialTheme.colorScheme.onSurface,
                             lineHeight = 25.sp,
-                            letterSpacing = 1.sp
+                            letterSpacing = 1.sp,
+                            style = if (tabIndex == index) {
+                                MaterialTheme.typography.titleMedium
+                            } else {
+                                MaterialTheme.typography.titleSmall
+                            }
                         )
                     },
                     selected = tabIndex == index,
@@ -96,7 +105,7 @@ fun PokemonViewPager(
 }
 
 @Composable
-fun <T>GenericViewPagerContent(state: CategoryUiState, content: @Composable (T) -> Unit) {
+fun <T> GenericViewPagerContent(state: CategoryUiState, content: @Composable (T) -> Unit) {
     when (state) {
         is CategoryUiState.Content<*> -> {
             content(state.content as T)

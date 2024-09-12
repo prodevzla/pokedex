@@ -95,7 +95,7 @@ fun PlayAudioContent(value: String) {
         if (tts == null) {
         tts = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.US
+                //tts?.language = Locale.US
 
                 tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {

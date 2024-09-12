@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
@@ -48,6 +49,16 @@ class PokemonDetailViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun updateSomething() {
+        _uiState.update { currentState ->
+            val currentInfo: PokemonInfo = (currentState.info as CategoryUiState.Content<PokemonInfo>).content
+            val updatedInfo = currentInfo.copy(weightKg = "5kg")
+            currentState.copy(
+                info = CategoryUiState.Content(updatedInfo)
+            )
         }
     }
 

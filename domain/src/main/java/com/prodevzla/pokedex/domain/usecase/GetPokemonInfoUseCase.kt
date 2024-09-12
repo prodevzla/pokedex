@@ -18,7 +18,7 @@ class GetPokemonInfoUseCase(
                 is Result.Success -> {
                     val updatedPokemonInfo = result.data.copy(
                         heightCm = "${result.data.height * 10}cm",
-                        weightKg = "${result.data.weight * 100}Kg"
+                        weightKg = "${result.data.weight / 10}Kg"
                     )
                     Result.Success(updatedPokemonInfo)
                 }
