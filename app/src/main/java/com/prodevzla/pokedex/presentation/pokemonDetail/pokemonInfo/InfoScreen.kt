@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
@@ -21,20 +21,37 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.PokemonInfo
+import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerContent
+import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
-fun InfoContent(modifier: Modifier = Modifier, state: PokemonInfo) {
+fun InfoScreen(
+    viewModel: PokemonInfoViewModel = hiltViewModel()
+) {
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    GenericViewPagerContent<PokemonInfo>(state.info) {
+        InfoScreenContent(state = it)
+    }
+}
+
+@Composable
+fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfo) {
     Column(
         modifier
             .fillMaxSize()
@@ -169,17 +186,16 @@ fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
 
 @ThemePreviews
 @Composable
-fun InfoContentPreview() {
+fun InfoScreenContentPreview() {
     PokedexTheme {
         Surface {
-            InfoContent(
+            InfoScreenContent(
                 state = PokemonInfo(
                     height = 4733,
                     weight = 8327,
                     genderRate = 8498,
                     flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
                     cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
-
                 )
             )
         }
@@ -197,4 +213,3 @@ fun InfoDetailPreview() {
         }
     }
 }
-

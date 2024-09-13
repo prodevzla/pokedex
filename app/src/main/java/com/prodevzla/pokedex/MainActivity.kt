@@ -74,10 +74,10 @@ class MainActivity : ComponentActivity() {
                                     typeOf<Pokemon>() to PokemonNavType.PokemonType
                                 )
                             ) { backStackEntry ->
-                                //val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
+                                val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
 
                                 PokemonDetailScreen(
-                                    //pokemon = arguments.pokemon,
+                                    pokemon = arguments.pokemon,
                                     onClickBack = {
                                         navController.navigateUp()
                                     }

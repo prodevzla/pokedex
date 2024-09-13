@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMoves
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,13 +8,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.prodevzla.pokedex.domain.model.PokemonMoves
-import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
-fun MovesContent(modifier: Modifier = Modifier, state: PokemonMoves) {
+fun MovesScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +27,7 @@ fun MovesContent(modifier: Modifier = Modifier, state: PokemonMoves) {
 fun MovesContentPreview() {
     PokedexTheme {
         Surface {
-            MovesContent(state = PokemonMoves())
+            MovesScreen()
         }
     }
 }

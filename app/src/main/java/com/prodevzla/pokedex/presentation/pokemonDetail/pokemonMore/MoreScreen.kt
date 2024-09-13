@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,28 +8,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.prodevzla.pokedex.domain.model.PokemonInfo
-import com.prodevzla.pokedex.domain.model.PokemonStats
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
-fun StatsContent(modifier: Modifier = Modifier, state: PokemonStats) {
+fun MoreScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        Text("stats")
+        Text("more")
     }
 }
 
 @ThemePreviews
 @Composable
-fun StatsContentPreview() {
+fun MoreContentPreview() {
     PokedexTheme {
         Surface {
-            StatsContent(state = PokemonStats())
+            MoreScreen()
         }
     }
 }

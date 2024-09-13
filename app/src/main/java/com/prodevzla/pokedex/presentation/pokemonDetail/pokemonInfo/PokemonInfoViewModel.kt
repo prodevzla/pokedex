@@ -1,15 +1,13 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
-import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
-import com.prodevzla.pokedex.presentation.navigation.PokemonNavType
+import com.prodevzla.pokedex.presentation.pokemonDetail.base.BaseAppViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,15 +15,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.reflect.typeOf
 
 @HiltViewModel
-class PokemonDetailViewModel @Inject constructor(
+class PokemonInfoViewModel @Inject constructor(
+    application: Application,
     savedStateHandle: SavedStateHandle,
     pokemonInfoUseCase: GetPokemonInfoUseCase
-) : ViewModel() {
-
-    val pokemon = savedStateHandle.toRoute<PokemonDetailRoute>(mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
+) : BaseAppViewModel(application, savedStateHandle) {
 
     private val _uiState: MutableStateFlow<DetailUiState> = MutableStateFlow(
         DetailUiState(

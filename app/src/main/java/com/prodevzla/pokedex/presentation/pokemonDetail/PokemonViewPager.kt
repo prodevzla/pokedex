@@ -1,10 +1,8 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -19,17 +17,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonAdditionalInfo
-import com.prodevzla.pokedex.domain.model.PokemonInfo
-import com.prodevzla.pokedex.domain.model.PokemonMoves
-import com.prodevzla.pokedex.domain.model.PokemonStats
-import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.CategoryUiState
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreen
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreenContentPreview
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore.MoreScreen
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMoves.MovesScreen
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonStats.StatsScreen
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -38,8 +36,7 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 @Composable
 fun PokemonViewPager(
     modifier: Modifier = Modifier,
-    indicatorColor: Color,
-    state: DetailUiState
+    tabRowBackgroundColor: Color,
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
 
@@ -55,15 +52,15 @@ fun PokemonViewPager(
             selectedTabIndex = tabIndex,
             indicator = { tabPositions ->
                 PrimaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[tabIndex]).offset(y = -8.dp),
                     color = MaterialTheme.colorScheme.surface,
                     width = 40.dp,
-                    height = 8.dp
+                    height = 8.dp,
                 )
             }) {
             tabs.forEachIndexed { index, title ->
                 Tab(
-                    modifier = Modifier.background(indicatorColor),
+                    modifier = Modifier.background(tabRowBackgroundColor),
 
                     text = {
                         Text(
@@ -85,21 +82,19 @@ fun PokemonViewPager(
         }
 
         when (tabIndex) {
-            0 -> GenericViewPagerContent<PokemonInfo>(state.info) {
-                InfoContent(state = it)
+            0 -> {
+                if (LocalInspectionMode.current) {
+                    InfoScreenContentPreview()
+                } else {
+                    InfoScreen()
+                }
             }
 
-            1 -> GenericViewPagerContent<PokemonStats>(state.stats)  {
-                StatsContent(state = it)
-            }
+            1 -> StatsScreen()
 
-            2 -> GenericViewPagerContent<PokemonMoves>(state.moves)  {
-                MovesContent(state = it)
-            }
+            2 -> MovesScreen()
 
-            3 -> GenericViewPagerContent<PokemonAdditionalInfo>(state.additionalInfo)  {
-                MoreContent(state = it)
-            }
+            3 -> MoreScreen()
         }
     }
 }
@@ -127,20 +122,7 @@ fun PokemonViewPagerPreview() {
     PokedexTheme {
         Surface {
             PokemonViewPager(
-                indicatorColor = Color.Red,
-                state = DetailUiState(
-                    pokemon = Pokemon(
-                        id = 4,
-                        name = "Charmander",
-                        types = listOf(
-                            PokemonType(
-                                id = 10,
-                                name = UiText.DynamicString("Fire")
-                            )
-                        ),
-                        generation = 1,
-                    ),
-                )
+                tabRowBackgroundColor = Color.Red,
             )
         }
     }

@@ -7,12 +7,9 @@ import android.speech.tts.UtteranceProgressListener
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -25,9 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.presentation.util.ThemePreviews
-import com.prodevzla.pokedex.ui.theme.PokedexTheme
-import java.util.Locale
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.WeightHeightText
 
 @Composable
 fun PlayAudioContent(uri: Uri) {
