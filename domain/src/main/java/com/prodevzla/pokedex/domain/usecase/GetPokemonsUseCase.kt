@@ -1,12 +1,15 @@
 package com.prodevzla.pokedex.domain.usecase
 
+import com.prodevzla.pokedex.domain.model.DataError
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 class GetPokemonsUseCase(
     private val repository: PokemonRepository
@@ -14,19 +17,20 @@ class GetPokemonsUseCase(
 
     operator fun invoke(): Flow<Result<List<Pokemon>>> =
         repository.getPokemonList()
-            .map { response ->
-                when (response) {
-                    is Result.Success -> Result.Success(
-                        response.data.map { pokemon ->
-                            pokemon.apply {
-                                image = IMAGE_URL.replace("{pokemonId}", pokemon.id.toString())
-                            }
+            .map<List<Pokemon>, Result<List<Pokemon>>> { response ->
+                Result.Success(
+                    response.map { pokemon ->
+                        pokemon.apply {
+                            image = IMAGE_URL.replace("{pokemonId}", pokemon.id.toString())
                         }
-                    )
-                    else -> response
-                }
+                    }
+                )
+            }
+            .onStart { emit(Result.Loading) }
+            .catch { e ->
+                println(e)
+                emit(Result.Error(e))
             }.flowOn(Dispatchers.IO)
-
 
 
     companion object {

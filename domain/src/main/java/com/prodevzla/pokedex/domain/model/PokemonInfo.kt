@@ -6,6 +6,4 @@ data class PokemonInfo(
     val genderRate: Int,
     val flavorText: String,
     val cries: String,
-    var heightCm: String = "0 cm",
-    var weightKg: String = "0 Kg"
 )

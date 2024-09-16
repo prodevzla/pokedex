@@ -5,26 +5,41 @@ import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 class GetPokemonInfoUseCase(
     private val repository: PokemonRepository
 ) {
 
-    operator fun invoke(id: Int): Flow<Result<PokemonInfo>> = repository.getPokemonInfo(id)
-        .map { result ->
-            when (result) {
-                is Result.Success -> {
-                    val updatedPokemonInfo = result.data.copy(
-                        heightCm = "${result.data.height * 10}cm",
-                        weightKg = "${result.data.weight / 10}Kg"
+    private fun convertHeightToCm(height: Int) = height * 10
+    private fun convertWeightToKg(weight: Int) = weight / 10
+
+    operator fun invoke(id: Int): Flow<Result<PokemonInfoUI>> =
+        repository.getPokemonInfo(id)
+            .map<PokemonInfo, Result<PokemonInfoUI>> { result ->
+                Result.Success(
+                    PokemonInfoUI(
+                        pokemonInfo = result,
+                        height = "${convertHeightToCm(result.height)} cm",
+                        weight = "${convertWeightToKg(result.weight)} Kg",
                     )
-                    Result.Success(updatedPokemonInfo)
-                }
-                else -> result
+                )
             }
-        }
-        .flowOn(Dispatchers.IO)
+            .onStart { emit(Result.Loading) }
+            .catch { e ->
+                println(e)
+                emit(Result.Error(e))
+            }.flowOn(Dispatchers.IO)
 
 }
+
+
+data class PokemonInfoUI(
+    val pokemonInfo: PokemonInfo,
+    val height: String,
+    val weight: String,
+)
+

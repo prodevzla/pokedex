@@ -51,7 +51,7 @@ class PokemonInfoViewModel @Inject constructor(
     fun updateSomething() {
         _uiState.update { currentState ->
             val currentInfo: PokemonInfo = (currentState.info as CategoryUiState.Content<PokemonInfo>).content
-            val updatedInfo = currentInfo.copy(weightKg = "5kg")
+            val updatedInfo = currentInfo.copy(weight = 5)
             currentState.copy(
                 info = CategoryUiState.Content(updatedInfo)
             )

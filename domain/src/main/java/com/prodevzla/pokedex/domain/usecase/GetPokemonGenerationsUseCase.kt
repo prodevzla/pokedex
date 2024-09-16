@@ -9,8 +9,10 @@ import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 class GetPokemonGenerationsUseCase(
     private val repository: PokemonRepository
@@ -21,17 +23,19 @@ class GetPokemonGenerationsUseCase(
             id = 0,
             name = UiText.StringResource(R.string.all_gens)
         )
-        return repository.getPokemonGenerations().map {
-            when (it) {
-                is Result.Success -> Result.Success(listOf(allTypesOption) + it.data.map { generation ->
+        return repository.getPokemonGenerations()
+            .map<List<PokemonGeneration>, Result<List<Filterable>>> {
+                Result.Success(listOf(allTypesOption) + it.map { generation ->
                     PokemonGeneration(
                         generation.id,
                         UiText.DynamicString(generation.name.value.replace("generation", "gen"))
                     )
                 })
-                else -> it
             }
-        }.flowOn(Dispatchers.IO)
+            .onStart { emit(Result.Loading) }
+            .catch { e ->
+                println(e)
+                emit(Result.Error(e))
+            }.flowOn(Dispatchers.IO)
     }
-
 }

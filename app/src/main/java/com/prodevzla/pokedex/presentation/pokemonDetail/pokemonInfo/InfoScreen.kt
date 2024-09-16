@@ -1,6 +1,8 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.PokemonInfo
+import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -45,13 +49,13 @@ fun InfoScreen(
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    GenericViewPagerContent<PokemonInfo>(state.info) {
-        InfoScreenContent(state = it)
-    }
+//    GenericViewPagerContent<PokemonInfo>(state.info) {
+    InfoScreenContent(state = state.info)
+//    }
 }
 
 @Composable
-fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfo) {
+fun InfoScreenContent(modifier: Modifier = Modifier, state: CategoryUiState) {
     Column(
         modifier
             .fillMaxSize()
@@ -67,18 +71,14 @@ fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfo) {
         )
 
         SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
-//        SpeciesCard(state = state)
+        SpeciesCard(state = state)
+        SpeciesCard(state = state)
+        SpeciesCard(state = state)
     }
 }
 
 @Composable
-fun SpeciesCard(modifier: Modifier = Modifier, state: PokemonInfo) {
+fun SpeciesCard(modifier: Modifier = Modifier, state: CategoryUiState) {
     Card(
         modifier = modifier.padding(MaterialTheme.spacing.medium),
         colors = CardDefaults.cardColors().copy(
@@ -86,58 +86,71 @@ fun SpeciesCard(modifier: Modifier = Modifier, state: PokemonInfo) {
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.spacing.medium)
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MaterialTheme.spacing.medium)
+                .animateContentSize()
         ) {
-            InfoDetail(label = "") {
-                WeightHeightText(text = state.flavorText)
+            if (state is CategoryUiState.Loading) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.align(Alignment.CenterHorizontally))
+                return@Column
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            if (state is CategoryUiState.Content<*>) {
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
-            ) {
+                state.content as PokemonInfoUI
 
-                InfoDetail(
-                    modifier = Modifier.weight(1f),
-                    label = stringResource(R.string.tab_pokemon_info_height)
-                ) {
-                    WeightHeightText(text = state.heightCm)
-                }
-                InfoDetail(
-                    modifier = Modifier.weight(1f),
-                    label = stringResource(R.string.tab_pokemon_info_weight)
-                ) {
-                    WeightHeightText(text = state.weightKg)
+                InfoDetail(label = "") {
+                    WeightHeightText(text = state.content.pokemonInfo.flavorText)
                 }
 
-            }
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
-            ) {
-
-                InfoDetail(
-                    modifier = Modifier.weight(1f),
-                    label = stringResource(R.string.tab_pokemon_info_voiceover)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
                 ) {
-                    PlayAudioContent(state.flavorText)
-                }
-                InfoDetail(
-                    modifier = Modifier.weight(1f),
-                    label = stringResource(R.string.tab_pokemon_info_cry)
-                ) {
-                    PlayAudioContent(Uri.parse(state.cries))
+
+                    InfoDetail(
+                        modifier = Modifier.weight(1f),
+                        label = stringResource(R.string.tab_pokemon_info_height)
+                    ) {
+                        WeightHeightText(text = state.content.height)
+                    }
+                    InfoDetail(
+                        modifier = Modifier.weight(1f),
+                        label = stringResource(R.string.tab_pokemon_info_weight)
+                    ) {
+                        WeightHeightText(text = state.content.weight)
+                    }
+
                 }
 
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+                ) {
+
+                    InfoDetail(
+                        modifier = Modifier.weight(1f),
+                        label = stringResource(R.string.tab_pokemon_info_voiceover)
+                    ) {
+                        PlayAudioContent(state.content.pokemonInfo.flavorText)
+                    }
+                    InfoDetail(
+                        modifier = Modifier.weight(1f),
+                        label = stringResource(R.string.tab_pokemon_info_cry)
+                    ) {
+                        PlayAudioContent(Uri.parse(state.content.pokemonInfo.cries))
+                    }
+
+                }
             }
         }
+
 
     }
 }
@@ -189,15 +202,15 @@ fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
 fun InfoScreenContentPreview() {
     PokedexTheme {
         Surface {
-            InfoScreenContent(
-                state = PokemonInfo(
-                    height = 4733,
-                    weight = 8327,
-                    genderRate = 8498,
-                    flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                    cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
-                )
-            )
+//            InfoScreenContent(
+//                state = PokemonInfo(
+//                    height = 4733,
+//                    weight = 8327,
+//                    genderRate = 8498,
+//                    flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+//                    cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+//                )
+//            )
         }
     }
 }

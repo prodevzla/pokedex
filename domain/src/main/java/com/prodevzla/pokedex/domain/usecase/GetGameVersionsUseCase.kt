@@ -15,18 +15,18 @@ class GetGameVersionsUseCase(
     private val repository: PokemonRepository
 ) {
 
-    operator fun invoke(): Flow<Result<List<Filterable>>> {
-        val allVersionsOption = FilterDefault(
-            id = 0,
-            name = UiText.StringResource(R.string.all_versions)
-        )
-
-        return repository.getGameVersions().map {
-            when (it) {
-                is Result.Success -> Result.Success(listOf(allVersionsOption) + it.data)
-                else -> it
-            }
-        }.flowOn(Dispatchers.IO)
-
-    }
+//    operator fun invoke(): Flow<Result<List<Filterable>>> {
+//        val allVersionsOption = FilterDefault(
+//            id = 0,
+//            name = UiText.StringResource(R.string.all_versions)
+//        )
+//
+//        return repository.getGameVersions().map {
+//            when (it) {
+//                is Result.Success -> Result.Success(listOf(allVersionsOption) + it.data)
+//                else -> it
+//            }
+//        }.flowOn(Dispatchers.IO)
+//
+//    }
 }

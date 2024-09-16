@@ -5,7 +5,6 @@ import com.apollographql.apollo.api.Operation
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.prodevzla.pokedex.domain.model.DataError
-import com.prodevzla.pokedex.domain.model.Result
 
 //internal inline fun <T, R> executeNetworkCall(
 //    networkCall: () -> Response<T>,
@@ -41,32 +40,19 @@ import com.prodevzla.pokedex.domain.model.Result
 internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
     query: () -> ApolloCall<T>,
     processResponse: (T?) -> R
-): Result<R> {
+): R {
     return try {
         val response = query().execute()
-        if (response.hasErrors()) {
-            Firebase.crashlytics.recordException(Throwable("custom exception + ${response.errors?.first()?.message}"))
-//            val error = when (response.code()) {
-//                408 -> DataError.Network.REQUEST_TIMEOUT
-//                429 -> DataError.Network.TOO_MANY_REQUESTS
-//                413 -> DataError.Network.PAYLOAD_TOO_LARGE
-//                500, 502, 503, 504 -> DataError.Network.SERVER_ERROR
-//                else -> DataError.Network.UNKNOWN
-//            }
-            Result.Error(DataError.Network.SERVER_ERROR)
-        } else {
-            Result.Success(processResponse(response.data))
-        }
+        processResponse(response.data)
     } catch (e: Exception) {
         Firebase.crashlytics.recordException(e)
         val error = when (e) {
-            is java.net.UnknownHostException -> DataError.Network.NO_INTERNET
-            is java.net.SocketTimeoutException -> DataError.Network.REQUEST_TIMEOUT
-            is java.io.IOException -> DataError.Network.SERVER_ERROR
-            is kotlinx.serialization.SerializationException -> DataError.Network.SERIALIZATION
-            else -> DataError.Network.UNKNOWN
+            is java.net.UnknownHostException -> DataError.NoInternet
+            is java.net.SocketTimeoutException -> DataError.RequestTimeOut
+            is java.io.IOException -> DataError.ServerError
+            else -> DataError.Unknown
         }
         e.printStackTrace()
-        Result.Error(error)
+        throw error
     }
 }
