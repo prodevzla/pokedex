@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
@@ -110,6 +111,7 @@ fun PokemonCard(
                     model = ImageRequest
                         .Builder(LocalContext.current)
                         .data(pokemon.image.toString())
+                        .diskCacheKey("cachePokemonCard${pokemon.name}")
                         //.placeholder(R.drawable.charmeleon)
                         .decoderFactory(SvgDecoder.Factory())
                         .build(),

@@ -22,14 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.CategoryUiState
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreenContentPreview
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore.MoreScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMoves.MovesScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonStats.StatsScreen
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
-import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
@@ -100,20 +98,12 @@ fun PokemonViewPager(
 }
 
 @Composable
-fun <T> GenericViewPagerContent(state: CategoryUiState, content: @Composable (T) -> Unit) {
-    when (state) {
-        is CategoryUiState.Content<*> -> {
-            content(state.content as T)
-        }
-
-        CategoryUiState.Error -> {
-            ErrorScreen()
-        }
-
-        CategoryUiState.Loading -> {
-            LoadingScreen()
-        }
+fun GenericViewPagerErrorContent(isError: Boolean, content: @Composable () -> Unit) {
+    if (isError) {
+        ErrorScreen()
+        return
     }
+    content()
 }
 
 @ThemePreviews

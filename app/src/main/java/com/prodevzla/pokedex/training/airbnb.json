@@ -1,0 +1,171 @@
+{
+  "title": "The MICA - Panoramic View...",
+  "subtitle": "Tiny home",
+  "location": {
+    "country": "Canada",
+    "state": "Quebec",
+    "suburb": "Lac-Beauport"
+  },
+  "rating": 4.99,
+  "capacity": "4",
+  "areas": [
+    {
+      "id": 1,
+      "name": "Living room",
+      "photos": [
+        "https://a0.muscache.com/im/pictures/f58c28d5-52d5-4c58-928e-ef00bf7164a3.jpg?im_w=1200",
+        "https://a0.muscache.com/im/pictures/5fc67b5f-e62e-49e0-b9cc-2f8a58c52efd.jpg?im_w=720"
+      ],
+      "amenities": [
+        {
+          "id": 1,
+          "name": "Sofa bed"
+        },
+        {
+          "id": 2,
+          "name": "Heating"
+        }
+      ,
+        {
+          "id": 3,
+          "name": "Sound system"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Full bathroom",
+      "photos": [
+        "https://a0.muscache.com/im/pictures/miso/Hosting-46695796/original/37b4a6ff-833a-4b57-a223-05e9e9bedd95.jpeg?im_w=1200"
+      ],
+      "amenities": [
+        {
+          "id": 4,
+          "name": "Shower gel"
+        },
+        {
+          "id": 5,
+          "name": "Cleaning products"
+        }
+      ]
+    }
+  ],
+  "reviewCount": 309,
+  //up to 20 reviews
+  "reviews": [
+    {
+      "stars": "5",
+      "date": "01-01-2024",
+      "description": "Chose this spot for a shot honeymoon...",
+      "client": {
+        "id": 1234,
+        "name": "Danielle",
+        "location": {
+          "country": "Canada",
+          "state": "Kitchener"
+        }
+      }
+    },
+    {
+      "stars": "5",
+      "date": "01-01-2024",
+      "description": "Chose this spot for a shot honeymoon...",
+      "client": {
+        "id": 1234,
+        "name": "Danielle",
+        "location": {
+          "country": "Canada",
+          "state": "Kitchener"
+        }
+      }
+    }
+  ],
+  "host": {
+    "name": "Nicolas",
+    "type": 10,//superhost
+    "timeHosting": "4 years hosting",
+    "rating": 4.98,
+    "reviews": 943,
+    "responseRate": 100,
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      },
+      {
+        "id": 2,
+        "name": "French"
+      }
+    ],
+    "location": {
+      "country": "Canada",
+      "state": "Quebec"
+    }
+  },
+  "features": [
+    {
+      "id": 1,
+      "name": "Designed by",
+      "description": "M4 Architecture"
+    },
+    {
+      "id": 2,
+      "name": "Fast Wi-fi",
+      "description": "At 137 Mbps, you can take video calls and stream videos"
+    }
+  ],
+  "description": "The Mica is a high-end tiny home perched atop a mountain, designed to offer the ultimate immersive scenic experience boasting a panoramic view of the surrounding valleys. Unwind in the outdoor jacuzzi available all year while enjoying breathtaking sunsets. Discover this hidden gem nestled in the Canadian boreal forest, combining comfort and functionality in every season! An unforgettable experience near the legendary city of Quebec, a UNESCO World Heritage Site.",
+  "amenities": [
+    {
+      "id": 1,
+      "name": "Mountain view"
+    },
+    {
+      "id": 2,
+      "name": "Valley view"
+    },
+    {
+      "id": 3,
+      "name": "Kitchen"
+    },
+    {
+      "id": 4,
+      "name": "Fast Wi-Fi: 137 Mbps"
+    }
+  ],
+  "accessibility": [
+    {
+      "id": 1,
+      "name": "Guest entrance and parking",
+      "description": "Accessible parking spot"
+    }
+  ],
+  "rules": [
+    {
+      "id": 1,//checking in and out
+      "items": [
+        {
+          "id": 1,
+          "description": "Check-in after 4:00 pm"
+        },
+        {
+          "id": 2,
+          "description": "Check-out before 11:00 am"
+        }
+      ]
+    },
+    {
+      "id": 2,//during your stay
+      "items": [
+        {
+          "id": 3,
+          "description": "4 guests maximum"
+        },
+        {
+          "id": 4,
+          "description": "No pets"
+        }
+      ]
+    }
+  ]
+}

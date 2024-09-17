@@ -110,6 +110,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.leak.canary)
+
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
 

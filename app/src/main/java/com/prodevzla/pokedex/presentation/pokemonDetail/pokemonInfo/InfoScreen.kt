@@ -1,8 +1,6 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
 import android.net.Uri
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,8 +31,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
-import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerContent
+import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
+import com.prodevzla.pokedex.presentation.util.ExpandableCard
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -49,13 +45,13 @@ fun InfoScreen(
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-//    GenericViewPagerContent<PokemonInfo>(state.info) {
-    InfoScreenContent(state = state.info)
-//    }
+    GenericViewPagerErrorContent(state is PokemonInfoUiState.Error) {
+        InfoScreenContent(state = state)
+    }
 }
 
 @Composable
-fun InfoScreenContent(modifier: Modifier = Modifier, state: CategoryUiState) {
+fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfoUiState) {
     Column(
         modifier
             .fillMaxSize()
@@ -71,87 +67,64 @@ fun InfoScreenContent(modifier: Modifier = Modifier, state: CategoryUiState) {
         )
 
         SpeciesCard(state = state)
-        SpeciesCard(state = state)
-        SpeciesCard(state = state)
-        SpeciesCard(state = state)
+//        SpeciesCard(state = state)
+//        SpeciesCard(state = state)
+//        SpeciesCard(state = state)
     }
 }
 
 @Composable
-fun SpeciesCard(modifier: Modifier = Modifier, state: CategoryUiState) {
-    Card(
-        modifier = modifier.padding(MaterialTheme.spacing.medium),
-        colors = CardDefaults.cardColors().copy(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.spacing.medium)
-    ) {
+fun SpeciesCard(modifier: Modifier = Modifier, state: PokemonInfoUiState) {
+    ExpandableCard(modifier = modifier, isLoading = state is PokemonInfoUiState.Loading) {
+        if (state is PokemonInfoUiState.Content) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.medium)
-                .animateContentSize()
-        ) {
-            if (state is CategoryUiState.Loading) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.align(Alignment.CenterHorizontally))
-                return@Column
+            InfoDetail(label = "") {
+                WeightHeightText(text = state.content.pokemonInfo.flavorText)
             }
 
-            if (state is CategoryUiState.Content<*>) {
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
-                state.content as PokemonInfoUI
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            ) {
 
-                InfoDetail(label = "") {
-                    WeightHeightText(text = state.content.pokemonInfo.flavorText)
-                }
-
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+                InfoDetail(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.tab_pokemon_info_height)
                 ) {
-
-                    InfoDetail(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(R.string.tab_pokemon_info_height)
-                    ) {
-                        WeightHeightText(text = state.content.height)
-                    }
-                    InfoDetail(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(R.string.tab_pokemon_info_weight)
-                    ) {
-                        WeightHeightText(text = state.content.weight)
-                    }
-
+                    WeightHeightText(text = state.content.height)
                 }
-
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+                InfoDetail(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.tab_pokemon_info_weight)
                 ) {
-
-                    InfoDetail(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(R.string.tab_pokemon_info_voiceover)
-                    ) {
-                        PlayAudioContent(state.content.pokemonInfo.flavorText)
-                    }
-                    InfoDetail(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(R.string.tab_pokemon_info_cry)
-                    ) {
-                        PlayAudioContent(Uri.parse(state.content.pokemonInfo.cries))
-                    }
-
+                    WeightHeightText(text = state.content.weight)
                 }
+
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            ) {
+
+                InfoDetail(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.tab_pokemon_info_voiceover)
+                ) {
+                    PlayAudioContent(state.content.pokemonInfo.flavorText)
+                }
+                InfoDetail(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.tab_pokemon_info_cry)
+                ) {
+                    PlayAudioContent(Uri.parse(state.content.pokemonInfo.cries))
+                }
+
             }
         }
-
-
     }
 }
 
@@ -159,8 +132,7 @@ fun SpeciesCard(modifier: Modifier = Modifier, state: CategoryUiState) {
 @Composable
 fun InfoDetail(modifier: Modifier = Modifier, label: String, content: @Composable () -> Unit) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
@@ -202,15 +174,21 @@ fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
 fun InfoScreenContentPreview() {
     PokedexTheme {
         Surface {
-//            InfoScreenContent(
-//                state = PokemonInfo(
-//                    height = 4733,
-//                    weight = 8327,
-//                    genderRate = 8498,
-//                    flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-//                    cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
-//                )
-//            )
+            InfoScreenContent(
+                state = PokemonInfoUiState.Content(
+                    content = PokemonInfoUI(
+                        pokemonInfo = PokemonInfo(
+                            height = 4733,
+                            weight = 8327,
+                            genderRate = 8498,
+                            flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                            cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+                        ),
+                        height = "erat",
+                        weight = "definitionem"
+                    )
+                )
+            )
         }
     }
 }
