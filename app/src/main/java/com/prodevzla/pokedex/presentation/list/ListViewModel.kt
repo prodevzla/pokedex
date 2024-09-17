@@ -1,5 +1,6 @@
 package com.prodevzla.pokedex.presentation.list
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.AnalyticsEvent.ClickEvent
@@ -26,17 +27,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     getPokemonsUseCase: GetPokemonsUseCase,
     getFiltersUseCase: GetFiltersUseCase,
     private val trackEventUseCase: TrackEventUseCase,
 ) : ViewModel() {
 
-    private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(DEFAULT_FILTER)
-    private val _typeFilter = MutableStateFlow(DEFAULT_FILTER)
+    private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(
+        savedStateHandle.get<Int>(KEY_FILTER_GEN) ?: DEFAULT_FILTER
+    )
+    private val _typeFilter = MutableStateFlow(
+        savedStateHandle.get<Int>(KEY_FILTER_TYPE) ?: DEFAULT_FILTER
+    )
 
-    private val _sort = MutableStateFlow(Sort())
+    private val _sort = MutableStateFlow(
+        savedStateHandle.get<Sort>(KEY_SORT) ?: Sort()
+    )
 
-    private val _search = MutableStateFlow("")
+    private val _search = MutableStateFlow(
+        savedStateHandle.get<String>(KEY_SEARCH) ?: DEFAULT_SEARCH
+    )
+
 
     private val retryableFlowTrigger = RetryableFlowTrigger()
 
@@ -54,7 +65,7 @@ class ListViewModel @Inject constructor(
             _sort,
             _search
         ) { pokemonList, filters, sort, search ->
-            when(pokemonList) {
+            when (pokemonList) {
                 is Result.Success -> {
                     ListState.Content(
                         pokemonList = filterPokemon(
@@ -69,6 +80,7 @@ class ListViewModel @Inject constructor(
                         search = search
                     )
                 }
+
                 is Result.Loading -> ListState.Loading
 
                 else -> ListState.Error
@@ -108,13 +120,26 @@ class ListViewModel @Inject constructor(
         when (event) {
             is ListScreenEvent.SelectFilter -> {
                 when (event.filterType) {
-                    FilterType.GENERATION -> _generationFilter.value = event.selection.id
-                    FilterType.TYPE -> _typeFilter.value = event.selection.id
+                    FilterType.GENERATION -> {
+                        savedStateHandle[KEY_FILTER_GEN] = event.selection.id
+                        _generationFilter.value = event.selection.id
+                    }
+                    FilterType.TYPE -> {
+                        savedStateHandle[KEY_FILTER_TYPE] = event.selection.id
+                        _typeFilter.value = event.selection.id
+                    }
                 }
             }
 
-            is ListScreenEvent.SelectSort -> _sort.value = event.selection
-            is ListScreenEvent.SearchPokemon -> _search.value = event.input
+            is ListScreenEvent.SelectSort -> {
+                savedStateHandle[KEY_SORT] = event.selection
+                _sort.value = event.selection
+            }
+            is ListScreenEvent.SearchPokemon -> {
+                savedStateHandle[KEY_SEARCH] = event.input
+                _search.value = event.input
+            }
+
             is ListScreenEvent.ClickTryAgain -> retryableFlowTrigger.retry()
             else -> {}
         }
@@ -122,6 +147,11 @@ class ListViewModel @Inject constructor(
 
     companion object {
         private const val DEFAULT_FILTER = 0
+        private const val DEFAULT_SEARCH = ""
+        private const val KEY_SEARCH = "search"
+        private const val KEY_SORT = "sort"
+        private const val KEY_FILTER_GEN = "filterGen"
+        private const val KEY_FILTER_TYPE = "filterType"
     }
 
 }
