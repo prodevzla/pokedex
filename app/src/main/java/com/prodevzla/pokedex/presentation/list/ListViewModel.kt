@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -47,8 +48,7 @@ class ListViewModel @Inject constructor(
     private val _search = MutableStateFlow(
         savedStateHandle.get<String>(KEY_SEARCH) ?: DEFAULT_SEARCH
     )
-
-
+    
     private val retryableFlowTrigger = RetryableFlowTrigger()
 
     private val _filters = getFiltersUseCase.invoke(
@@ -59,7 +59,7 @@ class ListViewModel @Inject constructor(
     val uiState: StateFlow<ListState> =
         combine(
             retryableFlowTrigger.retryableFlow {
-                getPokemonsUseCase.invoke()
+                getPokemonsUseCase.invoke()//.onStart { emit(Result.Loading) }
             },
             _filters,
             _sort,

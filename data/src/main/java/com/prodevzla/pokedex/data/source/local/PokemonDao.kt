@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.prodevzla.pokedex.data.source.model.PokemonEntity
 import com.prodevzla.pokedex.data.source.model.PokemonInfoEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao: BaseDao<PokemonEntity> {
 
     @Query("SELECT * FROM pokemonentity")
-    fun getAll(): List<PokemonEntity>
+    fun getAll(): Flow<List<PokemonEntity>>
 
     @Query("SELECT * FROM pokemonInfoEntity WHERE uid = :id")
     fun getPokemonInfo(id: Int): PokemonInfoEntity?
