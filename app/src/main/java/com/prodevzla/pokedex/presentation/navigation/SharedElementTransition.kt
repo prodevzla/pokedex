@@ -1,5 +1,3 @@
 package com.prodevzla.pokedex.presentation.navigation
 
-val sharedKeyPokemonImage = "sharedKeyPokemonImage"
-
-val sharedKeyPokemonName = "sharedKeyPokemonName"
+const val sharedKeyPokemonImage = "sharedKeyPokemonImage"

@@ -259,7 +259,7 @@ fun ListScreenPreview() {
     val state = ListState.Content(
         pokemonList = mutableListOf(
             Pokemon(
-                id = 6885,
+                id = 4,
                 name = "Charmander",
                 types = listOf(
                     PokemonType(
@@ -268,11 +268,13 @@ fun ListScreenPreview() {
                     )
                 ),
                 generation = 1,
+                image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+                isSaved = false
                 //gameVersions = emptyList()
             ),
             Pokemon(
-                id = 6886,
-                name = "Charmeleon",
+                id = 5,
+                name = "Charizard",
                 types = listOf(
                     PokemonType(
                         id = 10,
@@ -280,6 +282,8 @@ fun ListScreenPreview() {
                     )
                 ),
                 generation = 1,
+                image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+                isSaved = true
                 //gameVersions = emptyList()
             ),
         ),

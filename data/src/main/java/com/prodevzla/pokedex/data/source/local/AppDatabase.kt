@@ -16,7 +16,7 @@ import com.prodevzla.pokedex.data.source.model.PokemonTypeConverter
         PokemonTypeEntity::class,
         PokemonInfoEntity::class,
     ],
-    version = 2
+    version = 3
 )
 @TypeConverters(PokemonTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {

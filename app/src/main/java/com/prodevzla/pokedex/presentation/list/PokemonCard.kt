@@ -31,13 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
-import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
-import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonName
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.darken
 import com.prodevzla.pokedex.presentation.util.getColor
@@ -87,7 +85,6 @@ fun PokemonCard(
                 Text(
                     text = pokemon.toTitle(),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.sharedElementTransition(key = sharedKeyPokemonName + pokemon.id),
                     color = pokemon.types.first().getColor().darken(0.5f)
                 )
 
@@ -151,7 +148,7 @@ fun PokemonTypesRow(modifier: Modifier = Modifier, types: List<PokemonType>) {
     }
 }
 
-private val imageBackgroundShape = RoundedCornerShape(
+val imageBackgroundShape = RoundedCornerShape(
     topStartPercent = 50,
     topEndPercent = 5,
     bottomEndPercent = 50,
@@ -177,6 +174,8 @@ fun PokemonCardPreview() {
                                 )
                             ),
                             generation = 1,
+                            image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+                            isSaved = false,
                             //gameVersions = emptyList()
                         ),
                     )

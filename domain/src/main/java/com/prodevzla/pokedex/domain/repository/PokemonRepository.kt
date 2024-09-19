@@ -19,4 +19,8 @@ interface PokemonRepository {
 
     fun getPokemonInfo(id: Int): Flow<PokemonInfo>
 
+    fun getPokemon(id: Int): Flow<Pokemon>
+
+    suspend fun updateSaveStatus(id: Int)
+
 }

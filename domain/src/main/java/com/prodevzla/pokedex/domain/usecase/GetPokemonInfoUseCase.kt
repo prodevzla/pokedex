@@ -21,8 +21,7 @@ class GetPokemonInfoUseCase(
         repository.getPokemonInfo(id)
             .map<PokemonInfo, Result<PokemonInfoUI>> { result ->
                 Result.Success(
-                    PokemonInfoUI(
-                        pokemonInfo = result,
+                    result.toUI(
                         height = "${convertHeightToCm(result.height)} cm",
                         weight = "${convertWeightToKg(result.weight)} Kg",
                     )
@@ -38,8 +37,20 @@ class GetPokemonInfoUseCase(
 
 
 data class PokemonInfoUI(
-    val pokemonInfo: PokemonInfo,
     val height: String,
     val weight: String,
+    val genderRate: Int,
+    val flavorText: String,
+    val cries: String,
 )
+
+fun PokemonInfo.toUI(height: String, weight: String): PokemonInfoUI {
+    return PokemonInfoUI(
+        height = height,
+        weight = weight,
+        genderRate = this.genderRate,
+        flavorText = this.flavorText,
+        cries = this.cries
+    )
+}
 

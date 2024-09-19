@@ -7,7 +7,9 @@ import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.ToggleSavePokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import dagger.Module
 import dagger.Provides
@@ -27,7 +29,7 @@ object DomainModule {
 
     @Provides
     @Singleton
-    fun provideGetPokemonUseCase(repository: PokemonRepositoryImpl): GetPokemonsUseCase {
+    fun provideGetPokemonsUseCase(repository: PokemonRepositoryImpl): GetPokemonsUseCase {
         return GetPokemonsUseCase(repository)
     }
 
@@ -60,6 +62,18 @@ object DomainModule {
     @Singleton
     fun provideGetPokemonInfoUseCase(repository: PokemonRepositoryImpl): GetPokemonInfoUseCase {
         return GetPokemonInfoUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPokemonUseCase(repository: PokemonRepositoryImpl): GetPokemonUseCase {
+        return GetPokemonUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideToggleSavePokemonUseCase(repository: PokemonRepositoryImpl): ToggleSavePokemonUseCase {
+        return ToggleSavePokemonUseCase(repository)
     }
 
 }

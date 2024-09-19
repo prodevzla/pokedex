@@ -14,6 +14,7 @@ import com.prodevzla.pokedex.data.mapper.toEntity
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.data.source.model.PokemonEntity
 import com.prodevzla.pokedex.domain.model.GameVersionGroup
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
@@ -21,6 +22,8 @@ import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -28,7 +31,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-open class  PokemonRepositoryImpl @Inject constructor(
+open class PokemonRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
     private val pokemonDao: PokemonDao,
     private val pokemonGenerationDao: PokemonGenerationDao,
@@ -132,6 +135,19 @@ open class  PokemonRepositoryImpl @Inject constructor(
                 }
             )
         )
+    }
+
+    override fun getPokemon(id: Int): Flow<Pokemon> =
+        pokemonDao.getPokemon(id)
+            .map {
+                it.fromEntityToDomain()
+            }
+
+
+    override suspend fun updateSaveStatus(id: Int) {
+        val pokemon = pokemonDao.getPokemon(id).first()
+        val updatedRecord = pokemon.copy(isSaved = !pokemon.isSaved)
+        pokemonDao.updateSaveStatus(updatedRecord)
     }
 
 }

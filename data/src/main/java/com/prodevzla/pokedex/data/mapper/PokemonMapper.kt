@@ -17,14 +17,15 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon? {
     return Pokemon(
         id = this.id,
         name = this.name,
-        //image = URL(this.dreamworld!!)
+        image = IMAGE_URL.replace("{pokemonId}", this.id.toString()),
         types = this.pokemon_v2_pokemontypes.map { it.pokemon_v2_type!!.toDomain() },
         generation =
-            this.pokemon_v2_pokemonforms
-                .firstOrNull()
-                ?.pokemon_v2_pokemonformgenerations
-                ?.firstOrNull()
-                ?.generation_id ?: return null,
+        this.pokemon_v2_pokemonforms
+            .firstOrNull()
+            ?.pokemon_v2_pokemonformgenerations
+            ?.firstOrNull()
+            ?.generation_id ?: return null,
+        isSaved = false,
 //        gameVersions =
 //            this.pokemon_v2_pokemonforms
 //                .firstOrNull()
@@ -48,6 +49,7 @@ fun Pokemon.toEntity(): PokemonEntity {
         types = this.types,
         generation = this.generation,
         //gameVersions = this.gameVersions,
+        isSaved = this.isSaved,
     )
 }
 
@@ -59,11 +61,23 @@ fun PokemonEntity.fromEntityToDomain(): Pokemon {
     return Pokemon(
         id = this.uid,
         name = this.name,
-        image = null,
+        image = IMAGE_URL.replace("{pokemonId}", this.uid.toString()),
         types = this.types,
         generation = this.generation,
-        //gameVersions = this.gameVersions
+        //gameVersions = this.gameVersions,
+        isSaved = this.isSaved,
     )
 }
 
 fun List<PokemonEntity>.fromEntityToDomain() = this.map { it.fromEntityToDomain() }
+
+
+//it makes sense to have the "logic" related to the image here as we know that it will always be coming
+//from the same url. no use case will change the url, no user's action will change it and we won't get it
+//from any other repo or source.
+const val IMAGE_URL =
+//            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/{pokemonId}.svg"
+//            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemonId}.png"
+//            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{pokemonId}.png"
+//            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/{pokemonId}.png"//gap on the top
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{pokemonId}.png"
