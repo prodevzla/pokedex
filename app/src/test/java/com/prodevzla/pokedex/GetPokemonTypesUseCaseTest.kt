@@ -8,6 +8,7 @@ import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -25,14 +26,14 @@ class GetPokemonTypesUseCaseTest {
 
     @Before
     fun setup() {
-        val mockResult = Result.Success(
+        val mockResult =
             (1..22).map { id ->
                 PokemonType(
                     id = id,
                     name = UiText.DynamicString(value = "type-$id")
                 )
             }
-        )
+
 
         `when`(repository.getPokemonTypes()).thenReturn(
             flowOf(mockResult)
@@ -41,7 +42,7 @@ class GetPokemonTypesUseCaseTest {
 
     @Test
     fun `verify first item is all types`() = runBlocking {
-        val generations: Result<List<Filterable>> = useCase.invoke().toList().first()
+        val generations: Result<List<Filterable>> = useCase.invoke().first { it is Result.Success }
         assertTrue(generations is Result.Success)
 
         generations as Result.Success
@@ -56,7 +57,7 @@ class GetPokemonTypesUseCaseTest {
 
     @Test
     fun `verify number of types`() = runBlocking {
-        val generations: Result<List<Filterable>> = useCase.invoke().toList().first()
+        val generations: Result<List<Filterable>> = useCase.invoke().first { it is Result.Success }
         assertTrue(generations is Result.Success)
 
         generations as Result.Success

@@ -1,10 +1,8 @@
 package com.prodevzla.pokedex
 
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
-import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
@@ -32,27 +30,25 @@ class GetFiltersUseCaseTest {
 
     @Before
     fun setup() {
-        val mockTypes = Result.Success(
+        val mockTypes =
             (1..22).map { id ->
                 PokemonType(
                     id = id,
                     name = UiText.DynamicString(value = "type-$id")
                 )
             }
-        )
 
         `when`(repository.getPokemonTypes()).thenReturn(
             flowOf(mockTypes)
         )
 
-        val mockGenerations = Result.Success(
+        val mockGenerations =
             (1..9).map { id ->
                 PokemonGeneration(
                     id = id,
                     name = UiText.DynamicString(value = "generation-$id")
                 )
             }
-        )
 
         `when`(repository.getPokemonGenerations()).thenReturn(
             flowOf(mockGenerations)
@@ -64,17 +60,18 @@ class GetFiltersUseCaseTest {
 
         //val context = ApplicationProvider.getApplicationContext<Context>()
 
-        val filters: List<Filter>? = useCase.invoke(
+        val filters = useCase.invoke(
             generationFilter = MutableStateFlow(0),
             typeFilter = MutableStateFlow(0),
 
-        ).first()
+        ).first { !it.isNullOrEmpty()}
+
+        //println(filters)
 
         assertTrue(filters != null)
 
         assertEquals(filters?.size, 2)
 
     }
-
 
 }

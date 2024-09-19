@@ -9,6 +9,7 @@ import com.prodevzla.pokedex.domain.model.UiText
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -26,14 +27,13 @@ class GetPokemonGenerationsUseCaseTest {
 
     @Before
     fun setup() {
-        val mockResult = Result.Success(
+        val mockResult =
             (1..9).map { id ->
                 PokemonGeneration(
                     id = id,
                     name = UiText.DynamicString(value = "generation-$id")
                 )
             }
-        )
 
         `when`(repository.getPokemonGenerations()).thenReturn(
             flowOf(mockResult)
@@ -42,7 +42,7 @@ class GetPokemonGenerationsUseCaseTest {
 
     @Test
     fun `verify first item is all gens`() = runBlocking {
-        val generations: Result<List<Filterable>> = useCase.invoke().toList().first()
+        val generations: Result<List<Filterable>> = useCase.invoke().first { it is Result.Success }
         assertTrue(generations is Result.Success)
 
         generations as Result.Success
@@ -57,7 +57,7 @@ class GetPokemonGenerationsUseCaseTest {
 
     @Test
     fun `verify number of generations`() = runBlocking {
-        val generations: Result<List<Filterable>> = useCase.invoke().toList().first()
+        val generations: Result<List<Filterable>> = useCase.invoke().toList().first { it is Result.Success }
         assertTrue(generations is Result.Success)
 
         generations as Result.Success
@@ -68,7 +68,7 @@ class GetPokemonGenerationsUseCaseTest {
 
     @Test
     fun `verify generations label`() = runBlocking {
-        val generations: Result<List<Filterable>> = useCase.invoke().toList().first()
+        val generations: Result<List<Filterable>> = useCase.invoke().toList().first { it is Result.Success }
         assertTrue(generations is Result.Success)
 
         generations as Result.Success
