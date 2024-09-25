@@ -82,7 +82,6 @@ fun ListScreen(
 
 }
 
-//TODO use events pattern
 @Composable
 fun ListContent(
     modifier: Modifier = Modifier,

@@ -4,7 +4,7 @@ import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 
-class TTSPlayer(context: Context): Player<String>() {
+class TTSPlayer(context: Context): Player() {
 
     private val tts: TextToSpeech = TextToSpeech(context) {}
 

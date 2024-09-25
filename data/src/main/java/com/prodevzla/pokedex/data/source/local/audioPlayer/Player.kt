@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-abstract class Player<T> {
+abstract class Player {
 
     private val _state = MutableStateFlow(AudioPlaybackState.IDLE)
     val state: StateFlow<AudioPlaybackState> get() = _state.asStateFlow()
 
-    abstract fun play(audio: T)
+    abstract fun play(audio: String)
 
     abstract fun stop()
 

@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,9 +31,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
@@ -48,7 +51,7 @@ fun InfoScreen(
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
-        viewModel.onStop()
+        onEvent(PokemonInfoEvent.ScreenStopped)
     }
 
     GenericViewPagerErrorContent(state is PokemonInfoUiState.Error) {
@@ -63,7 +66,7 @@ fun InfoScreen(
 fun InfoScreenContent(
     modifier: Modifier = Modifier,
     state: PokemonInfoUiState,
-    onEvent: (PokemonInfoEvent) -> Unit
+    onEvent: (PokemonInfoEvent) -> Unit = {},
 ) {
     Column(
         modifier
@@ -81,18 +84,12 @@ fun InfoScreenContent(
 
         SpeciesCard(
             state = state,
-            onClickPlayVoiceover = { it ->
-                onEvent.invoke(PokemonInfoEvent.PlayVoiceover(it))
+            onToggleVoiceover = {
+                onEvent.invoke(PokemonInfoEvent.TogglePlayVoiceover(it))
             },
-            onClickStopVoiceover = {
-                onEvent.invoke(PokemonInfoEvent.StopVoiceover)
+            onToggleCry = {
+                onEvent.invoke(PokemonInfoEvent.TogglePlayCry(it))
             },
-            onClickPlayMediaPlayer = {
-                onEvent.invoke(PokemonInfoEvent.PlayCry(it))
-            },
-            onClickStopMediaPlayer = {
-                onEvent.invoke(PokemonInfoEvent.StopCry)
-            }
         )
 //        SpeciesCard(state = state)
 //        SpeciesCard(state = state)
@@ -104,11 +101,8 @@ fun InfoScreenContent(
 fun SpeciesCard(
     modifier: Modifier = Modifier,
     state: PokemonInfoUiState,
-    onClickPlayVoiceover: (String) -> Unit,
-    onClickStopVoiceover: () -> Unit,//TODO RENAME THESE METHODS
-
-    onClickPlayMediaPlayer: (Uri) -> Unit,
-    onClickStopMediaPlayer: () -> Unit,
+    onToggleVoiceover: (String) -> Unit,
+    onToggleCry: (String) -> Unit,
 ) {
     ExpandableCard(modifier = modifier, isLoading = state is PokemonInfoUiState.Loading) {
         if (state is PokemonInfoUiState.Content) {
@@ -151,10 +145,9 @@ fun SpeciesCard(
                 ) {
                     PlayAudioContent(
                         state.statePlayVoiceover,
-                        onClickPlay = {
-                            onClickPlayVoiceover.invoke(state.content.flavorText)
-                        },
-                        onClickStop = onClickStopVoiceover,
+                        togglePlay = {
+                            onToggleVoiceover.invoke(state.content.flavorText)
+                        }
                     )
                 }
                 InfoDetail(
@@ -163,13 +156,11 @@ fun SpeciesCard(
                 ) {
                     PlayAudioContent(
                         state = state.statePlayCry,
-                        onClickPlay = {
-                            onClickPlayMediaPlayer.invoke(Uri.parse(state.content.cries))
-                        },
-                        onClickStop = onClickStopMediaPlayer
+                        togglePlay = {
+                            onToggleCry.invoke(state.content.cry)
+                        }
                     )
                 }
-
             }
         }
     }
@@ -216,34 +207,34 @@ fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
     )
 }
 
-//@ThemePreviews
-//@Composable
-//fun InfoScreenContentPreview() {
-//    PokedexTheme {
-//        Surface {
-//            InfoScreenContent(
-//                state = PokemonInfoUiState.Content(
-//                    content = PokemonInfoUI(
-//                        height = "120 cm",
-//                        weight = "30 Kg",
-//                        genderRate = 8498,
-//                        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-//                        cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
-//                    ),
-//                )
-//            )
-//        }
-//    }
-//}
-//
-//@ThemePreviews
-//@Composable
-//fun InfoDetailPreview() {
-//    PokedexTheme {
-//        Surface {
-//            InfoDetail(label = "height") {
-//                WeightHeightText(text = "0.1m")
-//            }
-//        }
-//    }
-//}
+@ThemePreviews
+@Composable
+fun InfoScreenContentPreview() {
+    PokedexTheme {
+        Surface {
+            InfoScreenContent(
+                state = PokemonInfoUiState.Content(
+                    content = PokemonInfoUI(
+                        height = "120 cm",
+                        weight = "30 Kg",
+                        genderRate = 8498,
+                        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                        cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+                    ),
+                )
+            )
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun InfoDetailPreview() {
+    PokedexTheme {
+        Surface {
+            InfoDetail(label = "height") {
+                WeightHeightText(text = "0.1m")
+            }
+        }
+    }
+}

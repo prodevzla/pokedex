@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.data.repository
 
-import android.net.Uri
 import com.prodevzla.pokedex.data.source.local.audioPlayer.MediaPlayer
 import com.prodevzla.pokedex.data.source.local.audioPlayer.TTSPlayer
 import com.prodevzla.pokedex.domain.repository.AudioRepository
@@ -25,7 +24,7 @@ class AudioRepositoryImpl @Inject constructor(
 
     override fun observeMediaPlayerState() = mediaPlayer.state
 
-    override fun playAudioMP(audio: Uri) {
+    override fun playAudioMP(audio: String) {
         mediaPlayer.play(audio)
     }
 

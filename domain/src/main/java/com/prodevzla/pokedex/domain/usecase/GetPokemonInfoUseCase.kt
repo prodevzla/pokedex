@@ -43,7 +43,7 @@ data class PokemonInfoUI(
     val weight: String,
     val genderRate: Int,
     val flavorText: String,
-    val cries: String,
+    val cry: String,
 )
 
 fun PokemonInfo.toUI(height: String, weight: String): PokemonInfoUI {
@@ -52,7 +52,7 @@ fun PokemonInfo.toUI(height: String, weight: String): PokemonInfoUI {
         weight = weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText.replace("\n", " "),
-        cries = this.cries
+        cry = this.cry
     )
 }
 

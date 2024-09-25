@@ -1,7 +1,5 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.base
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
@@ -17,15 +15,15 @@ fun SavedStateHandle.getPokemon(): Pokemon {
 /**
  * Used by the PokemonInfoScreen. It extends the AndroidViewModel as this screen need to reproduce some audio through the context class
  */
-abstract class BaseAppViewModel(
-    application: Application,
-    private val savedStateHandle: SavedStateHandle
-) : AndroidViewModel(application), PokemonInterface {
-
-    override val pokemon: Pokemon by lazy {
-        savedStateHandle.getPokemon()
-    }
-}
+//abstract class BaseAppViewModel(
+//    application: Application,
+//    private val savedStateHandle: SavedStateHandle
+//) : AndroidViewModel(application), PokemonInterface {
+//
+//    override val pokemon: Pokemon by lazy {
+//        savedStateHandle.getPokemon()
+//    }
+//}
 
 /**
  * Used by the PokemonStats, PokemonMoves and PokemonMore screens

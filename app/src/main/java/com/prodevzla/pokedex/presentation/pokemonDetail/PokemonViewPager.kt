@@ -17,11 +17,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreen
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreenContentPreview
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore.MoreScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMoves.MovesScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonStats.StatsScreen
@@ -79,11 +81,11 @@ fun PokemonViewPager(
 
         when (tabIndex) {
             0 -> {
-//                if (LocalInspectionMode.current) {
-//                    InfoScreenContentPreview()
-//                } else {
+                if (LocalInspectionMode.current) {
+                    InfoScreenContentPreview()
+                } else {
                     InfoScreen()
-//                }
+                }
             }
 
             1 -> StatsScreen()

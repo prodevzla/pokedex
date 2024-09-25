@@ -4,13 +4,13 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 
-class MediaPlayer(val context: Context): Player<Uri>() {
+class MediaPlayer(val context: Context): Player() {
 
     private val mediaPlayer = MediaPlayer()
 
-    override fun play(audio: Uri) {
+    override fun play(audio: String) {
         mediaPlayer.reset()
-        mediaPlayer.setDataSource(context, audio)
+        mediaPlayer.setDataSource(context, Uri.parse(audio))
         mediaPlayer.prepare()
 
         mediaPlayer.setOnCompletionListener {

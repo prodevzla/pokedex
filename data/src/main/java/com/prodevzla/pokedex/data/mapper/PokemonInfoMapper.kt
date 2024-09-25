@@ -15,7 +15,7 @@ fun GetPokemonInfoQuery.Pokemon_v2_pokemon.toDomain(): PokemonInfo {
         weight = this.weight!!,
         genderRate = this.pokemon_v2_pokemonspecy?.gender_rate!!,
         flavorText = this.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts.first().flavor_text,
-        cries = this.pokemon_v2_pokemoncries.toDomain()
+        cry = this.pokemon_v2_pokemoncries.toDomain()
     )
 }
 
@@ -29,7 +29,7 @@ fun PokemonInfoEntity.fromEntityToDomain(): PokemonInfo {
         weight = this.weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText,
-        cries = this.cries
+        cry = this.cries
     )
 }
 
@@ -40,6 +40,6 @@ fun PokemonInfo.toEntity(id: Int): PokemonInfoEntity {
         weight = this.weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText,
-        cries = this.cries
+        cries = this.cry
     )
 }

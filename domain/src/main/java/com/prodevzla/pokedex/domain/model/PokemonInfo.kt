@@ -5,5 +5,5 @@ data class PokemonInfo(
     val weight: Int,
     val genderRate: Int,
     val flavorText: String,
-    val cries: String,
+    val cry: String,
 )

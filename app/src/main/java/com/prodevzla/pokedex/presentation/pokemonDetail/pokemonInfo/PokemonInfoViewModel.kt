@@ -1,7 +1,5 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
-import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
@@ -12,7 +10,7 @@ import com.prodevzla.pokedex.domain.usecase.ObserveVoiceoverPlayerUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayMPAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayTTSAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
-import com.prodevzla.pokedex.presentation.pokemonDetail.base.BaseAppViewModel
+import com.prodevzla.pokedex.presentation.pokemonDetail.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,16 +20,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonInfoViewModel @Inject constructor(
-    application: Application,
     savedStateHandle: SavedStateHandle,
     pokemonInfoUseCase: GetPokemonInfoUseCase,
     observeVoiceoverPlayerUseCase: ObserveVoiceoverPlayerUseCase,
     private val playTTSAudioUseCase: PlayTTSAudioUseCase,
-
     observeMediaPlayerUseCase: ObserveMediaPlayerUseCase,
-    private val playMPAudioUseCase: PlayMPAudioUseCase,
-
-    ) : BaseAppViewModel(application, savedStateHandle) {
+    private val playMPAudioUseCase: PlayMPAudioUseCase
+) : BaseViewModel(savedStateHandle) {
 
     val uiState: StateFlow<PokemonInfoUiState> = combine(
         pokemonInfoUseCase.invoke(pokemon.id),
@@ -55,37 +50,26 @@ class PokemonInfoViewModel @Inject constructor(
 
     fun onEvent(event: PokemonInfoEvent) {
         when (event) {
-            is PokemonInfoEvent.PlayVoiceover -> playVoiceover(event.content)
-            PokemonInfoEvent.StopVoiceover -> stopVoiceover()
+            is PokemonInfoEvent.TogglePlayVoiceover ->
+                playTTSAudioUseCase.invoke(event.content.takeIf { isVoiceoverIdle() })
 
-            is PokemonInfoEvent.PlayCry -> playCry(event.content)
-            PokemonInfoEvent.StopCry -> stopCry()
+            is PokemonInfoEvent.TogglePlayCry ->
+                playMPAudioUseCase.invoke(event.content.takeIf { isCryIdle() })
 
-            PokemonInfoEvent.ScreenStopped -> stopVoiceover()
+            PokemonInfoEvent.ScreenStopped -> {
+                playTTSAudioUseCase.invoke(null)
+                playMPAudioUseCase.invoke(null)
+            }
         }
     }
 
-    private fun playVoiceover(content: String) {
-        playTTSAudioUseCase.invoke(content)
+    private fun isVoiceoverIdle(): Boolean {
+        return (uiState.value as? PokemonInfoUiState.Content)?.statePlayVoiceover == AudioPlaybackState.IDLE
     }
 
-    private fun stopVoiceover() {
-        playTTSAudioUseCase.invoke(null)
+    private fun isCryIdle(): Boolean {
+        return (uiState.value as? PokemonInfoUiState.Content)?.statePlayCry == AudioPlaybackState.IDLE
     }
-
-    private fun playCry(content: Uri) {
-        playMPAudioUseCase.invoke(content)
-    }
-
-    private fun stopCry() {
-        playMPAudioUseCase.invoke(null)
-    }
-
-    fun onStop() {
-        stopVoiceover()
-        stopCry()
-    }
-
 }
 
 sealed interface PokemonInfoUiState {
