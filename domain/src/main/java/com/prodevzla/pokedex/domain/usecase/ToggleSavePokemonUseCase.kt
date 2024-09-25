@@ -6,6 +6,6 @@ class ToggleSavePokemonUseCase(
     private val repository: PokemonRepository
 ) {
 
-    operator suspend fun invoke(id: Int) = repository.updateSaveStatus(id)
+    suspend operator fun invoke(id: Int) = repository.updateSaveStatus(id)
 
 }

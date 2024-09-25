@@ -16,10 +16,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,15 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.domain.model.PokemonInfo
-import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
-import com.prodevzla.pokedex.presentation.util.ThemePreviews
-import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
@@ -45,13 +43,28 @@ fun InfoScreen(
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val onEvent: (PokemonInfoEvent) -> Unit = remember(viewModel) {
+        return@remember viewModel::onEvent
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
+        viewModel.onStop()
+    }
+
     GenericViewPagerErrorContent(state is PokemonInfoUiState.Error) {
-        InfoScreenContent(state = state)
+        InfoScreenContent(
+            state = state,
+            onEvent = onEvent
+        )
     }
 }
 
 @Composable
-fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfoUiState) {
+fun InfoScreenContent(
+    modifier: Modifier = Modifier,
+    state: PokemonInfoUiState,
+    onEvent: (PokemonInfoEvent) -> Unit
+) {
     Column(
         modifier
             .fillMaxSize()
@@ -66,7 +79,21 @@ fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfoUiState) 
             fontWeight = FontWeight.Bold
         )
 
-        SpeciesCard(state = state)
+        SpeciesCard(
+            state = state,
+            onClickPlayVoiceover = { it ->
+                onEvent.invoke(PokemonInfoEvent.PlayVoiceover(it))
+            },
+            onClickStopVoiceover = {
+                onEvent.invoke(PokemonInfoEvent.StopVoiceover)
+            },
+            onClickPlayMediaPlayer = {
+                onEvent.invoke(PokemonInfoEvent.PlayCry(it))
+            },
+            onClickStopMediaPlayer = {
+                onEvent.invoke(PokemonInfoEvent.StopCry)
+            }
+        )
 //        SpeciesCard(state = state)
 //        SpeciesCard(state = state)
 //        SpeciesCard(state = state)
@@ -74,7 +101,15 @@ fun InfoScreenContent(modifier: Modifier = Modifier, state: PokemonInfoUiState) 
 }
 
 @Composable
-fun SpeciesCard(modifier: Modifier = Modifier, state: PokemonInfoUiState) {
+fun SpeciesCard(
+    modifier: Modifier = Modifier,
+    state: PokemonInfoUiState,
+    onClickPlayVoiceover: (String) -> Unit,
+    onClickStopVoiceover: () -> Unit,//TODO RENAME THESE METHODS
+
+    onClickPlayMediaPlayer: (Uri) -> Unit,
+    onClickStopMediaPlayer: () -> Unit,
+) {
     ExpandableCard(modifier = modifier, isLoading = state is PokemonInfoUiState.Loading) {
         if (state is PokemonInfoUiState.Content) {
 
@@ -114,13 +149,25 @@ fun SpeciesCard(modifier: Modifier = Modifier, state: PokemonInfoUiState) {
                     modifier = Modifier.weight(1f),
                     label = stringResource(R.string.tab_pokemon_info_voiceover)
                 ) {
-                    PlayAudioContent(state.content.flavorText)
+                    PlayAudioContent(
+                        state.statePlayVoiceover,
+                        onClickPlay = {
+                            onClickPlayVoiceover.invoke(state.content.flavorText)
+                        },
+                        onClickStop = onClickStopVoiceover,
+                    )
                 }
                 InfoDetail(
                     modifier = Modifier.weight(1f),
                     label = stringResource(R.string.tab_pokemon_info_cry)
                 ) {
-                    PlayAudioContent(Uri.parse(state.content.cries))
+                    PlayAudioContent(
+                        state = state.statePlayCry,
+                        onClickPlay = {
+                            onClickPlayMediaPlayer.invoke(Uri.parse(state.content.cries))
+                        },
+                        onClickStop = onClickStopMediaPlayer
+                    )
                 }
 
             }
@@ -169,34 +216,34 @@ fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
     )
 }
 
-@ThemePreviews
-@Composable
-fun InfoScreenContentPreview() {
-    PokedexTheme {
-        Surface {
-            InfoScreenContent(
-                state = PokemonInfoUiState.Content(
-                    content = PokemonInfoUI(
-                        height = "120 cm",
-                        weight = "30 Kg",
-                        genderRate = 8498,
-                        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                        cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
-                    ),
-                )
-            )
-        }
-    }
-}
-
-@ThemePreviews
-@Composable
-fun InfoDetailPreview() {
-    PokedexTheme {
-        Surface {
-            InfoDetail(label = "height") {
-                WeightHeightText(text = "0.1m")
-            }
-        }
-    }
-}
+//@ThemePreviews
+//@Composable
+//fun InfoScreenContentPreview() {
+//    PokedexTheme {
+//        Surface {
+//            InfoScreenContent(
+//                state = PokemonInfoUiState.Content(
+//                    content = PokemonInfoUI(
+//                        height = "120 cm",
+//                        weight = "30 Kg",
+//                        genderRate = 8498,
+//                        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+//                        cries = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg"
+//                    ),
+//                )
+//            )
+//        }
+//    }
+//}
+//
+//@ThemePreviews
+//@Composable
+//fun InfoDetailPreview() {
+//    PokedexTheme {
+//        Surface {
+//            InfoDetail(label = "height") {
+//                WeightHeightText(text = "0.1m")
+//            }
+//        }
+//    }
+//}

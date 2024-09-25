@@ -14,7 +14,9 @@ class GetPokemonInfoUseCase(
     private val repository: PokemonRepository
 ) {
 
+    //shall this be in a separate use case?
     private fun convertHeightToCm(height: Int) = height * 10
+    //shall this be in a separate use case?
     private fun convertWeightToKg(weight: Int) = weight / 10
 
     operator fun invoke(id: Int): Flow<Result<PokemonInfoUI>> =
@@ -49,7 +51,7 @@ fun PokemonInfo.toUI(height: String, weight: String): PokemonInfoUI {
         height = height,
         weight = weight,
         genderRate = this.genderRate,
-        flavorText = this.flavorText,
+        flavorText = this.flavorText.replace("\n", " "),
         cries = this.cries
     )
 }

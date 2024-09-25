@@ -5,13 +5,17 @@ import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.LoggingInterceptor
 import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
+import com.prodevzla.pokedex.data.repository.AudioRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
 import com.prodevzla.pokedex.data.source.local.AppDatabase
 import com.prodevzla.pokedex.data.source.local.PokemonDao
 import com.prodevzla.pokedex.data.source.local.PokemonGenerationDao
 import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
+import com.prodevzla.pokedex.data.source.local.audioPlayer.MediaPlayer
+import com.prodevzla.pokedex.data.source.local.audioPlayer.TTSPlayer
 import com.prodevzla.pokedex.data.source.remote.AnalyticsService
 import com.prodevzla.pokedex.domain.repository.AnalyticsRepository
+import com.prodevzla.pokedex.domain.repository.AudioRepository
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import dagger.Module
 import dagger.Provides
@@ -95,6 +99,25 @@ object DataModule {
     @Singleton
     fun provideAnalyticsTrackerRepository(analyticsService: AnalyticsService): AnalyticsRepository {
         return AnalyticsRepositoryImpl(analyticsService)
+    }
+
+    //TODO EVALUATE IF MEDIA PLAYERS SHOULD BE SINGLETONS. SAME FOR REPO
+    @Provides
+    @Singleton
+    fun provideTTSPlayer(@ApplicationContext appContext: Context): TTSPlayer {
+        return TTSPlayer(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMediaPlayer(@ApplicationContext appContext: Context): MediaPlayer {
+        return MediaPlayer(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAudioRepository(ttsPlayer: TTSPlayer, mediaPlayer: MediaPlayer): AudioRepository {
+        return AudioRepositoryImpl(ttsPlayer, mediaPlayer)
     }
 
 }

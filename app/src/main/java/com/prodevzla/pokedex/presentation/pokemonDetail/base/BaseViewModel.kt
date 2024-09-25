@@ -30,7 +30,9 @@ abstract class BaseAppViewModel(
 /**
  * Used by the PokemonStats, PokemonMoves and PokemonMore screens
  */
-abstract class BaseViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(), PokemonInterface {
+abstract class BaseViewModel(
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel(), PokemonInterface {
 
     override val pokemon: Pokemon
         get() = savedStateHandle.getPokemon()

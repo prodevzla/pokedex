@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.di
 
 import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
+import com.prodevzla.pokedex.domain.repository.AudioRepository
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
@@ -9,6 +10,10 @@ import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.ObserveMediaPlayerUseCase
+import com.prodevzla.pokedex.domain.usecase.ObserveVoiceoverPlayerUseCase
+import com.prodevzla.pokedex.domain.usecase.PlayMPAudioUseCase
+import com.prodevzla.pokedex.domain.usecase.PlayTTSAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.ToggleSavePokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import dagger.Module
@@ -74,6 +79,30 @@ object DomainModule {
     @Singleton
     fun provideToggleSavePokemonUseCase(repository: PokemonRepositoryImpl): ToggleSavePokemonUseCase {
         return ToggleSavePokemonUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObserveVoiceoverPlayerUseCase(repository: AudioRepository): ObserveVoiceoverPlayerUseCase {
+        return ObserveVoiceoverPlayerUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayTTSAudioUseCase(repository: AudioRepository): PlayTTSAudioUseCase {
+        return PlayTTSAudioUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObserveMediaPlayerUseCase(repository: AudioRepository): ObserveMediaPlayerUseCase {
+        return ObserveMediaPlayerUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayMPAudioUseCase(repository: AudioRepository): PlayMPAudioUseCase {
+        return PlayMPAudioUseCase(repository)
     }
 
 }
