@@ -44,4 +44,5 @@ sealed class ListScreenEvent(val eventTag: String, val value: String? = null) {
             value = "${pokemon.id}-${pokemon.name}"
         )
     data object ClickTryAgain: ListScreenEvent(CLICK_TRY_AGAIN)
+    data class ToggleSave(val pokemon: Pokemon): ListScreenEvent("")
 }

@@ -13,16 +13,19 @@ import com.prodevzla.pokedex.domain.model.SortBy
 import com.prodevzla.pokedex.domain.model.SortOrder
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonsUseCase
+import com.prodevzla.pokedex.domain.usecase.ToggleSavePokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import com.prodevzla.pokedex.domain.usecase.filterIf
 import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
 import com.prodevzla.pokedex.presentation.util.retryableFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +34,7 @@ class ListViewModel @Inject constructor(
     getPokemonsUseCase: GetPokemonsUseCase,
     getFiltersUseCase: GetFiltersUseCase,
     private val trackEventUseCase: TrackEventUseCase,
+    private val toggleSavePokemonUseCase: ToggleSavePokemonUseCase,
 ) : ViewModel() {
 
     private val _generationFilter: MutableStateFlow<Int> = MutableStateFlow(
@@ -140,6 +144,11 @@ class ListViewModel @Inject constructor(
             }
 
             is ListScreenEvent.ClickTryAgain -> retryableFlowTrigger.retry()
+            is ListScreenEvent.ToggleSave -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    toggleSavePokemonUseCase.invoke(event.pokemon.id)
+                }
+            }
             else -> {}
         }
     }

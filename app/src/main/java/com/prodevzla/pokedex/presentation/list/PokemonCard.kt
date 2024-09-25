@@ -50,7 +50,8 @@ context(SharedTransitionScope, AnimatedVisibilityScope)
 fun PokemonCard(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
-    onClickPokemon: (Pokemon) -> Unit = {},
+    onClickItem: (Pokemon) -> Unit = {},
+    onToggleSave: (Pokemon) -> Unit = {},
 ) {
     Card(
         modifier = modifier
@@ -65,14 +66,18 @@ fun PokemonCard(
 
         ),
         onClick = {
-            onClickPokemon.invoke(pokemon)
+            onClickItem(pokemon)
         }
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = pokemon.types.first().getColor())
+                .background(
+                    color = pokemon.types
+                        .first()
+                        .getColor()
+                )
                 .padding(start = MaterialTheme.spacing.medium)
         ) {
 
@@ -82,11 +87,21 @@ fun PokemonCard(
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text(
-                    text = pokemon.toTitle(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = pokemon.types.first().getColor().darken(0.5f)
-                )
+                Row {
+                    Text(
+                        text = pokemon.toTitle(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = pokemon.types.first().getColor().darken(0.5f),
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    SaveButton(
+                        isSaved = pokemon.isSaved,
+                        onClick = {
+                            onToggleSave(pokemon)
+                        }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -116,7 +131,10 @@ fun PokemonCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(
-                            color = pokemon.types.first().getColor().copy(alpha = 0.6f),
+                            color = pokemon.types
+                                .first()
+                                .getColor()
+                                .copy(alpha = 0.6f),
                             shape = imageBackgroundShape
                         )
                         .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
@@ -135,9 +153,13 @@ fun PokemonTypesRow(modifier: Modifier = Modifier, types: List<PokemonType>) {
                     .weight(1f)
                     .border(
                         width = 0.5.dp, // border width
-                        color = types.first().getColor().darken(0.5f),
+                        color = types
+                            .first()
+                            .getColor()
+                            .darken(0.5f),
                         shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
-                    ).padding(4.dp),
+                    )
+                    .padding(4.dp),
 
                 text = type.name.value.uppercase(),
                 style = MaterialTheme.typography.titleSmall,
@@ -159,6 +181,37 @@ val imageBackgroundShape = RoundedCornerShape(
 @ThemePreviews
 @Composable
 fun PokemonCardPreview() {
+    PokedexTheme {
+        Surface {
+            SharedTransitionLayout {
+                AnimatedVisibility(visible = true) {
+                    PokemonCard(
+                        pokemon = Pokemon(
+                            id = 4,
+                            name = "Charmander",
+                            types = listOf(
+                                PokemonType(
+                                    id = 10,
+                                    name = UiText.DynamicString("Fire")
+                                )
+                            ),
+                            generation = 1,
+                            image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+                            isSaved = true,
+                            //gameVersions = emptyList()
+                        ),
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@ThemePreviews
+@Composable
+fun PokemonCardUnsavedPreview() {
     PokedexTheme {
         Surface {
             SharedTransitionLayout {

@@ -211,8 +211,11 @@ fun ListContent(
                             with(animatedVisibilityScope) {
                                 PokemonCard(
                                     pokemon = item,
-                                    onClickPokemon = {
-                                        onEvent(ListScreenEvent.ClickPokemon(it))
+                                    onClickItem = { pokemon ->
+                                        onEvent.invoke(ListScreenEvent.ClickPokemon(pokemon))
+                                    },
+                                    onToggleSave = { pokemon ->
+                                        onEvent.invoke(ListScreenEvent.ToggleSave(pokemon))
                                     },
                                 )
                             }

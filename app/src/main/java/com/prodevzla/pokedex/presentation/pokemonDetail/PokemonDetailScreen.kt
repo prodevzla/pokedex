@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +38,7 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.list.SaveButton
 import com.prodevzla.pokedex.presentation.list.imageBackgroundShape
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
@@ -55,7 +53,6 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
 //https://medium.com/@tunahan.bozkurt/custom-scroll-behavior-in-jetpack-compose-2d5a0e57d742
-
 context(SharedTransitionScope, AnimatedVisibilityScope)
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -87,24 +84,12 @@ fun PokemonDetailScreen(
         },
         actions = {
             val isSaved: Boolean = pokemonVm.value?.isSaved ?: false
-
-            val (icon: ImageVector, tint: Color) = if (isSaved) {
-                Icons.Filled.Favorite to Color.Red
-            } else {
-                Icons.Default.FavoriteBorder to MaterialTheme.colorScheme.onSurface
-            }
-
-            IconButton(
+            SaveButton(
+                isSaved = isSaved,
                 onClick = {
                     viewModel.onEvent(PokemonDetailEvent.SaveClick)
                 }
-            ) {
-                Icon(
-                    imageVector = icon,
-                    tint = tint,
-                    contentDescription = "saved"
-                )
-            }
+            )
         },
 
         ) {
