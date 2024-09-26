@@ -25,5 +25,10 @@ query GetPokemonInfoQuery($pokemonId: Int!) {
             id
             cries
         }
+        pokemon_v2_pokemonabilities {
+            pokemon_v2_ability {
+                name
+            }
+        }
     }
 }

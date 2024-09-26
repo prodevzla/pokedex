@@ -7,14 +7,10 @@ interface AudioRepository {
 
     fun observeVoiceoverState(): Flow<AudioPlaybackState>
 
-    fun playAudioTTS(audio: String)
-
-    fun stopAudioTTS()
+    fun toggleTTSPlayer(audio: String?)
 
     fun observeMediaPlayerState(): Flow<AudioPlaybackState>
 
-    fun playAudioMP(audio: String)
-
-    fun stopAudioMP()
+    fun toggleMPlayer(audio: String?)
 
 }

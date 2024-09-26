@@ -7,11 +7,7 @@ class PlayTTSAudioUseCase(
 ) {
 
     operator fun invoke(audio: String?) {
-        if (audio == null) {
-            audioRepository.stopAudioTTS()
-            return
-        }
-        audioRepository.playAudioTTS(audio)
+        audioRepository.toggleTTSPlayer(audio)
     }
 
 }

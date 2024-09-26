@@ -4,15 +4,11 @@ import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.FilterDefault
 import com.prodevzla.pokedex.domain.model.Filterable
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
-import kotlinx.coroutines.Dispatchers
+import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class GetPokemonGenerationsUseCase(
     private val repository: PokemonRepository
@@ -24,18 +20,13 @@ class GetPokemonGenerationsUseCase(
             name = UiText.StringResource(R.string.all_gens)
         )
         return repository.getPokemonGenerations()
-            .map<List<PokemonGeneration>, Result<List<Filterable>>> {
-                Result.Success(listOf(allTypesOption) + it.map { generation ->
-                    PokemonGeneration(
-                        generation.id,
-                        UiText.DynamicString(generation.name.value.replace("generation", "gen"))
+            .map {
+                listOf(allTypesOption) + it.map { generation: PokemonGeneration ->
+                    generation.copy(
+                        name = UiText.DynamicString(generation.name.value.replace("generation", "gen"))
                     )
-                })
+                }
             }
-            .onStart { emit(Result.Loading) }
-            .catch { e ->
-                println(e)
-                emit(Result.Error(e))
-            }.flowOn(Dispatchers.IO)
+            .asResult()
     }
 }

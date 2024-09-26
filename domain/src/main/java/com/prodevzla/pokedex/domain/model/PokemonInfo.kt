@@ -6,4 +6,5 @@ data class PokemonInfo(
     val genderRate: Int,
     val flavorText: String,
     val cry: String,
+    val abilities: List<String>
 )

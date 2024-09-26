@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,25 +52,21 @@ class PokemonInfoViewModel @Inject constructor(
     fun onEvent(event: PokemonInfoEvent) {
         when (event) {
             is PokemonInfoEvent.TogglePlayVoiceover ->
-                playTTSAudioUseCase.invoke(event.content.takeIf { isVoiceoverIdle() })
+                viewModelScope.launch {
+                    playTTSAudioUseCase.invoke(event.content)
+                }
 
             is PokemonInfoEvent.TogglePlayCry ->
-                playMPAudioUseCase.invoke(event.content.takeIf { isCryIdle() })
+                playMPAudioUseCase.invoke(event.content)
 
             PokemonInfoEvent.ScreenStopped -> {
                 playTTSAudioUseCase.invoke(null)
                 playMPAudioUseCase.invoke(null)
             }
         }
+
     }
 
-    private fun isVoiceoverIdle(): Boolean {
-        return (uiState.value as? PokemonInfoUiState.Content)?.statePlayVoiceover == AudioPlaybackState.IDLE
-    }
-
-    private fun isCryIdle(): Boolean {
-        return (uiState.value as? PokemonInfoUiState.Content)?.statePlayCry == AudioPlaybackState.IDLE
-    }
 }
 
 sealed interface PokemonInfoUiState {

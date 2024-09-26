@@ -7,11 +7,7 @@ class PlayMPAudioUseCase(
 ) {
 
     operator fun invoke(audio: String?) {
-        if (audio == null) {
-            audioRepository.stopAudioMP()
-            return
-        }
-        audioRepository.playAudioMP(audio)
+        audioRepository.toggleMPlayer(audio)
     }
 
 }

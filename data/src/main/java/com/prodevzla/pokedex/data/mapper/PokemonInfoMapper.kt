@@ -4,7 +4,6 @@ import com.prodevzla.pokedex.data.GetPokemonInfoQuery
 import com.prodevzla.pokedex.data.source.model.PokemonInfoEntity
 import com.prodevzla.pokedex.domain.model.PokemonInfo
 
-
 fun List<GetPokemonInfoQuery.Pokemon_v2_pokemoncry>.toDomain(): String {
     return (this.first().cries as LinkedHashMap<String, String>)["latest"]!!
 }
@@ -15,7 +14,8 @@ fun GetPokemonInfoQuery.Pokemon_v2_pokemon.toDomain(): PokemonInfo {
         weight = this.weight!!,
         genderRate = this.pokemon_v2_pokemonspecy?.gender_rate!!,
         flavorText = this.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts.first().flavor_text,
-        cry = this.pokemon_v2_pokemoncries.toDomain()
+        cry = this.pokemon_v2_pokemoncries.toDomain(),
+        abilities = this.pokemon_v2_pokemonabilities.mapNotNull { it.pokemon_v2_ability?.name }
     )
 }
 
@@ -29,7 +29,8 @@ fun PokemonInfoEntity.fromEntityToDomain(): PokemonInfo {
         weight = this.weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText,
-        cry = this.cries
+        cry = this.cries,
+        abilities = this.abilities,
     )
 }
 
@@ -40,6 +41,7 @@ fun PokemonInfo.toEntity(id: Int): PokemonInfoEntity {
         weight = this.weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText,
-        cries = this.cry
+        cries = this.cry,
+        abilities = this.abilities
     )
 }
