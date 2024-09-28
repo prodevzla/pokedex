@@ -38,9 +38,10 @@ class PokemonInfoViewModel @Inject constructor(
             Result.Loading -> PokemonInfoUiState.Loading
             is Result.Error -> PokemonInfoUiState.Error
             is Result.Success -> PokemonInfoUiState.Content(
-                content = infoResponse.data,
-                statePlayVoiceover = voiceoverPlaybackState,
-                statePlayCry = mediaPlayerPlaybackState
+                spec = infoResponse.data.toSpec(
+                    statePlayVoiceover = voiceoverPlaybackState,
+                    statePlayCry = mediaPlayerPlaybackState),
+                abilities = infoResponse.data.abilities
             )
         }
     }.stateIn(
@@ -73,8 +74,29 @@ sealed interface PokemonInfoUiState {
     data object Loading : PokemonInfoUiState
     data object Error : PokemonInfoUiState
     data class Content(
-        val content: PokemonInfoUI,
-        val statePlayVoiceover: AudioPlaybackState = AudioPlaybackState.IDLE,
-        val statePlayCry: AudioPlaybackState = AudioPlaybackState.IDLE
+        val spec: PokemonSpec,
+        val abilities: List<String>,
     ) : PokemonInfoUiState
+}
+
+data class PokemonSpec(
+    val height: String,
+    val weight: String,
+    val genderRate: Int,
+    val flavorText: String,
+    val cry: String,
+    val statePlayVoiceover: AudioPlaybackState,
+    val statePlayCry: AudioPlaybackState
+)
+
+fun PokemonInfoUI.toSpec(statePlayVoiceover: AudioPlaybackState, statePlayCry: AudioPlaybackState): PokemonSpec {
+    return PokemonSpec(
+        height = this.height,
+        weight = this.weight,
+        genderRate = this.genderRate,
+        flavorText = this.flavorText,
+        cry = this.cry,
+        statePlayVoiceover = statePlayVoiceover,
+        statePlayCry = statePlayCry
+    )
 }

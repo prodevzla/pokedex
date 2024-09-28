@@ -18,16 +18,15 @@ class GetPokemonInfoUseCase(
 
     operator fun invoke(id: Int): Flow<Result<PokemonInfoUI>> =
         repository.getPokemonInfo(id)
-            .map { result ->
-                result.toUI(
+            .map { result: PokemonInfo ->
+                result.toPokemonInfoUI(
                     height = "${convertHeightToCm(result.height)} cm",
-                    weight = "${convertWeightToKg(result.weight)} Kg",
+                    weight = "${convertWeightToKg(result.weight)} Kg"
                 )
             }
             .asResult()
 
 }
-
 
 data class PokemonInfoUI(
     val height: String,
@@ -35,15 +34,19 @@ data class PokemonInfoUI(
     val genderRate: Int,
     val flavorText: String,
     val cry: String,
+    val abilities: List<String>
 )
 
-fun PokemonInfo.toUI(height: String, weight: String): PokemonInfoUI {
+
+fun PokemonInfo.toPokemonInfoUI(height: String, weight: String): PokemonInfoUI {
     return PokemonInfoUI(
         height = height,
         weight = weight,
         genderRate = this.genderRate,
         flavorText = this.flavorText.replace("\n", " "),
-        cry = this.cry
+        cry = this.cry,
+        abilities  = this.abilities,
     )
 }
+
 
