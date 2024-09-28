@@ -37,7 +37,6 @@ data class PokemonInfoUI(
     val abilities: List<String>
 )
 
-
 fun PokemonInfo.toPokemonInfoUI(height: String, weight: String): PokemonInfoUI {
     return PokemonInfoUI(
         height = height,
@@ -48,5 +47,3 @@ fun PokemonInfo.toPokemonInfoUI(height: String, weight: String): PokemonInfoUI {
         abilities  = this.abilities,
     )
 }
-
-

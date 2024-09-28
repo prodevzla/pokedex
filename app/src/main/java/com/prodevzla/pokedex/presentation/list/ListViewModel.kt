@@ -18,13 +18,12 @@ import com.prodevzla.pokedex.domain.usecase.TrackEventUseCase
 import com.prodevzla.pokedex.domain.usecase.filterIf
 import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
 import com.prodevzla.pokedex.presentation.util.retryableFlow
+import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -88,11 +87,7 @@ class ListViewModel @Inject constructor(
 
                 else -> ListState.Error
             }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ListState.Loading
-        )
+        }.toStateFlow(viewModelScope, ListState.Loading)
 
     private fun filterPokemon(
         pokemonList: List<Pokemon>,

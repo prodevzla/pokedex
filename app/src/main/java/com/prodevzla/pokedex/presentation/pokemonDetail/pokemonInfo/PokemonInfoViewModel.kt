@@ -11,11 +11,10 @@ import com.prodevzla.pokedex.domain.usecase.PlayMPAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayTTSAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
 import com.prodevzla.pokedex.presentation.pokemonDetail.base.BaseViewModel
+import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,11 +43,7 @@ class PokemonInfoViewModel @Inject constructor(
                 abilities = infoResponse.data.abilities
             )
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = PokemonInfoUiState.Loading
-    )
+    }.toStateFlow(viewModelScope, PokemonInfoUiState.Loading)
 
     fun onEvent(event: PokemonInfoEvent) {
         when (event) {
