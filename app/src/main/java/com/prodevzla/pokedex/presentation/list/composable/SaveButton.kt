@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.list
+package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -24,7 +24,6 @@ fun SaveButton(
         modifier = modifier.size(16.dp),
         onClick = onClick
     ) {
-
         if (isSaved) {
             Icon(
                 imageVector = Icons.Filled.Favorite,

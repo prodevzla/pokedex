@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
-import com.prodevzla.pokedex.presentation.pokemonDetail.PlayAudioContent
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.PokemonSpec
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme

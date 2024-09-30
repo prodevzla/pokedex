@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +13,6 @@ import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.res.painterResource
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
-import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.WeightHeightText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 

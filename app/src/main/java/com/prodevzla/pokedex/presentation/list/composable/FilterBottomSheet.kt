@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.list
+package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

@@ -41,8 +41,8 @@ import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
-import com.prodevzla.pokedex.presentation.list.SaveButton
-import com.prodevzla.pokedex.presentation.list.imageBackgroundShape
+import com.prodevzla.pokedex.presentation.list.composable.SaveButton
+import com.prodevzla.pokedex.presentation.list.composable.imageBackgroundShape
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ThemePreviews

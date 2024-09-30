@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.list
+package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

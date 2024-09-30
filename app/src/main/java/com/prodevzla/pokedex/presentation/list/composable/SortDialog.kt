@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.list
+package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,6 +73,7 @@ fun SortDialog(
                                 .padding(vertical = MaterialTheme.spacing.small),
                             text = it.name,
                             style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Start
                         )
                     }
@@ -95,13 +96,11 @@ fun SortDialog(
                         )
                         Text(
                             text = it.name,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
-
-
                 }
-
             }
         },
         onDismissRequest = onDismiss,

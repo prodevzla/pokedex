@@ -1,4 +1,4 @@
-package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
+package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
