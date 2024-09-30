@@ -15,20 +15,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.list.ListScreen
 import com.prodevzla.pokedex.presentation.navigation.Favourites
 import com.prodevzla.pokedex.presentation.navigation.HomeRoute
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
-import com.prodevzla.pokedex.presentation.navigation.PokemonNavType
 import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonDetailScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.reflect.typeOf
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @AndroidEntryPoint

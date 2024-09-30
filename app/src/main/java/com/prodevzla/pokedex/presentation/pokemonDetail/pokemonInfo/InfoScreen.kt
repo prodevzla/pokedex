@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
+import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.AbilitiesCard
@@ -95,7 +96,8 @@ fun InfoScreenContent(
 
         AbilitiesCard(
             isLoading = state is PokemonInfoUiState.Loading,
-            abilities = (state as? PokemonInfoUiState.Content)?.abilities
+            abilities = (state as? PokemonInfoUiState.Content)?.abilities,
+            pokemonType = (state as? PokemonInfoUiState.Content)?.pokemonType,
         )
 //        SpeciesCard(state = state)
 //        SpeciesCard(state = state)
@@ -120,7 +122,11 @@ fun InfoScreenContentPreview() {
                         statePlayVoiceover = AudioPlaybackState.IDLE,
                         statePlayCry = AudioPlaybackState.IDLE
                     ),
-                    abilities = listOf("ability1")
+                    abilities = listOf("ability1"),
+                    pokemonType = PokemonType(
+                        id = 1,
+                        name = UiText.DynamicString("Normal")
+                    )
                 )
             )
         }

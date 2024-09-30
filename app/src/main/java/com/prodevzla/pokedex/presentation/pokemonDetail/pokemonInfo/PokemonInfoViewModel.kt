@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
+import com.prodevzla.pokedex.domain.usecase.GetPokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.ObserveMediaPlayerUseCase
 import com.prodevzla.pokedex.domain.usecase.ObserveVoiceoverPlayerUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayMPAudioUseCase
@@ -27,13 +28,15 @@ class PokemonInfoViewModel @Inject constructor(
     observeMediaPlayerUseCase: ObserveMediaPlayerUseCase,
     private val playMPAudioUseCase: PlayMPAudioUseCase,
     private val transformPokemonInfoIntoModelViewCase: TransformPokemonInfoIntoModelViewCase,
+    private val getPokemonUseCase: GetPokemonUseCase,
 ) : BasePokemonDetailViewModel(savedStateHandle) {
 
     val uiState: StateFlow<PokemonInfoUiState> = combine(
         pokemonInfoUseCase.invoke(pokemonId),
         observeVoiceoverPlayerUseCase.invoke(),
-        observeMediaPlayerUseCase.invoke()
-    ) { infoResponse, voiceoverPlaybackState, mediaPlayerPlaybackState ->
+        observeMediaPlayerUseCase.invoke(),
+        getPokemonUseCase.invoke(pokemonId),
+    ) { infoResponse, voiceoverPlaybackState, mediaPlayerPlaybackState, pokemon ->
         when (infoResponse) {
             Result.Loading -> PokemonInfoUiState.Loading
             is Result.Error -> PokemonInfoUiState.Error
@@ -41,7 +44,8 @@ class PokemonInfoViewModel @Inject constructor(
                 transformPokemonInfoIntoModelViewCase.invoke(
                     pokemonInfo = infoResponse.data,
                     statePlayVoiceover = voiceoverPlaybackState,
-                    statePlayCry = mediaPlayerPlaybackState
+                    statePlayCry = mediaPlayerPlaybackState,
+                    pokemon = pokemon,
                 )
         }
     }.toStateFlow(viewModelScope, PokemonInfoUiState.Loading)

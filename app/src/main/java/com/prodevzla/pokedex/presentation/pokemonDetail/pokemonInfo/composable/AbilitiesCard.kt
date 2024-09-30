@@ -2,18 +2,21 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
 fun AbilitiesCard(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
-    abilities: List<String>?
+    abilities: List<String>?,
+    pokemonType: PokemonType?,
 ) {
     ExpandableCard(modifier = modifier, isLoading = isLoading) {
         if (abilities == null) {
@@ -21,7 +24,13 @@ fun AbilitiesCard(
         }
         Column {
             abilities.forEach {
-                Text(it)
+                InfoDetailBox(
+                    boxBackgroundColor = pokemonType?.getColor(),
+                    label = "", content = {
+                        InfoDetailText(text = it)
+                    }
+
+                )
             }
 
         }
@@ -36,7 +45,11 @@ fun AbilitiesCardPreview() {
         Surface {
             AbilitiesCard(
                 isLoading = false,
-                abilities = listOf("ability 1")
+                abilities = listOf("ability 1"),
+                pokemonType = PokemonType(
+                    id = 1,
+                    name = UiText.DynamicString("Normal")
+                )
 
             )
         }

@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,8 +45,8 @@ fun SpeciesCard(
             return@ExpandableCard
         }
 
-        InfoDetail(label = "") {
-            WeightHeightText(text = state.flavorText)
+        InfoDetailBox(label = "") {
+            InfoDetailText(text = state.flavorText)
         }
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
@@ -54,17 +56,17 @@ fun SpeciesCard(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
 
-            InfoDetail(
+            InfoDetailBox(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_height)
             ) {
-                WeightHeightText(text = state.height.asString())
+                InfoDetailText(text = state.height.asString())
             }
-            InfoDetail(
+            InfoDetailBox(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_weight)
             ) {
-                WeightHeightText(text = state.weight.asString())
+                InfoDetailText(text = state.weight.asString())
             }
 
         }
@@ -75,7 +77,7 @@ fun SpeciesCard(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
 
-            InfoDetail(
+            InfoDetailBox(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_voiceover)
             ) {
@@ -86,7 +88,7 @@ fun SpeciesCard(
                     }
                 )
             }
-            InfoDetail(
+            InfoDetailBox(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_cry)
             ) {
@@ -102,9 +104,13 @@ fun SpeciesCard(
     }
 }
 
-
 @Composable
-fun InfoDetail(modifier: Modifier = Modifier, label: String, content: @Composable () -> Unit) {
+fun InfoDetailBox(
+    modifier: Modifier = Modifier,
+    boxBackgroundColor: Color? = null,
+    label: String,
+    content: @Composable () -> Unit
+) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -114,10 +120,15 @@ fun InfoDetail(modifier: Modifier = Modifier, label: String, content: @Composabl
                 .border(
                     BorderStroke(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = boxBackgroundColor ?: MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
+                .background(
+                    color = boxBackgroundColor ?: MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(MaterialTheme.spacing.small)
+                )
+
         ) {
             content()
         }
@@ -129,6 +140,18 @@ fun InfoDetail(modifier: Modifier = Modifier, label: String, content: @Composabl
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
+}
+
+@Composable
+fun InfoDetailText(modifier: Modifier = Modifier, text: String) {
+    Text(
+        modifier = modifier
+            .padding(MaterialTheme.spacing.small)
+            .fillMaxWidth(),
+        text = text,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleMedium
+    )
 }
 
 @ThemePreviews
@@ -152,26 +175,24 @@ fun SpeciesCardPreview() {
     }
 }
 
-@Composable
-fun WeightHeightText(modifier: Modifier = Modifier, text: String) {
-    Text(
-        modifier = modifier
-            .padding(MaterialTheme.spacing.small)
-            .fillMaxWidth(),
-        text = text,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium
-    )
-}
-
 @ThemePreviews
 @Composable
 fun InfoDetailPreview() {
     PokedexTheme {
         Surface {
-            InfoDetail(label = "height") {
-                WeightHeightText(text = "0.1m")
+            InfoDetailBox(label = "height") {
+                InfoDetailText(text = "0.1m")
             }
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun SquareBoxTextPreview() {
+    PokedexTheme { 
+        Surface {
+            InfoDetailText(text = "0.1m")
         }
     }
 }

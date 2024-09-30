@@ -23,7 +23,7 @@ fun PlayAudioContent(
 ) {
     SubcomposeLayout { constraints ->
         val textPlaceable = subcompose("Text") {
-            WeightHeightText(text = "text")
+            InfoDetailText(text = "text")
         }[0].measure(constraints)
 
         val textHeightDp = textPlaceable.height.toDp()
