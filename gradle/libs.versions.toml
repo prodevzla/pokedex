@@ -29,6 +29,7 @@ firebaseBom = "33.3.0"
 firebaseCrashlyticsPlugin = "3.0.2"
 firebaseDistributionPlugin = "5.0.0"
 leak-canary = "2.14"
+kotlinxCoroutinesCore = "1.6.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +70,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -83,4 +85,3 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin"}
 firebase-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseDistributionPlugin"}
-

@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.domain.usecase
 
-import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.FilterDefault
 import com.prodevzla.pokedex.domain.model.Filterable
 import com.prodevzla.pokedex.domain.model.Result
