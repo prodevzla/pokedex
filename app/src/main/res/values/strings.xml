@@ -6,6 +6,10 @@
     <string name="sort_dialog_title">Sort by...</string>
     <string name="sort_dialog_button_confirm">Confirm</string>
     <string name="sort_dialog_button_cancel">Cancel</string>
+    <string name="all_gens">all gens</string>
+    <string name="all_types">all types</string>
+    <string name="dialog_title_generation">Select generation</string>
+    <string name="dialog_title_type">Select type</string>
 
 <!--    Pokemon screen-->
     <string name="tab_info">info</string>

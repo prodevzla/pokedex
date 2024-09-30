@@ -1,9 +1,9 @@
 package com.prodevzla.pokedex.domain.usecase
 
-import com.prodevzla.pokedex.domain.R
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Result
+import com.prodevzla.pokedex.domain.model.StringDictionary
 import com.prodevzla.pokedex.domain.model.UiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,14 +35,14 @@ class GetFiltersUseCase(
 //                        filterOption = FilterOption.VERSION
 //                    ),
                     Filter(
-                        dialogTitle = UiText.StringResource(R.string.dialog_title_generation),
+                        dialogTitle = UiText.DomainResource(StringDictionary.DialogTitleGeneration),
                         weight = 1f,
                         selection = selectedGeneration,//generations.data.first { it.id == selectedGeneration },
                         values = generations.data,
                         type = FilterType.GENERATION
                     ),
                     Filter(
-                        dialogTitle = UiText.StringResource(R.string.dialog_title_type),
+                        dialogTitle = UiText.DomainResource(StringDictionary.DialogTitleType),
                         weight = 1f,
                         selection = selectedType,//types.data.first { it.id == selectedType },
                         values = types.data,

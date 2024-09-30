@@ -9,4 +9,6 @@ sealed class UiText {
         vararg val args: Any,
     ): UiText()
 
+    data class DomainResource(val value: StringDictionary): UiText()
+
 }
