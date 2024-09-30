@@ -1,7 +1,9 @@
 package com.prodevzla.pokedex.data.mapper
 
 import com.prodevzla.pokedex.data.GetPokemonInfoQuery
+import com.prodevzla.pokedex.data.GetPokemonInfoQuery.Pokemon_v2_pokemonability
 import com.prodevzla.pokedex.data.source.model.PokemonInfoEntity
+import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.PokemonInfo
 
 fun List<GetPokemonInfoQuery.Pokemon_v2_pokemoncry>.toDomain(): String {
@@ -15,12 +17,24 @@ fun GetPokemonInfoQuery.Pokemon_v2_pokemon.toDomain(): PokemonInfo {
         genderRate = this.pokemon_v2_pokemonspecy?.gender_rate!!,
         flavorText = this.pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesflavortexts.first().flavor_text,
         cry = this.pokemon_v2_pokemoncries.toDomain(),
-        abilities = this.pokemon_v2_pokemonabilities.mapNotNull { it.pokemon_v2_ability?.name }
+        abilities = this.pokemon_v2_pokemonabilities.toDomain()
     )
 }
 
 fun List<GetPokemonInfoQuery.Pokemon_v2_pokemon>.toDomain(): PokemonInfo {
     return this.map { it.toDomain() }.first()
+}
+
+fun List<Pokemon_v2_pokemonability>.toDomain(): List<Ability> {
+    return this.map { it.pokemon_v2_ability!!.toDomain() }
+}
+
+fun GetPokemonInfoQuery.Pokemon_v2_ability.toDomain(): Ability {
+    return Ability(
+        name = this.name,
+        description = this.pokemon_v2_abilityflavortexts.first().flavor_text,
+        isHidden = this.pokemon_v2_pokemonabilities.first().is_hidden
+    )
 }
 
 fun PokemonInfoEntity.fromEntityToDomain(): PokemonInfo {

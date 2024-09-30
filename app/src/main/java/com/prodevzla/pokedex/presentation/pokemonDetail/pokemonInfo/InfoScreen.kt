@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
@@ -122,7 +123,18 @@ fun InfoScreenContentPreview() {
                         statePlayVoiceover = AudioPlaybackState.IDLE,
                         statePlayCry = AudioPlaybackState.IDLE
                     ),
-                    abilities = listOf("ability1"),
+                    abilities = listOf(
+                        Ability(
+                            name = "Run away",
+                            description = "Enables a sure getaway from wild Pokemon",
+                            isHidden = false
+                        ),
+                        Ability(
+                            name = "Hustle",
+                            description = "Boosts the attack stat, but lowers accuracy",
+                            isHidden = true
+                        )
+                    ),
                     pokemonType = PokemonType(
                         id = 1,
                         name = UiText.DynamicString("Normal")

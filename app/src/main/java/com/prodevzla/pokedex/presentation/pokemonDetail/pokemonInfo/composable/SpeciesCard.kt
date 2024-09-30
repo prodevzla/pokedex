@@ -107,7 +107,6 @@ fun SpeciesCard(
 @Composable
 fun InfoDetailBox(
     modifier: Modifier = Modifier,
-    boxBackgroundColor: Color? = null,
     label: String,
     content: @Composable () -> Unit
 ) {
@@ -120,12 +119,12 @@ fun InfoDetailBox(
                 .border(
                     BorderStroke(
                         width = 1.dp,
-                        color = boxBackgroundColor ?: MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
                 .background(
-                    color = boxBackgroundColor ?: MaterialTheme.colorScheme.surface,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
 

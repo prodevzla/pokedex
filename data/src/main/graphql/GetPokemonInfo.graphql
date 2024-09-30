@@ -28,6 +28,16 @@ query GetPokemonInfoQuery($pokemonId: Int!) {
         pokemon_v2_pokemonabilities {
             pokemon_v2_ability {
                 name
+                # pokemon_v2_abilityeffecttexts {
+                #   effect
+                # }
+                pokemon_v2_abilityflavortexts(where: {pokemon_v2_language: {name: {_like: "en"}}}, order_by: {version_group_id: desc}, limit: 1) {
+                    flavor_text
+                }
+                pokemon_v2_pokemonabilities(where: {pokemon_id: {_eq: $pokemonId}}) {
+                    is_hidden
+                    slot
+                }
             }
         }
     }

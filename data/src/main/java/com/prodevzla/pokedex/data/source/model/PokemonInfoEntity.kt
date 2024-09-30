@@ -3,8 +3,7 @@ package com.prodevzla.pokedex.data.source.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.domain.model.Ability
 
 @Entity
 data class PokemonInfoEntity(
@@ -15,19 +14,20 @@ data class PokemonInfoEntity(
     @ColumnInfo(name = "flavorText") val flavorText: String,
     @ColumnInfo(name = "cries") val cries: String,
     @androidx.room.TypeConverters(AbilitiesConverter::class)
-    @ColumnInfo(name = "abilities") val abilities: List<String>,
-
+    @ColumnInfo(name = "abilities") val abilities: List<Ability>,
 )
 
 class AbilitiesConverter {
     @androidx.room.TypeConverter
-    fun fromAbility(types: List<String>): String {
-        return types.joinToString(separator = ",")
+    fun fromAbilities(types: List<Ability>): String {
+        return types.joinToString(separator = ",") { "${it.name},${it.description},${it.isHidden}" }
     }
 
     @androidx.room.TypeConverter
-    fun toAbility(typesString: String): List<String> {
-        return typesString.split(",")
+    fun toAbilities(typesString: String): List<Ability> {
+        return typesString.split(",").chunked(3).map {
+            Ability(name = it[0], description = it[1], isHidden = it[2].toBoolean())
+        }
     }
 
 }
