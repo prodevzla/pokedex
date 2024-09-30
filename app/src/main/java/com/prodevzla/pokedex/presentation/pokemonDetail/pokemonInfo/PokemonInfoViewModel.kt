@@ -10,7 +10,7 @@ import com.prodevzla.pokedex.domain.usecase.ObserveVoiceoverPlayerUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayMPAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PlayTTSAudioUseCase
 import com.prodevzla.pokedex.domain.usecase.PokemonInfoUI
-import com.prodevzla.pokedex.presentation.pokemonDetail.base.BaseViewModel
+import com.prodevzla.pokedex.presentation.pokemonDetail.base.BasePokemonDetailViewModel
 import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -26,10 +26,10 @@ class PokemonInfoViewModel @Inject constructor(
     private val playTTSAudioUseCase: PlayTTSAudioUseCase,
     observeMediaPlayerUseCase: ObserveMediaPlayerUseCase,
     private val playMPAudioUseCase: PlayMPAudioUseCase
-) : BaseViewModel(savedStateHandle) {
+) : BasePokemonDetailViewModel(savedStateHandle) {
 
     val uiState: StateFlow<PokemonInfoUiState> = combine(
-        pokemonInfoUseCase.invoke(pokemon.id),
+        pokemonInfoUseCase.invoke(pokemonId),
         observeVoiceoverPlayerUseCase.invoke(),
         observeMediaPlayerUseCase.invoke()
     ) { infoResponse, voiceoverPlaybackState, mediaPlayerPlaybackState ->

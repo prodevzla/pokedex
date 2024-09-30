@@ -60,7 +60,9 @@ class MainActivity : ComponentActivity() {
                             composable<HomeRoute> {
                                 ListScreen(
                                     onClickPokemon = { pokemon ->
-                                        navController.navigate(PokemonDetailRoute(pokemon))
+                                        navController.navigate(PokemonDetailRoute(
+                                            id = pokemon.id,
+                                        ))
                                     },
                                     onClickNavIcon = {
                                         toggleDrawer(scope, drawerState)
@@ -70,14 +72,14 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable<PokemonDetailRoute>(
-                                typeMap = mapOf(
-                                    typeOf<Pokemon>() to PokemonNavType.PokemonType
-                                )
+//                                typeMap = mapOf(
+//                                    typeOf<Pokemon>() to PokemonNavType.PokemonType
+//                                )
                             ) { backStackEntry ->
-                                val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
+                                //val arguments = backStackEntry.toRoute<PokemonDetailRoute>()
 
                                 PokemonDetailScreen(
-                                    pokemon = arguments.pokemon,
+                                    //pokemon = arguments.pokemon,
                                     onClickBack = {
                                         navController.navigateUp()
                                     }

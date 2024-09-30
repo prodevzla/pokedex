@@ -3,13 +3,11 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.base
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
-import com.prodevzla.pokedex.presentation.navigation.PokemonNavType
-import kotlin.reflect.typeOf
 
-fun SavedStateHandle.getPokemon(): Pokemon {
-    return this.toRoute<PokemonDetailRoute>(mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
+fun SavedStateHandle.getPokemonId(): Int {
+//    return this.toRoute<PokemonDetailRoute>(mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
+    return this.toRoute<PokemonDetailRoute>().id
 }
 
 /**
@@ -28,17 +26,17 @@ fun SavedStateHandle.getPokemon(): Pokemon {
 /**
  * Used by the PokemonStats, PokemonMoves and PokemonMore screens
  */
-abstract class BaseViewModel(
+abstract class BasePokemonDetailViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), PokemonInterface {
 
-    override val pokemon: Pokemon
-        get() = savedStateHandle.getPokemon()
+    override val pokemonId: Int
+        get() = savedStateHandle.getPokemonId()
 
 }
 
 interface PokemonInterface {
 
-    val pokemon: Pokemon
+    val pokemonId: Int
 
 }

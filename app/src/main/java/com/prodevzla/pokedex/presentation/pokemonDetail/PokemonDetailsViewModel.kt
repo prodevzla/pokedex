@@ -1,12 +1,11 @@
 package com.prodevzla.pokedex.presentation.pokemonDetail
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.usecase.GetPokemonUseCase
 import com.prodevzla.pokedex.domain.usecase.ToggleSavePokemonUseCase
-import com.prodevzla.pokedex.presentation.pokemonDetail.base.getPokemon
+import com.prodevzla.pokedex.presentation.pokemonDetail.base.BasePokemonDetailViewModel
 import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +18,7 @@ class PokemonDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getPokemonUseCase: GetPokemonUseCase,
     private val toggleSavePokemonUseCase: ToggleSavePokemonUseCase,
-) : ViewModel() {
-
-    private val pokemonId = savedStateHandle.getPokemon().id
+) : BasePokemonDetailViewModel(savedStateHandle) {
 
     val uiState: StateFlow<Pokemon?> = getPokemonUseCase.invoke(pokemonId)
         .toStateFlow(viewModelScope, null)
@@ -35,6 +32,7 @@ class PokemonDetailsViewModel @Inject constructor(
                     }
                 }
             }
+            else -> {}
         }
     }
 }

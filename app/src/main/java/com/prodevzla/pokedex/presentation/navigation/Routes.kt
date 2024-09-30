@@ -6,9 +6,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 object HomeRoute
 
+//@Serializable
+//data class PokemonDetailRoute(
+//    val pokemon: Pokemon
+//)
+
 @Serializable
 data class PokemonDetailRoute(
-    val pokemon: Pokemon
+    val id: Int,
 )
 
 @Serializable

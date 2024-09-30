@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.prodevzla.pokedex.presentation.pokemonDetail
 
 import androidx.compose.animation.AnimatedVisibility
@@ -23,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,18 +57,40 @@ import com.prodevzla.pokedex.ui.theme.spacing
 
 //https://medium.com/@tunahan.bozkurt/custom-scroll-behavior-in-jetpack-compose-2d5a0e57d742
 context(SharedTransitionScope, AnimatedVisibilityScope)
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun PokemonDetailScreen(
     modifier: Modifier = Modifier,
-    pokemon: Pokemon,
     viewModel: PokemonDetailsViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
 ) {
+    val pokemonState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    val pokemonVm = viewModel.uiState.collectAsStateWithLifecycle()
+    val pokemon = pokemonState.value ?: return
 
+    val onEvent: (PokemonDetailEvent) -> Unit = remember(viewModel) {
+        return@remember viewModel::onEvent
+    }
 
+    PokemonDetailScreenContent(
+        modifier = modifier,
+        pokemon = pokemon,
+        onEvent = { event ->
+            when (event) {
+                PokemonDetailEvent.OnClickBack -> onClickBack.invoke()
+                PokemonDetailEvent.SaveClick -> onEvent.invoke(event)
+            }
+        }
+    )
+
+}
+
+context(SharedTransitionScope, AnimatedVisibilityScope)
+@Composable
+fun PokemonDetailScreenContent(
+    modifier: Modifier = Modifier,
+    pokemon: Pokemon,
+    onEvent: (PokemonDetailEvent) -> Unit = {},
+) {
     CustomScaffold(
         modifier = modifier,
         topBarColor = pokemon.types.first().getColor(),
@@ -78,16 +103,18 @@ fun PokemonDetailScreen(
             )
         },
         navIcon = {
-            IconButton(onClickBack) {
+            IconButton(onClick = {
+                onEvent(PokemonDetailEvent.OnClickBack)
+            }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "navigate back")
             }
         },
         actions = {
-            val isSaved: Boolean = pokemonVm.value?.isSaved ?: false
+            val isSaved: Boolean = pokemon.isSaved ?: false
             SaveButton(
                 isSaved = isSaved,
                 onClick = {
-                    viewModel.onEvent(PokemonDetailEvent.SaveClick)
+                    onEvent(PokemonDetailEvent.SaveClick)
                 }
             )
         },
@@ -112,14 +139,12 @@ fun PokemonDetailScreen(
             )
         }
     }
-
 }
 
 context(SharedTransitionScope, AnimatedVisibilityScope)
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun PokemonDetailHeader(modifier: Modifier = Modifier, pokemon: Pokemon) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Column(
             modifier = Modifier
                 .weight(0.5f)
@@ -210,7 +235,7 @@ fun PokemonDetailScreenPreview() {
         Surface {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
-                    PokemonDetailScreen(
+                    PokemonDetailScreenContent(
                         pokemon = Pokemon(
                             id = 4,
                             name = "Charmander",
@@ -224,11 +249,9 @@ fun PokemonDetailScreenPreview() {
                             image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
                             isSaved = false
                         ),
-                        onClickBack = {}
                     )
                 }
             }
-
         }
     }
 }
