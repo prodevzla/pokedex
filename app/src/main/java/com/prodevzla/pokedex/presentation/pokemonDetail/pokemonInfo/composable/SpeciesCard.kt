@@ -22,9 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
-import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.PokemonSpec
+import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.asString
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -56,13 +58,13 @@ fun SpeciesCard(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_height)
             ) {
-                WeightHeightText(text = state.height)
+                WeightHeightText(text = state.height.asString())
             }
             InfoDetail(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.tab_pokemon_info_weight)
             ) {
-                WeightHeightText(text = state.weight)
+                WeightHeightText(text = state.weight.asString())
             }
 
         }
@@ -137,9 +139,9 @@ fun SpeciesCardPreview() {
             SpeciesCard(
                 isLoading = false,
                 state = PokemonSpec(
-                    height = "120 cm",
-                    weight = "30 Kg",
-                    genderRate = 8498,
+                    height = UiText.DynamicString("120 cm"),
+                    weight = UiText.DynamicString("30 Kg"),
+                    //genderRate = 8498,
                     flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
                     cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
                     statePlayVoiceover = AudioPlaybackState.PLAYING,
@@ -173,4 +175,3 @@ fun InfoDetailPreview() {
         }
     }
 }
-

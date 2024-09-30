@@ -21,9 +21,12 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.AbilitiesCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.SpeciesCard
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -109,9 +112,9 @@ fun InfoScreenContentPreview() {
             InfoScreenContent(
                 state = PokemonInfoUiState.Content(
                     spec = PokemonSpec(
-                        height = "120 cm",
-                        weight = "30 Kg",
-                        genderRate = 8498,
+                        height = UiText.DynamicString("120 cm"),
+                        weight = UiText.DynamicString("30 Kg"),
+                        //genderRate = 8498,
                         flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
                         cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
                         statePlayVoiceover = AudioPlaybackState.IDLE,

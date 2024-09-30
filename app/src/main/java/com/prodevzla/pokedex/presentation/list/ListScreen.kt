@@ -50,6 +50,7 @@ import com.prodevzla.pokedex.presentation.list.composable.ListAppBarTitle
 import com.prodevzla.pokedex.presentation.list.composable.PokemonCard
 import com.prodevzla.pokedex.presentation.list.composable.SearchBar
 import com.prodevzla.pokedex.presentation.list.composable.SortDialog
+import com.prodevzla.pokedex.presentation.list.model.ListState
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
