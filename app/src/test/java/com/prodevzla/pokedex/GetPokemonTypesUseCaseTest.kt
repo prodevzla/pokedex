@@ -6,6 +6,7 @@ import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.domain.usecase.GetPokemonTypesUseCase
+import com.prodevzla.pokedex.presentation.util.getRes
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
@@ -50,8 +51,8 @@ class GetPokemonTypesUseCaseTest {
         assertEquals(0, generations.data.first().id)
 
         assertEquals(
-            com.prodevzla.pokedex.domain.R.string.all_types,
-            (generations.data.first().name as UiText.StringResource).resId,
+            R.string.all_types,
+            (generations.data.first().name as UiText.DomainResource).value.getRes()
         )
     }
 

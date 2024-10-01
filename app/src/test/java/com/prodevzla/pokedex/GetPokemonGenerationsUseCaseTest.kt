@@ -6,6 +6,7 @@ import com.prodevzla.pokedex.domain.usecase.GetPokemonGenerationsUseCase
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.model.UiText
+import com.prodevzla.pokedex.presentation.util.getRes
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -50,8 +51,8 @@ class GetPokemonGenerationsUseCaseTest {
         assertEquals(0, generations.data.first().id)
 
         assertEquals(
-            com.prodevzla.pokedex.domain.R.string.all_gens,
-            (generations.data.first().name as UiText.StringResource).resId
+            R.string.all_gens,
+            (generations.data.first().name as UiText.DomainResource).value.getRes()
         )
     }
 
