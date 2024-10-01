@@ -1,6 +1,7 @@
 package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.asString
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
+import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
 fun FilterButton(
@@ -30,7 +32,7 @@ fun FilterButton(
         colors = ButtonDefaults.buttonColors().copy(
             containerColor = filter.getColor()
         ),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(MaterialTheme.spacing.small),
         contentPadding = PaddingValues(0.dp),
         onClick = { onClick(filter) }
     ) {

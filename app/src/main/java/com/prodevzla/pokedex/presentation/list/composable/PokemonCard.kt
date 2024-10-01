@@ -157,7 +157,7 @@ fun PokemonTypesRow(modifier: Modifier = Modifier, types: List<PokemonType>) {
                             .first()
                             .getColor()
                             .darken(0.5f),
-                        shape = RoundedCornerShape(4.dp) // adjust the corner radius as needed
+                        shape = RoundedCornerShape(4.dp)
                     )
                     .padding(4.dp),
 

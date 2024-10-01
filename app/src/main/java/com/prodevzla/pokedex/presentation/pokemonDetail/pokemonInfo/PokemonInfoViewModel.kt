@@ -28,7 +28,7 @@ class PokemonInfoViewModel @Inject constructor(
     observeMediaPlayerUseCase: ObserveMediaPlayerUseCase,
     private val playMPAudioUseCase: PlayMPAudioUseCase,
     private val transformPokemonInfoIntoModelViewCase: TransformPokemonInfoIntoModelViewCase,
-    private val getPokemonUseCase: GetPokemonUseCase,
+    getPokemonUseCase: GetPokemonUseCase,
 ) : BasePokemonDetailViewModel(savedStateHandle) {
 
     val uiState: StateFlow<PokemonInfoUiState> = combine(
@@ -63,6 +63,10 @@ class PokemonInfoViewModel @Inject constructor(
             PokemonInfoEvent.ScreenStopped -> {
                 playTTSAudioUseCase.invoke(null)
                 playMPAudioUseCase.invoke(null)
+            }
+
+            is PokemonInfoEvent.OnClickAbility -> {
+                println("TODO Implement dialog: ${event.ability}")
             }
         }
 

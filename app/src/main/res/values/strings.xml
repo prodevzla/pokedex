@@ -22,4 +22,5 @@
     <string name="tab_pokemon_info_weight">Weight</string>
     <string name="tab_pokemon_info_voiceover">Voiceover</string>
     <string name="tab_pokemon_info_cry">Cry</string>
+    <string name="ability_hidden">Hidden</string>
 </resources>

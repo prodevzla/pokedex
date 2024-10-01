@@ -7,14 +7,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -26,6 +22,7 @@ import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.AbilitiesCard
+import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.SpeciesCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
@@ -69,12 +66,7 @@ fun InfoScreenContent(
             .padding(top = MaterialTheme.spacing.medium)
     ) {
 
-        Text(
-            text = stringResource(R.string.tab_pokemon_info_species),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontWeight = FontWeight.Bold
-        )
+        CardTitle(text = R.string.tab_pokemon_info_species)
 
         SpeciesCard(
             isLoading = state is PokemonInfoUiState.Loading,
@@ -87,18 +79,15 @@ fun InfoScreenContent(
             },
         )
 
-        //todo create composable for this following Text as it will be reused across the 4 tabs
-        Text(
-            text = stringResource(R.string.tab_pokemon_info_abilities),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontWeight = FontWeight.Bold
-        )
+        CardTitle(text = R.string.tab_pokemon_info_abilities)
 
         AbilitiesCard(
             isLoading = state is PokemonInfoUiState.Loading,
             abilities = (state as? PokemonInfoUiState.Content)?.abilities,
             pokemonType = (state as? PokemonInfoUiState.Content)?.pokemonType,
+            onClickAbility = {
+                onEvent.invoke(PokemonInfoEvent.OnClickAbility(it))
+            }
         )
 //        SpeciesCard(state = state)
 //        SpeciesCard(state = state)

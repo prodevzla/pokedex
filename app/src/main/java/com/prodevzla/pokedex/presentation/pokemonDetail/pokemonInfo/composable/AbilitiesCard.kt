@@ -6,9 +6,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
@@ -33,6 +44,7 @@ fun AbilitiesCard(
     isLoading: Boolean,
     abilities: List<Ability>?,
     pokemonType: PokemonType?,
+    onClickAbility: (Ability) -> Unit = {},
 ) {
     ExpandableCard(modifier = modifier, isLoading = isLoading) {
         if (abilities == null || pokemonType == null) {
@@ -43,6 +55,7 @@ fun AbilitiesCard(
                 AbilityBox(
                     boxBackgroundColor = pokemonType.getColor(),
                     ability = it,
+                    onClickAbility = onClickAbility,
                 )
             }
         }
@@ -55,10 +68,9 @@ fun AbilityBox(
     modifier: Modifier = Modifier,
     boxBackgroundColor: Color,
     ability: Ability,
+    onClickAbility: (Ability) -> Unit,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -70,11 +82,33 @@ fun AbilityBox(
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
                 .background(
-                    color = boxBackgroundColor,
+                    color = if (ability.isHidden) MaterialTheme.colorScheme.surface else boxBackgroundColor,
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
-
         ) {
+            if (ability.isHidden) {
+                Text(
+                    text = stringResource(R.string.ability_hidden),
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .background(
+                            color = boxBackgroundColor,
+                            shape = RoundedCornerShape(
+                                topStart = MaterialTheme.spacing.small,
+                                topEnd = 0.dp,
+                                bottomEnd = 0.dp,
+                                bottomStart = MaterialTheme.spacing.small
+                            )
+                        )
+                        .padding(
+                            vertical = MaterialTheme.spacing.small,
+                            horizontal = MaterialTheme.spacing.medium
+                        ),
+                )
+            }
+
             Text(
                 modifier = modifier
                     .padding(MaterialTheme.spacing.small)
@@ -83,10 +117,29 @@ fun AbilityBox(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
             )
+
+            IconButton(
+                modifier = Modifier
+                    .size(30.dp)
+                    .align(Alignment.CenterEnd),
+                onClick = {
+                    onClickAbility.invoke(ability)
+                }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .wrapContentHeight(),
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = "ability info"
+                )
+            }
         }
 
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
+
         Text(
-            text = ability.description + ability.isHidden.toString(), //TODO continue here, show a hidden label when the ability is hidden
+            text = ability.description,
             modifier = Modifier.align(Alignment.Start),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface

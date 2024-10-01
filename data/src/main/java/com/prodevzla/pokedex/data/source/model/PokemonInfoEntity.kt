@@ -20,14 +20,14 @@ data class PokemonInfoEntity(
 class AbilitiesConverter {
     @androidx.room.TypeConverter
     fun fromAbilities(types: List<Ability>): String {
-        return types.joinToString(separator = ",") { "${it.name},${it.description},${it.isHidden}" }
+        return types.joinToString(separator = "###") { "${it.name}@@@${it.description}@@@${it.isHidden}" }
     }
 
     @androidx.room.TypeConverter
     fun toAbilities(typesString: String): List<Ability> {
-        return typesString.split(",").chunked(3).map {
-            Ability(name = it[0], description = it[1], isHidden = it[2].toBoolean())
+        return typesString.split("###").map {
+            val sections: List<String> = it.split("@@@")
+            Ability(name = sections[0], description = sections[1], isHidden = sections[2].toBoolean())
         }
     }
-
 }
