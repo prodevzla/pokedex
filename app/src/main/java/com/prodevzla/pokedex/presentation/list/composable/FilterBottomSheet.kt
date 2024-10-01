@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -14,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Filterable
@@ -58,6 +55,7 @@ fun FilterSheetContent(
             .padding(horizontal = MaterialTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         item {
             Text(
                 text = filter.dialogTitle.asString(),
@@ -66,32 +64,15 @@ fun FilterSheetContent(
         }
 
         items(filter.values) {
-            FilterOptionsDefault(
-                item = it,
-                filter = filter,
-                onClickItem = onClickItem
+            FilterButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = it.name,
+                color = it.getColor(),
+                onClick = {
+                    onClickItem.invoke(it, filter.type)
+                },
             )
         }
-
-    }
-}
-
-@Composable
-fun FilterOptionsDefault(item: Filterable, filter: Filter, onClickItem: (Filterable, FilterType) -> Unit) {
-    Button(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            onClickItem(item, filter.type)
-        },
-        shape = RectangleShape,
-        colors = ButtonDefaults.buttonColors().copy(
-            containerColor = item.getColor()
-        ),
-    ) {
-        Text(
-            text = item.name.asString().uppercase(),
-            style = MaterialTheme.typography.titleMedium
-        )
     }
 }
 

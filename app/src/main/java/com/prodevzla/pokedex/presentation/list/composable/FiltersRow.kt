@@ -12,6 +12,7 @@ import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.PokemonGeneration
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
+import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -28,8 +29,11 @@ fun FiltersRow(
         filters.forEach {
             FilterButton(
                 modifier = Modifier.weight(it.weight),
-                filter = it,
-                onClick = onClickFilter
+                text = it.selectedItem.name,
+                color = it.getColor(),
+                onClick = {
+                    onClickFilter.invoke(it)
+                },
             )
         }
 

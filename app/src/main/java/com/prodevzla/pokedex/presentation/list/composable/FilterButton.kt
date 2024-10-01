@@ -9,10 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -24,20 +22,21 @@ import com.prodevzla.pokedex.ui.theme.spacing
 @Composable
 fun FilterButton(
     modifier: Modifier = Modifier,
-    filter: Filter,
-    onClick: (Filter) -> Unit = {},
+    text: UiText,
+    color: Color,
+    onClick: () -> Unit = {},
 ) {
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors().copy(
-            containerColor = filter.getColor()
+            containerColor = color//filter.getColor()
         ),
         shape = RoundedCornerShape(MaterialTheme.spacing.small),
         contentPadding = PaddingValues(0.dp),
-        onClick = { onClick(filter) }
+        onClick = onClick
     ) {
         Text(
-            text = filter.selectedItem.name.asString().uppercase(),
+            text = text.asString().uppercase(),//filter.selectedItem.name.asString().uppercase(),
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -50,18 +49,8 @@ fun FilterButtonPreview() {
     PokedexTheme {
         Surface {
             FilterButton(
-                filter = Filter(
-                    dialogTitle = UiText.DynamicString("Select type"),
-                    weight = 1.0f,
-                    selection = 10,
-                    values = listOf(
-                        PokemonType(
-                            id = 10,
-                            name = UiText.DynamicString("Fire")
-                        )
-                    ),
-                    type = FilterType.TYPE,
-                )
+                text = UiText.DynamicString("Select type"),
+                color = PokemonType(id = 1, name = UiText.DynamicString("normal")).getColor(),
             )
         }
     }
