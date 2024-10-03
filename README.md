@@ -1,6 +1,6 @@
 <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_1.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_2.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_3.png" alt="Sample Image" width="300" />
 <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_4.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_5.png" alt="Sample Image" width="300" /> <img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_6.png" alt="Sample Image" width="300" />
-<img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_6.png" alt="Sample Image" width="300" />
+<img src="https://github.com/prodevzla/pokedex/blob/main/screenshots/pokedex_7.png" alt="Sample Image" width="300" />
 
 This is a small Android project that have been developed for training purposes. The main goal is to build a Pokémon Pokédex using some of the latest technologies available for Android.
 
