@@ -31,7 +31,7 @@ fun List<Pokemon_v2_pokemonability>.toDomain(): List<Ability> {
 
 fun GetPokemonInfoQuery.Pokemon_v2_ability.toDomain(): Ability {
     return Ability(
-        name = this.name,
+        name = this.pokemon_v2_abilitynames.first().name,
         description = this.pokemon_v2_abilityflavortexts.first().flavor_text,
         isHidden = this.pokemon_v2_pokemonabilities.first().is_hidden
     )
