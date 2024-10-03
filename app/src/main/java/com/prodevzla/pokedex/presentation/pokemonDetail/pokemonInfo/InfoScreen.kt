@@ -20,12 +20,12 @@ import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
-import com.prodevzla.pokedex.presentation.pokemonDetail.GenericViewPagerErrorContent
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.AbilitiesCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.SpeciesCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
+import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -45,12 +45,17 @@ fun InfoScreen(
         onEvent(PokemonInfoEvent.ScreenStopped)
     }
 
-    GenericViewPagerErrorContent(state is PokemonInfoUiState.Error) {
-        InfoScreenContent(
+    when (state) {
+        PokemonInfoUiState.Error -> ErrorScreen(tryAgain = {
+            onEvent(PokemonInfoEvent.ClickTryAgain)
+        })
+
+        else -> InfoScreenContent(
             state = state,
             onEvent = onEvent
         )
     }
+
 }
 
 @Composable

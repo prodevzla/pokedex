@@ -12,6 +12,8 @@ import com.prodevzla.pokedex.domain.usecase.PlayTTSAudioUseCase
 import com.prodevzla.pokedex.presentation.pokemonDetail.base.BasePokemonDetailViewModel
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.viewcase.TransformPokemonInfoIntoModelViewCase
+import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
+import com.prodevzla.pokedex.presentation.util.retryableFlow
 import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -31,8 +33,12 @@ class PokemonInfoViewModel @Inject constructor(
     getPokemonUseCase: GetPokemonUseCase,
 ) : BasePokemonDetailViewModel(savedStateHandle) {
 
+    private val retryableFlowTrigger = RetryableFlowTrigger()
+
     val uiState: StateFlow<PokemonInfoUiState> = combine(
-        pokemonInfoUseCase.invoke(pokemonId),
+        retryableFlowTrigger.retryableFlow {
+            pokemonInfoUseCase.invoke(pokemonId)
+        },
         observeVoiceoverPlayerUseCase.invoke(),
         observeMediaPlayerUseCase.invoke(),
         getPokemonUseCase.invoke(pokemonId),
@@ -68,6 +74,10 @@ class PokemonInfoViewModel @Inject constructor(
             is PokemonInfoEvent.OnClickAbility -> {
                 println("TODO Implement dialog: ${event.ability}")
             }
+
+            PokemonInfoEvent.ClickTryAgain ->
+                retryableFlowTrigger.retry()
+
         }
 
     }

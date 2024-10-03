@@ -97,15 +97,6 @@ fun PokemonViewPager(
     }
 }
 
-@Composable
-fun GenericViewPagerErrorContent(isError: Boolean, content: @Composable () -> Unit) {
-    if (isError) {
-        ErrorScreen()
-        return
-    }
-    content()
-}
-
 @ThemePreviews
 @Composable
 fun PokemonViewPagerPreview() {

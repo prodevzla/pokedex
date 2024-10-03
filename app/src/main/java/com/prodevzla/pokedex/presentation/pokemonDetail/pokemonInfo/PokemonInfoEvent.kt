@@ -7,4 +7,5 @@ sealed interface PokemonInfoEvent {
     data class TogglePlayCry(val content: String): PokemonInfoEvent
     data object ScreenStopped: PokemonInfoEvent
     data class OnClickAbility(val ability: Ability): PokemonInfoEvent
+    data object ClickTryAgain: PokemonInfoEvent
 }
