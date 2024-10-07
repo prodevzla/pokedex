@@ -1,0 +1,15 @@
+query GetAbility($abilityId: Int!) {
+    pokemon_v2_ability(where: {id: {_eq: $abilityId}}) {
+        id
+        pokemon_v2_abilitynames(where: {pokemon_v2_language: {name: {_like: "en"}}}) {
+            name
+        }
+        pokemon_v2_abilityflavortexts(where: {pokemon_v2_language: {name: {_like: "en"}}}, order_by: {version_group_id: desc}, limit: 1) {
+            flavor_text
+        }
+        pokemon_v2_abilityeffecttexts(where: {pokemon_v2_language: {name: {_like: "en"}}}) {
+            short_effect
+            effect
+        }
+    }
+}
