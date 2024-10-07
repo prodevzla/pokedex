@@ -3,6 +3,7 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,6 +86,9 @@ fun AbilityBox(
                     color = if (ability.isHidden) MaterialTheme.colorScheme.surface else boxBackgroundColor,
                     shape = RoundedCornerShape(MaterialTheme.spacing.small)
                 )
+                .clickable {
+                    onClickAbility.invoke(ability)
+                }
         ) {
             if (ability.isHidden) {
                 Text(
@@ -118,22 +122,15 @@ fun AbilityBox(
                 style = MaterialTheme.typography.titleMedium
             )
 
-            IconButton(
+            Icon(
                 modifier = Modifier
-                    .size(30.dp)
+                    .padding(end = 10.dp)
+                    .size(16.dp)
+                    .wrapContentHeight()
                     .align(Alignment.CenterEnd),
-                onClick = {
-                    onClickAbility.invoke(ability)
-                }
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .wrapContentHeight(),
-                    imageVector = Icons.Outlined.Info,
-                    contentDescription = "ability info"
-                )
-            }
+                imageVector = Icons.Outlined.Info,
+                contentDescription = "ability info"
+            )
         }
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))

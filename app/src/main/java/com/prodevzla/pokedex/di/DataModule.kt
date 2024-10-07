@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.LoggingInterceptor
+import com.prodevzla.pokedex.data.repository.AbilityRepositoryImpl
 import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.AudioRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
@@ -14,6 +15,7 @@ import com.prodevzla.pokedex.data.source.local.PokemonTypeDao
 import com.prodevzla.pokedex.data.source.local.audioPlayer.MediaPlayer
 import com.prodevzla.pokedex.data.source.local.audioPlayer.TTSPlayer
 import com.prodevzla.pokedex.data.source.remote.AnalyticsService
+import com.prodevzla.pokedex.domain.repository.AbilityRepository
 import com.prodevzla.pokedex.domain.repository.AnalyticsRepository
 import com.prodevzla.pokedex.domain.repository.AudioRepository
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
@@ -118,6 +120,12 @@ object DataModule {
     @Singleton
     fun provideAudioRepository(ttsPlayer: TTSPlayer, mediaPlayer: MediaPlayer): AudioRepository {
         return AudioRepositoryImpl(ttsPlayer, mediaPlayer)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAbilityRepository(apolloClient: ApolloClient): AbilityRepository {
+        return AbilityRepositoryImpl(apolloClient)
     }
 
 }

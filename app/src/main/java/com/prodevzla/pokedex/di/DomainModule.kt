@@ -2,7 +2,9 @@ package com.prodevzla.pokedex.di
 
 import com.prodevzla.pokedex.data.repository.AnalyticsRepositoryImpl
 import com.prodevzla.pokedex.data.repository.PokemonRepositoryImpl
+import com.prodevzla.pokedex.domain.repository.AbilityRepository
 import com.prodevzla.pokedex.domain.repository.AudioRepository
+import com.prodevzla.pokedex.domain.usecase.GetAbilityUseCase
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
@@ -104,5 +106,8 @@ object DomainModule {
     fun providePlayMPAudioUseCase(repository: AudioRepository): PlayMPAudioUseCase {
         return PlayMPAudioUseCase(repository)
     }
+
+    @Provides
+    fun provideGetAbilityUseCase(repository: AbilityRepository) = GetAbilityUseCase(repository)
 
 }
