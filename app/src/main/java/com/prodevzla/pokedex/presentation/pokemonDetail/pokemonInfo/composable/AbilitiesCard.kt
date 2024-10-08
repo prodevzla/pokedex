@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.domain.model.Ability
+import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
@@ -43,9 +42,9 @@ import com.prodevzla.pokedex.ui.theme.spacing
 fun AbilitiesCard(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
-    abilities: List<Ability>?,
+    abilities: List<PokemonAbility>?,
     pokemonType: PokemonType?,
-    onClickAbility: (Ability) -> Unit = {},
+    onClickAbility: (PokemonAbility) -> Unit = {},
 ) {
     ExpandableCard(modifier = modifier, isLoading = isLoading) {
         if (abilities == null || pokemonType == null) {
@@ -68,8 +67,8 @@ fun AbilitiesCard(
 fun AbilityBox(
     modifier: Modifier = Modifier,
     boxBackgroundColor: Color,
-    ability: Ability,
-    onClickAbility: (Ability) -> Unit,
+    ability: PokemonAbility,
+    onClickAbility: (PokemonAbility) -> Unit,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
@@ -152,12 +151,14 @@ fun AbilitiesCardPreview() {
             AbilitiesCard(
                 isLoading = false,
                 abilities = listOf(
-                    Ability(
+                    PokemonAbility(
+                        id = 1,
                         name = "Run away",
                         description = "Enables a sure getaway from wild Pokemon",
                         isHidden = false
                     ),
-                    Ability(
+                    PokemonAbility(
+                        id = 2,
                         name = "Hustle",
                         description = "Boosts the attack stat, but lowers accuracy",
                         isHidden = true

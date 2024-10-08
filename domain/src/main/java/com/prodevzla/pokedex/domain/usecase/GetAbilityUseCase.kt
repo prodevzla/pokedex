@@ -6,6 +6,6 @@ class GetAbilityUseCase(
     private val abilityRepository: AbilityRepository,
 ) {
 
-    operator fun invoke(id: Int) = abilityRepository.getAbility(id)
+    operator fun invoke(id: Int) = abilityRepository.getAbility(id).asResult()
 
 }

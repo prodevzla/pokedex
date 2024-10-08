@@ -27,6 +27,7 @@ query GetPokemonInfoQuery($pokemonId: Int!) {
         }
         pokemon_v2_pokemonabilities {
             pokemon_v2_ability {
+                id
                 name
                 # pokemon_v2_abilityeffecttexts {
                 #   effect

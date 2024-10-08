@@ -12,16 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
-import com.prodevzla.pokedex.domain.model.Ability
+import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
-import com.prodevzla.pokedex.domain.model.Filter
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.AbilityScreen
@@ -69,7 +67,7 @@ fun InfoScreenContent(
     state: PokemonInfoUiState,
     onEvent: (PokemonInfoEvent) -> Unit = {},
 ) {
-    var showAbilityDialog: Ability? by remember { mutableStateOf(null) }
+    var showAbilityDialog: PokemonAbility? by remember { mutableStateOf(null) }
 
     Column(
         modifier
@@ -105,7 +103,7 @@ fun InfoScreenContent(
 
         showAbilityDialog?.let {
             AbilityScreen(
-                ability = it,
+                abilityId = it.id,
                 onDismiss = {
                     showAbilityDialog = null
                 }
@@ -135,12 +133,14 @@ fun InfoScreenContentPreview() {
                         statePlayCry = AudioPlaybackState.IDLE
                     ),
                     abilities = listOf(
-                        Ability(
+                        PokemonAbility(
+                            id = 1,
                             name = "Run away",
                             description = "Enables a sure getaway from wild Pokemon",
                             isHidden = false
                         ),
-                        Ability(
+                        PokemonAbility(
+                            id = 2,
                             name = "Hustle",
                             description = "Boosts the attack stat, but lowers accuracy",
                             isHidden = true

@@ -72,7 +72,7 @@ class PokemonInfoViewModel @Inject constructor(
             }
 
             is PokemonInfoEvent.OnClickAbility -> {
-                println("TODO Implement dialog: ${event.ability}")
+                println("TODO Implement dialog: ${event.pokemonAbility}")
             }
 
             PokemonInfoEvent.ClickTryAgain ->

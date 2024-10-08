@@ -11,28 +11,54 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.domain.model.Ability
+import com.prodevzla.pokedex.presentation.ability.model.AbilityUiState
+import com.prodevzla.pokedex.presentation.util.ErrorScreen
+import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 
 @Composable
 fun AbilityScreen(
     modifier: Modifier = Modifier,
-    ability: Ability,
-    viewModel: AbilityViewModel = hiltViewModel(),
+    abilityId: Int,
+    viewModel: AbilityViewModel = hiltViewModel(
+        key = "ability$abilityId",
+        creationCallback = { factory: AbilityViewModel.MyViewModelFactory ->
+            factory.create(abilityId)
+        }
+    ),
     onDismiss: () -> Unit = {}
 ) {
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     ModalBottomSheet(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.onSurface,
+        containerColor = Color.Blue,
         onDismissRequest = onDismiss,
     ) {
-        AbilityScreenContent(
-            modifier = modifier,
-            ability = ability
-        )
+
+        when (state) {
+            AbilityUiState.Loading -> LoadingScreen()
+            AbilityUiState.Error -> ErrorScreen(tryAgain = {
+
+            })
+
+            is AbilityUiState.Content -> {
+
+                AbilityScreenContent(
+                    modifier = modifier,
+                    ability = (state as AbilityUiState.Content).ability
+                )
+            }
+        }
+
     }
 }
 
@@ -40,11 +66,11 @@ fun AbilityScreen(
 fun AbilityScreenContent(modifier: Modifier = Modifier, ability: Ability) {
     Column(
         modifier = modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.surface)
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
     ) {
-        Text("AbilityContent")
-        Text(ability.name)
+        Text(ability.id.toString())
+        Text(ability.flavorText)
     }
 
 
@@ -57,10 +83,11 @@ fun AbilityScreenPreview() {
         Surface {
             AbilityScreenContent(
                 ability = Ability(
+                    id = 6260,
                     name = "Overgrow",
-                    description = "Powers up Grass-type moves when the Pokemon's HP is low",
-                    isHidden = false
-
+                    flavorText = "Overgrow",
+                    shortEffect = "Powers up Grass-type moves when the Pokemon's HP is low",
+                    longEffect = "Powers up Grass-type moves when the Pokemon's HP is low asdasd asd"
                 )
             )
         }
