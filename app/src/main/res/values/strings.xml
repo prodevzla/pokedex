@@ -23,4 +23,10 @@
     <string name="tab_pokemon_info_voiceover">Voiceover</string>
     <string name="tab_pokemon_info_cry">Cry</string>
     <string name="ability_hidden">Hidden</string>
+
+<!--    Ability bottom sheet-->
+    <string name="ability_title_description">Description</string>
+    <string name="ability_title_effect">Effect</string>
+    <string name="ability_title_details">Details</string>
+    <string name="ability_title_pokemon">Pokèmon with this ability</string>
 </resources>

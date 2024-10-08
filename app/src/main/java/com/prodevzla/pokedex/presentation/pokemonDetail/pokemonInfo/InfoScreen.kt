@@ -104,6 +104,7 @@ fun InfoScreenContent(
         showAbilityDialog?.let {
             AbilityScreen(
                 abilityId = it.id,
+                abilityName = it.name,
                 onDismiss = {
                     showAbilityDialog = null
                 }

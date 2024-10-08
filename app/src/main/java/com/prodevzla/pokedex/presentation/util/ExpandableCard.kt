@@ -26,7 +26,7 @@ fun ExpandableCard(
     Card(
         modifier = modifier.padding(MaterialTheme.spacing.medium),
         colors = CardDefaults.cardColors().copy(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = MaterialTheme.spacing.medium)
     ) {
