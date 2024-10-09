@@ -27,7 +27,6 @@ import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreenCo
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore.MoreScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMoves.MovesScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonStats.StatsScreen
-import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 

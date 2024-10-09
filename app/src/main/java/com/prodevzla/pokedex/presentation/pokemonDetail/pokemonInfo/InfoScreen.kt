@@ -107,7 +107,7 @@ fun InfoScreenContent(
                 abilityName = it.name,
                 onDismiss = {
                     showAbilityDialog = null
-                }
+                },
             )
         }
 //        SpeciesCard(state = state)

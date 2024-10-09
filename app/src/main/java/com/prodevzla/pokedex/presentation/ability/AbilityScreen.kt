@@ -4,12 +4,12 @@ package com.prodevzla.pokedex.presentation.ability
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -17,6 +17,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +31,7 @@ import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.model.AbilityUiState
-import com.prodevzla.pokedex.presentation.list.PokemonList
+import com.prodevzla.pokedex.presentation.list.composable.PokemonCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.InfoDetailText
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
@@ -50,10 +51,15 @@ fun AbilityScreen(
             factory.create(abilityId)
         }
     ),
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
+    onClickPokemon: (Pokemon) -> Unit = {},//TODO CONTINUE HERE
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val onEvent: (AbilityScreenEvent) -> Unit = remember(viewModel) {
+        return@remember viewModel::onEvent
+    }
 
     ModalBottomSheet(
         modifier = modifier,
@@ -72,6 +78,12 @@ fun AbilityScreen(
             isLoading = state is AbilityUiState.Loading,
             ability = (state as? AbilityUiState.Content)?.ability,
             pokemons = (state as? AbilityUiState.Content)?.pokemons,
+            onEvent = { event ->
+                when (event) {
+                    is AbilityScreenEvent.OnClickPokemon -> onClickPokemon.invoke(event.pokemon)
+                    is AbilityScreenEvent.ToggleSave -> onEvent(event)
+                }
+            },
         )
 
     }
@@ -83,82 +95,99 @@ fun AbilityScreenContent(
     title: String,
     isLoading: Boolean,
     ability: Ability?,
-    pokemons: List<Pokemon>?
+    pokemons: List<Pokemon>?,
+    onEvent: (AbilityScreenEvent) -> Unit = {}
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
     ) {
 
-        Text(
-            text = title,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-                .background(MaterialTheme.colorScheme.onSurface)
-                .align(Alignment.CenterHorizontally)
-                .wrapContentHeight(align = Alignment.CenterVertically),
+        item {
+
+            Text(
+                text = title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .background(MaterialTheme.colorScheme.onSurface)
+                    //.align(Alignment.CenterHorizontally)
+                    .wrapContentHeight(align = Alignment.CenterVertically),
 
 
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.surface,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(Modifier.height(MaterialTheme.spacing.medium))
-
-
-        CardTitle(text = R.string.ability_title_description)
-
-        ExpandableCard(isLoading = isLoading) {
-            if (ability == null) {
-                return@ExpandableCard
-            }
-            InfoDetailText(text = ability.flavorText)
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.surface,
+                textAlign = TextAlign.Center
+            )
         }
 
-        CardTitle(text = R.string.ability_title_effect)
-
-        ExpandableCard(isLoading = isLoading) {
-            if (ability == null) {
-                return@ExpandableCard
-            }
-            InfoDetailText(text = ability.shortEffect)
+        item {
+            Spacer(Modifier.height(MaterialTheme.spacing.medium))
         }
 
-        CardTitle(text = R.string.ability_title_details)
-
-        ExpandableCard(isLoading = isLoading) {
-            if (ability == null) {
-                return@ExpandableCard
-            }
-            InfoDetailText(text = ability.longEffect)
+        item {
+            CardTitle(text = R.string.ability_title_description)
         }
 
-        CardTitle(text = R.string.ability_title_pokemon)
+        item {
+            ExpandableCard(isLoading = isLoading) {
+                if (ability == null) {
+                    return@ExpandableCard
+                }
+                InfoDetailText(text = ability.flavorText)
+            }
+        }
 
-        val lazyListState = rememberLazyListState()
+        item {
+            CardTitle(text = R.string.ability_title_effect)
+        }
+
+        item {
+            ExpandableCard(isLoading = isLoading) {
+                if (ability == null) {
+                    return@ExpandableCard
+                }
+                InfoDetailText(text = ability.shortEffect)
+            }
+        }
+
+        item {
+            CardTitle(text = R.string.ability_title_details)
+        }
+
+        item {
+            ExpandableCard(isLoading = isLoading) {
+                if (ability == null) {
+                    return@ExpandableCard
+                }
+                InfoDetailText(text = ability.longEffect)
+            }
+        }
+
+        item {
+            CardTitle(text = R.string.ability_title_pokemon)
+        }
 
         if (pokemons == null) {
-            return@Column
+            return@LazyColumn
         }
-        PokemonList(
-            lazyListState = lazyListState,
-            items = pokemons,
-            sharedTransitionScope = null,
-            animatedVisibilityScope = null,
-            onClickPokemon = {
 
-            },
-            onClickSave = {
-
-            }
-        )
+        items(pokemons, key = { it.id }) { item ->
+            PokemonCard(
+                pokemon = item,
+                onClickItem = { pokemon ->
+                    onEvent.invoke(AbilityScreenEvent.OnClickPokemon(pokemon))
+                },
+                onToggleSave = { pokemon ->
+                    onEvent.invoke(AbilityScreenEvent.ToggleSave(pokemon))
+                },
+                sharedTransitionScope = null,
+                animatedVisibilityScope = null,
+            )
+        }
     }
-
-
 }
 
 @ThemePreviews
@@ -167,8 +196,8 @@ fun AbilityScreenPreview() {
     PokedexTheme {
         Surface {
             AbilityScreenContent(
-                isLoading = false,
                 title = "Overgrow",
+                isLoading = false,
                 ability = Ability(
                     id = 6260,
                     name = "Overgrow",
@@ -207,7 +236,7 @@ fun AbilityScreenPreview() {
                         abilities = listOf(1,2)
                         //gameVersions = emptyList()
                     ),
-                )
+                ),
             )
         }
     }
