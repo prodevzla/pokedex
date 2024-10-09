@@ -78,7 +78,9 @@ class MainActivity : ComponentActivity() {
                                     //pokemon = arguments.pokemon,
                                     onClickBack = {
                                         navController.navigateUp()
-                                    }
+                                    },
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = this,
                                 )
                             }
 

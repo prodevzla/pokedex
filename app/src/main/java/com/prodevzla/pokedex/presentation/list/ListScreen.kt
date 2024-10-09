@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -207,28 +208,19 @@ fun ListContent(
                     }
                 }
 
-                LazyColumn(
-                    state = lazyListState,
+                PokemonList(
                     modifier = modifier,
-                    contentPadding = PaddingValues(MaterialTheme.spacing.small),
-                ) {
-                    items(state.pokemonList, key = { it.id }) { item ->
-                        with(sharedTransitionScope) {
-                            with(animatedVisibilityScope) {
-                                PokemonCard(
-                                    pokemon = item,
-                                    onClickItem = { pokemon ->
-                                        onEvent.invoke(ListScreenEvent.ClickPokemon(pokemon))
-                                    },
-                                    onToggleSave = { pokemon ->
-                                        onEvent.invoke(ListScreenEvent.ToggleSave(pokemon))
-                                    },
-                                )
-                            }
-                        }
-
+                    lazyListState = lazyListState,
+                    items = state.pokemonList,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    onClickPokemon = { pokemon ->
+                        onEvent.invoke(ListScreenEvent.ClickPokemon(pokemon))
+                    },
+                    onClickSave = { pokemon ->
+                        onEvent.invoke(ListScreenEvent.ToggleSave(pokemon))
                     }
-                }
+                )
 
                 showFilterDialog?.let { filter ->
                     FilterBottomSheet(
@@ -262,6 +254,39 @@ fun ListContent(
 
 }
 
+@Composable
+fun PokemonList(
+    modifier: Modifier = Modifier,
+    lazyListState: LazyListState,
+    items: List<Pokemon>,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?,
+    onClickPokemon: (Pokemon) -> Unit,
+    onClickSave: (Pokemon) -> Unit,
+) {
+    LazyColumn(
+        modifier = modifier,
+        state = lazyListState,
+        contentPadding = PaddingValues(MaterialTheme.spacing.small),
+    ) {
+        items(items, key = { it.id }) { item ->
+
+            PokemonCard(
+                pokemon = item,
+                onClickItem = { pokemon ->
+                    onClickPokemon.invoke(pokemon)
+                },
+                onToggleSave = { pokemon ->
+                    onClickSave.invoke(pokemon)
+                },
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+
+        }
+    }
+}
+
 @ThemePreviews
 @Composable
 fun ListScreenPreview() {
@@ -278,7 +303,8 @@ fun ListScreenPreview() {
                 ),
                 generation = 1,
                 image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                isSaved = false
+                isSaved = false,
+                abilities = listOf(1,2)
                 //gameVersions = emptyList()
             ),
             Pokemon(
@@ -292,7 +318,8 @@ fun ListScreenPreview() {
                 ),
                 generation = 1,
                 image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
-                isSaved = true
+                isSaved = true,
+                abilities = listOf(1,2)
                 //gameVersions = emptyList()
             ),
         ),

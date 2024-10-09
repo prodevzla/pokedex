@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.prodevzla.pokedex.presentation.list.composable
 
 import androidx.compose.animation.AnimatedVisibility
@@ -44,14 +46,15 @@ import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
-context(SharedTransitionScope, AnimatedVisibilityScope)
-@OptIn(ExperimentalSharedTransitionApi::class)
+//context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
 fun PokemonCard(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
     onClickItem: (Pokemon) -> Unit = {},
     onToggleSave: (Pokemon) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: AnimatedVisibilityScope?,
 ) {
     Card(
         modifier = modifier
@@ -137,7 +140,11 @@ fun PokemonCard(
                                 .copy(alpha = 0.6f),
                             shape = imageBackgroundShape
                         )
-                        .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
+                        .sharedElementTransition(
+                            key = sharedKeyPokemonImage + pokemon.id,
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
                 )
             }
         }
@@ -177,7 +184,6 @@ val imageBackgroundShape = RoundedCornerShape(
     bottomStartPercent = 50,
 )
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
 fun PokemonCardPreview() {
@@ -198,8 +204,11 @@ fun PokemonCardPreview() {
                             generation = 1,
                             image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
                             isSaved = true,
+                            abilities = listOf(1,2)
                             //gameVersions = emptyList()
                         ),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
                     )
                 }
             }
@@ -208,7 +217,6 @@ fun PokemonCardPreview() {
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
 fun PokemonCardUnsavedPreview() {
@@ -229,8 +237,11 @@ fun PokemonCardUnsavedPreview() {
                             generation = 1,
                             image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
                             isSaved = false,
+                            abilities = listOf(1,2)
                             //gameVersions = emptyList()
                         ),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
                     )
                 }
             }

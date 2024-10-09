@@ -8,6 +8,7 @@ data class Pokemon(
     val types: List<PokemonType>,
     val generation: Int,
     val isSaved: Boolean,
+    val abilities: List<Int>
     //val gameVersions: List<Int>,
 )
 

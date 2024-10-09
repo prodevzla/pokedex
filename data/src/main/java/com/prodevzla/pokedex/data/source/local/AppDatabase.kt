@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.prodevzla.pokedex.data.source.model.AbilitiesConverter
+import com.prodevzla.pokedex.data.source.model.PokemonAbilitiesConverter
 import com.prodevzla.pokedex.data.source.model.PokemonEntity
 import com.prodevzla.pokedex.data.source.model.PokemonGenerationEntity
 import com.prodevzla.pokedex.data.source.model.PokemonInfoEntity
@@ -19,7 +20,11 @@ import com.prodevzla.pokedex.data.source.model.PokemonTypeConverter
     ],
     version = 3
 )
-@TypeConverters(PokemonTypeConverter::class, AbilitiesConverter::class)
+@TypeConverters(
+    PokemonTypeConverter::class,
+    AbilitiesConverter::class,
+    PokemonAbilitiesConverter::class
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao
     abstract fun pokemonGenerationDao(): PokemonGenerationDao

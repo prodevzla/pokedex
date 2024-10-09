@@ -14,8 +14,8 @@ data class PokemonEntity(
     @androidx.room.TypeConverters(PokemonTypeConverter::class) val types: List<PokemonType>,
     @ColumnInfo(name = "generation") val generation: Int,
     @ColumnInfo(name = "isSaved") val isSaved: Boolean,
+    @androidx.room.TypeConverters(PokemonAbilitiesConverter::class) val abilities: List<Int>
 )
-
 
 class PokemonTypeConverter {
     @androidx.room.TypeConverter
@@ -29,5 +29,16 @@ class PokemonTypeConverter {
             PokemonType(id = it[0].toInt(), name = UiText.DynamicString(it[1]))
         }
     }
+}
 
+class PokemonAbilitiesConverter {
+    @androidx.room.TypeConverter
+    fun fromList(abilities: List<Int>): String {
+        return abilities.joinToString(separator = ",")
+    }
+
+    @androidx.room.TypeConverter
+    fun toList(abilities: String): List<Int> {
+        return abilities.split(",").map { it.toInt() }
+    }
 }

@@ -56,12 +56,13 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
 //https://medium.com/@tunahan.bozkurt/custom-scroll-behavior-in-jetpack-compose-2d5a0e57d742
-context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
 fun PokemonDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: PokemonDetailsViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val pokemonState = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -79,17 +80,21 @@ fun PokemonDetailScreen(
                 PokemonDetailEvent.OnClickBack -> onClickBack.invoke()
                 PokemonDetailEvent.SaveClick -> onEvent.invoke(event)
             }
-        }
+        },
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
     )
 
 }
 
-context(SharedTransitionScope, AnimatedVisibilityScope)
+//context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
 fun PokemonDetailScreenContent(
     modifier: Modifier = Modifier,
     pokemon: Pokemon,
     onEvent: (PokemonDetailEvent) -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     CustomScaffold(
         modifier = modifier,
@@ -124,7 +129,11 @@ fun PokemonDetailScreenContent(
             modifier = Modifier.background(color = pokemon.types.first().getColor())
         ) {
 
-            PokemonDetailHeader(pokemon = pokemon)
+            PokemonDetailHeader(
+                pokemon = pokemon,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
+            )
 
             PokemonViewPager(
                 modifier = Modifier
@@ -141,9 +150,12 @@ fun PokemonDetailScreenContent(
     }
 }
 
-context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
-fun PokemonDetailHeader(modifier: Modifier = Modifier, pokemon: Pokemon) {
+fun PokemonDetailHeader(
+    modifier: Modifier = Modifier, pokemon: Pokemon,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Column(
             modifier = Modifier
@@ -191,7 +203,11 @@ fun PokemonDetailHeader(modifier: Modifier = Modifier, pokemon: Pokemon) {
                             .copy(alpha = 0.6f),
                         shape = imageBackgroundShape
                     )
-                    .sharedElementTransition(key = sharedKeyPokemonImage + pokemon.id)
+                    .sharedElementTransition(
+                        key = sharedKeyPokemonImage + pokemon.id,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    )
             )
         }
 
@@ -247,8 +263,11 @@ fun PokemonDetailScreenPreview() {
                             ),
                             generation = 1,
                             image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                            isSaved = false
+                            isSaved = false,
+                            abilities = listOf(1,2)
                         ),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this
                     )
                 }
             }

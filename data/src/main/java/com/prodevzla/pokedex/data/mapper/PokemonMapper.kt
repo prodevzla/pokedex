@@ -26,6 +26,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon? {
             ?.firstOrNull()
             ?.generation_id ?: return null,
         isSaved = false,
+        abilities = this.pokemon_v2_pokemonabilities.map { it.id }
 //        gameVersions =
 //            this.pokemon_v2_pokemonforms
 //                .firstOrNull()
@@ -50,6 +51,7 @@ fun Pokemon.toEntity(): PokemonEntity {
         generation = this.generation,
         //gameVersions = this.gameVersions,
         isSaved = this.isSaved,
+        abilities = this.abilities,
     )
 }
 
@@ -66,6 +68,7 @@ fun PokemonEntity.fromEntityToDomain(): Pokemon {
         generation = this.generation,
         //gameVersions = this.gameVersions,
         isSaved = this.isSaved,
+        abilities = this.abilities,
     )
 }
 

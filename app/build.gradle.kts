@@ -67,11 +67,11 @@ android {
     }
 }
 
-tasks.withType<KotlinJvmCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-receivers")
-    }
-}
+//tasks.withType<KotlinJvmCompile>().configureEach {
+//    compilerOptions {
+//        freeCompilerArgs.add("-Xcontext-receivers")
+//    }
+//}
 
 dependencies {
     implementation(project(":domain"))
