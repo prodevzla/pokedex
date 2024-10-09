@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalSharedTransitionApi::class)
 
 package com.prodevzla.pokedex.presentation.list
 

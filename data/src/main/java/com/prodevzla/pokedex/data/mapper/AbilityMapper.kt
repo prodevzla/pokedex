@@ -7,9 +7,18 @@ fun GetAbilityQuery.Pokemon_v2_ability.toDomain(): Ability {
     return Ability(
         id = this.id,
         name = this.pokemon_v2_abilitynames.first().name,
-        flavorText = this.pokemon_v2_abilityflavortexts.first().flavor_text,
-        shortEffect = this.pokemon_v2_abilityeffecttexts.first().short_effect,
-        longEffect = this.pokemon_v2_abilityeffecttexts.first().effect,
+        flavorText = this.pokemon_v2_abilityflavortexts.first().flavor_text.replace(
+            oldValue = "\n",
+            newValue = ""
+        ),
+        shortEffect = this.pokemon_v2_abilityeffecttexts.first().short_effect.replace(
+            oldValue = "\n",
+            newValue = ""
+        ),
+        longEffect = this.pokemon_v2_abilityeffecttexts.first().effect.replace(
+            oldValue = "\n",
+            newValue = ""
+        ),
     )
 }
 

@@ -1,13 +1,15 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 
 package com.prodevzla.pokedex.presentation.ability
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -24,7 +26,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Ability
+import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.model.AbilityUiState
+import com.prodevzla.pokedex.presentation.list.PokemonList
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.InfoDetailText
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
@@ -64,7 +70,8 @@ fun AbilityScreen(
             modifier = modifier,
             title = abilityName,
             isLoading = state is AbilityUiState.Loading,
-            ability = (state as? AbilityUiState.Content)?.ability
+            ability = (state as? AbilityUiState.Content)?.ability,
+            pokemons = (state as? AbilityUiState.Content)?.pokemons,
         )
 
     }
@@ -75,7 +82,8 @@ fun AbilityScreenContent(
     modifier: Modifier = Modifier,
     title: String,
     isLoading: Boolean,
-    ability: Ability?
+    ability: Ability?,
+    pokemons: List<Pokemon>?
 ) {
     Column(
         modifier = modifier
@@ -131,8 +139,23 @@ fun AbilityScreenContent(
 
         CardTitle(text = R.string.ability_title_pokemon)
 
+        val lazyListState = rememberLazyListState()
 
+        if (pokemons == null) {
+            return@Column
+        }
+        PokemonList(
+            lazyListState = lazyListState,
+            items = pokemons,
+            sharedTransitionScope = null,
+            animatedVisibilityScope = null,
+            onClickPokemon = {
 
+            },
+            onClickSave = {
+
+            }
+        )
     }
 
 
@@ -152,6 +175,38 @@ fun AbilityScreenPreview() {
                     flavorText = "Overgrow",
                     shortEffect = "Powers up Grass-type moves when the Pokemon's HP is low",
                     longEffect = "Powers up Grass-type moves when the Pokemon's HP is low asdasd asd"
+                ),
+                pokemons = listOf(
+                    Pokemon(
+                        id = 4,
+                        name = "Charmander",
+                        types = listOf(
+                            PokemonType(
+                                id = 10,
+                                name = UiText.DynamicString("Fire")
+                            )
+                        ),
+                        generation = 1,
+                        image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+                        isSaved = false,
+                        abilities = listOf(1,2)
+                        //gameVersions = emptyList()
+                    ),
+                    Pokemon(
+                        id = 5,
+                        name = "Charizard",
+                        types = listOf(
+                            PokemonType(
+                                id = 10,
+                                name = UiText.DynamicString("Fire")
+                            )
+                        ),
+                        generation = 1,
+                        image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+                        isSaved = true,
+                        abilities = listOf(1,2)
+                        //gameVersions = emptyList()
+                    ),
                 )
             )
         }

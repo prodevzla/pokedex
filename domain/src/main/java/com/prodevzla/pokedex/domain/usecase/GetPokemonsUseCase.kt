@@ -16,13 +16,6 @@ class GetPokemonsUseCase(
 
     operator fun invoke(): Flow<Result<List<Pokemon>>> =
         repository.getPokemonList()
-            .map<List<Pokemon>, Result<List<Pokemon>>> { response ->
-                Result.Success(response)
-            }
-            .onStart { emit(Result.Loading) }
-            .catch { e ->
-                println(e)
-                emit(Result.Error(e))
-            }.flowOn(Dispatchers.IO)
+            .asResult()
 
 }

@@ -6,7 +6,6 @@ import com.prodevzla.pokedex.data.mapper.executeApolloCall
 import com.prodevzla.pokedex.data.mapper.toDomain
 import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.repository.AbilityRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,7 +20,7 @@ class AbilityRepositoryImpl @Inject constructor(
                 apolloClient.query(GetAbilityQuery(id))
             },
             processResponse = { body ->
-                delay(1500)
+                //delay(1500)
                 emit(body!!.pokemon_v2_ability.toDomain())
             }
         )

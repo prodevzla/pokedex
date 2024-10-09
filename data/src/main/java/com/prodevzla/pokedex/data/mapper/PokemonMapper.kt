@@ -26,7 +26,7 @@ fun GetPokemonListQuery.Pokemon_v2_pokemon.toDomain(): Pokemon? {
             ?.firstOrNull()
             ?.generation_id ?: return null,
         isSaved = false,
-        abilities = this.pokemon_v2_pokemonabilities.map { it.id }
+        abilities = this.pokemon_v2_pokemonabilities.map { it.ability_id!! }
 //        gameVersions =
 //            this.pokemon_v2_pokemonforms
 //                .firstOrNull()

@@ -34,7 +34,7 @@ query GetPokemonListQuery {
             }
         }
         pokemon_v2_pokemonabilities {
-            id
+            ability_id
         }
     }
 }
