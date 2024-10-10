@@ -9,6 +9,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -139,10 +140,19 @@ fun PokemonDetailScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        pokemon.types
-                            .first()
-                            .getColor()
-                            .lighten(0.8f)
+                        MaterialTheme.colorScheme.surface
+//                        if (isSystemInDarkTheme()) {
+//                            pokemon.types
+//                                .first()
+//                                .getColor()
+//                                .darken(0.8f)
+//                        } else {
+//                            pokemon.types
+//                                .first()
+//                                .getColor()
+//                                .lighten(0.8f)
+//                        }
+
                     ),
                 tabRowBackgroundColor = pokemon.types.first().getColor(),
             )

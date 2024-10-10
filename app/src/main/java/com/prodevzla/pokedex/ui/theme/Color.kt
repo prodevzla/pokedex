@@ -6,6 +6,11 @@ val RoyalBlue = Color(0xFF0000FF)
 val NeutralGrey = Color(0xFFCDD4DB)
 val SelectedGrey = Color(0xFF8A8B91)
 
+val CardColorLight = Color(0xFFEDEDF3)
+val CardColorDark = Color(0xFF1E2024)
+
+
+
 val typeNormal = Color(168,168,125)
 val typeFighting = Color(133,55,45)
 val typeFlying = Color(164,145,234)

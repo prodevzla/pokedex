@@ -15,14 +15,16 @@ private val DarkColorScheme = darkColorScheme(
     primary = NeutralGrey,
     onPrimary = Color.White,
     onSurface = Color.White,
-    onSurfaceVariant = Color.LightGray
+    onSurfaceVariant = Color.LightGray,
+    surfaceContainer = CardColorDark,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = NeutralGrey,
     onPrimary = Color.Black,
     onSurface = Color.Black,
-    onSurfaceVariant = Color.LightGray
+    onSurfaceVariant = Color.LightGray,
+    surfaceContainer = CardColorLight,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
