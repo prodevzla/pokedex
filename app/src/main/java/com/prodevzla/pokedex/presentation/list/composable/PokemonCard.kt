@@ -36,8 +36,8 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
+import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.darken
 import com.prodevzla.pokedex.presentation.util.getColor
@@ -192,21 +192,7 @@ fun PokemonCardPreview() {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
                     PokemonCard(
-                        pokemon = Pokemon(
-                            id = 4,
-                            name = "Charmander",
-                            types = listOf(
-                                PokemonType(
-                                    id = 10,
-                                    name = UiText.DynamicString("Fire")
-                                )
-                            ),
-                            generation = 1,
-                            image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                            isSaved = true,
-                            abilities = listOf(1,2)
-                            //gameVersions = emptyList()
-                        ),
+                        pokemon = PreviewData.pokemon1,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )
@@ -225,21 +211,7 @@ fun PokemonCardUnsavedPreview() {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
                     PokemonCard(
-                        pokemon = Pokemon(
-                            id = 4,
-                            name = "Charmander",
-                            types = listOf(
-                                PokemonType(
-                                    id = 10,
-                                    name = UiText.DynamicString("Fire")
-                                )
-                            ),
-                            generation = 1,
-                            image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                            isSaved = false,
-                            abilities = listOf(1,2)
-                            //gameVersions = emptyList()
-                        ),
+                        pokemon = PreviewData.pokemon2,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )

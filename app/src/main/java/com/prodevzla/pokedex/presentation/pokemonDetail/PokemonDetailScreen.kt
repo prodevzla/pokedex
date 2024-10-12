@@ -9,7 +9,6 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,17 +40,16 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.list.composable.SaveButton
 import com.prodevzla.pokedex.presentation.list.composable.imageBackgroundShape
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
+import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.presentation.util.darken
 import com.prodevzla.pokedex.presentation.util.getColor
 import com.prodevzla.pokedex.presentation.util.getUIId
 import com.prodevzla.pokedex.presentation.util.getUIName
-import com.prodevzla.pokedex.presentation.util.lighten
 import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -262,20 +260,7 @@ fun PokemonDetailScreenPreview() {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
                     PokemonDetailScreenContent(
-                        pokemon = Pokemon(
-                            id = 4,
-                            name = "Charmander",
-                            types = listOf(
-                                PokemonType(
-                                    id = 10,
-                                    name = UiText.DynamicString("Fire")
-                                )
-                            ),
-                            generation = 1,
-                            image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                            isSaved = false,
-                            abilities = listOf(1,2)
-                        ),
+                        pokemon = PreviewData.pokemon1,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this
                     )

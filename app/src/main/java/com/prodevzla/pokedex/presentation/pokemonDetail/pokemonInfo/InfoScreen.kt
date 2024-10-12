@@ -9,9 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.PokemonAbility
-import com.prodevzla.pokedex.domain.model.AudioPlaybackState
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.AbilityScreen
@@ -27,8 +26,8 @@ import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.A
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.SpeciesCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
-import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
+import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -124,29 +123,8 @@ fun InfoScreenContentPreview() {
         Surface {
             InfoScreenContent(
                 state = PokemonInfoUiState.Content(
-                    spec = PokemonSpec(
-                        height = UiText.DynamicString("120 cm"),
-                        weight = UiText.DynamicString("30 Kg"),
-                        //genderRate = 8498,
-                        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                        cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
-                        statePlayVoiceover = AudioPlaybackState.IDLE,
-                        statePlayCry = AudioPlaybackState.IDLE
-                    ),
-                    abilities = listOf(
-                        PokemonAbility(
-                            id = 1,
-                            name = "Run away",
-                            description = "Enables a sure getaway from wild Pokemon",
-                            isHidden = false
-                        ),
-                        PokemonAbility(
-                            id = 2,
-                            name = "Hustle",
-                            description = "Boosts the attack stat, but lowers accuracy",
-                            isHidden = true
-                        )
-                    ),
+                    spec = PreviewData.pokemonSpec,
+                    abilities = PreviewData.pokemonAbilityList,
                     pokemonType = PokemonType(
                         id = 1,
                         name = UiText.DynamicString("Normal")

@@ -28,14 +28,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonType
-import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.model.AbilityUiState
 import com.prodevzla.pokedex.presentation.list.composable.PokemonCard
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.CardTitle
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable.InfoDetailText
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.ExpandableCard
+import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -198,45 +197,8 @@ fun AbilityScreenPreview() {
             AbilityScreenContent(
                 title = "Overgrow",
                 isLoading = false,
-                ability = Ability(
-                    id = 6260,
-                    name = "Overgrow",
-                    flavorText = "Overgrow",
-                    shortEffect = "Powers up Grass-type moves when the Pokemon's HP is low",
-                    longEffect = "Powers up Grass-type moves when the Pokemon's HP is low asdasd asd"
-                ),
-                pokemons = listOf(
-                    Pokemon(
-                        id = 4,
-                        name = "Charmander",
-                        types = listOf(
-                            PokemonType(
-                                id = 10,
-                                name = UiText.DynamicString("Fire")
-                            )
-                        ),
-                        generation = 1,
-                        image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                        isSaved = false,
-                        abilities = listOf(1,2)
-                        //gameVersions = emptyList()
-                    ),
-                    Pokemon(
-                        id = 5,
-                        name = "Charizard",
-                        types = listOf(
-                            PokemonType(
-                                id = 10,
-                                name = UiText.DynamicString("Fire")
-                            )
-                        ),
-                        generation = 1,
-                        image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
-                        isSaved = true,
-                        abilities = listOf(1,2)
-                        //gameVersions = emptyList()
-                    ),
-                ),
+                ability = PreviewData.ability,
+                pokemons = PreviewData.pokemonList,
             )
         }
     }

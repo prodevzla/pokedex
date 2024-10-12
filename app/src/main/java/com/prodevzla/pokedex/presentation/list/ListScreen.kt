@@ -38,12 +38,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Filter
-import com.prodevzla.pokedex.domain.model.FilterType
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonGeneration
-import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.Sort
-import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.list.composable.FilterBottomSheet
 import com.prodevzla.pokedex.presentation.list.composable.FiltersRow
 import com.prodevzla.pokedex.presentation.list.composable.ListAppBarTitle
@@ -54,6 +50,7 @@ import com.prodevzla.pokedex.presentation.list.model.ListState
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
+import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
@@ -265,64 +262,8 @@ fun ListContent(
 @Composable
 fun ListScreenPreview() {
     val state = ListState.Content(
-        pokemonList = mutableListOf(
-            Pokemon(
-                id = 4,
-                name = "Charmander",
-                types = listOf(
-                    PokemonType(
-                        id = 10,
-                        name = UiText.DynamicString("Fire")
-                    )
-                ),
-                generation = 1,
-                image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-                isSaved = false,
-                abilities = listOf(1,2)
-                //gameVersions = emptyList()
-            ),
-            Pokemon(
-                id = 5,
-                name = "Charizard",
-                types = listOf(
-                    PokemonType(
-                        id = 10,
-                        name = UiText.DynamicString("Fire")
-                    )
-                ),
-                generation = 1,
-                image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
-                isSaved = true,
-                abilities = listOf(1,2)
-                //gameVersions = emptyList()
-            ),
-        ),
-        filters = listOf(
-            Filter(
-                dialogTitle = UiText.DynamicString("Select generation"),
-                weight = 1.0f,
-                selection = 1,
-                values = listOf(
-                    PokemonGeneration(
-                        id = 1,
-                        name = UiText.DynamicString("Gen I")
-                    )
-                ),
-                type = FilterType.GENERATION,
-            ),
-            Filter(
-                dialogTitle = UiText.DynamicString("Select type"),
-                weight = 1.0f,
-                selection = 10,
-                values = listOf(
-                    PokemonType(
-                        id = 10,
-                        name = UiText.DynamicString("Fire")
-                    )
-                ),
-                type = FilterType.TYPE,
-            )
-        ),
+        pokemonList = PreviewData.pokemonList,
+        filters = PreviewData.filterList,
         sort = Sort(),
         search = ""
     )
