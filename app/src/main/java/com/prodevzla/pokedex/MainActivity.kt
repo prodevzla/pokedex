@@ -81,6 +81,11 @@ class MainActivity : ComponentActivity() {
                                     },
                                     sharedTransitionScope = this@SharedTransitionLayout,
                                     animatedVisibilityScope = this,
+                                    onClickPokemon = { pokemon ->
+                                        navController.navigate(PokemonDetailRoute(
+                                            id = pokemon.id
+                                        ))
+                                    }
                                 )
                             }
 

@@ -51,7 +51,7 @@ fun AbilityScreen(
         }
     ),
     onDismiss: () -> Unit = {},
-    onClickPokemon: (Pokemon) -> Unit = {},//TODO CONTINUE HERE
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()

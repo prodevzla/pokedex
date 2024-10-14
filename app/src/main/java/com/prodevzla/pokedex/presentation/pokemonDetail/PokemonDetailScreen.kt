@@ -62,6 +62,7 @@ fun PokemonDetailScreen(
     onClickBack: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
     val pokemonState = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -82,6 +83,7 @@ fun PokemonDetailScreen(
         },
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
+        onClickPokemon = onClickPokemon,
     )
 
 }
@@ -94,6 +96,7 @@ fun PokemonDetailScreenContent(
     onEvent: (PokemonDetailEvent) -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
     CustomScaffold(
         modifier = modifier,
@@ -153,6 +156,7 @@ fun PokemonDetailScreenContent(
 
                     ),
                 tabRowBackgroundColor = pokemon.types.first().getColor(),
+                onClickPokemon = onClickPokemon,
             )
         }
     }

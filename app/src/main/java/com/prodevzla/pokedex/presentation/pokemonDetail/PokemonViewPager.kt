@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreen
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.InfoScreenContentPreview
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonMore.MoreScreen
@@ -34,6 +35,7 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 fun PokemonViewPager(
     modifier: Modifier = Modifier,
     tabRowBackgroundColor: Color,
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
 
@@ -83,7 +85,7 @@ fun PokemonViewPager(
                 if (LocalInspectionMode.current) {
                     InfoScreenContentPreview()
                 } else {
-                    InfoScreen()
+                    InfoScreen(onClickPokemon = onClickPokemon)
                 }
             }
 

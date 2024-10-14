@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
+import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
@@ -34,7 +35,8 @@ import com.prodevzla.pokedex.ui.theme.spacing
 
 @Composable
 fun InfoScreen(
-    viewModel: PokemonInfoViewModel = hiltViewModel()
+    viewModel: PokemonInfoViewModel = hiltViewModel(),
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +56,8 @@ fun InfoScreen(
 
         else -> InfoScreenContent(
             state = state,
-            onEvent = onEvent
+            onEvent = onEvent,
+            onClickPokemon = onClickPokemon,
         )
     }
 
@@ -65,6 +68,7 @@ fun InfoScreenContent(
     modifier: Modifier = Modifier,
     state: PokemonInfoUiState,
     onEvent: (PokemonInfoEvent) -> Unit = {},
+    onClickPokemon: (Pokemon) -> Unit = {},
 ) {
     var showAbilityDialog: PokemonAbility? by remember { mutableStateOf(null) }
 
@@ -107,6 +111,7 @@ fun InfoScreenContent(
                 onDismiss = {
                     showAbilityDialog = null
                 },
+                onClickPokemon = onClickPokemon
             )
         }
 //        SpeciesCard(state = state)
