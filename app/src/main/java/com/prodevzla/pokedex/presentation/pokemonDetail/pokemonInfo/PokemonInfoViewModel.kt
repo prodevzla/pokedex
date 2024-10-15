@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonUseCase
@@ -16,6 +17,7 @@ import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
 import com.prodevzla.pokedex.presentation.util.retryableFlow
 import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -35,6 +37,8 @@ class PokemonInfoViewModel @Inject constructor(
 
     private val retryableFlowTrigger = RetryableFlowTrigger()
 
+    private val _showAbilityDialog: MutableStateFlow<PokemonAbility?> =  MutableStateFlow(null)
+
     val uiState: StateFlow<PokemonInfoUiState> = combine(
         retryableFlowTrigger.retryableFlow {
             pokemonInfoUseCase.invoke(pokemonId)
@@ -42,7 +46,8 @@ class PokemonInfoViewModel @Inject constructor(
         observeVoiceoverPlayerUseCase.invoke(),
         observeMediaPlayerUseCase.invoke(),
         getPokemonUseCase.invoke(pokemonId),
-    ) { infoResponse, voiceoverPlaybackState, mediaPlayerPlaybackState, pokemon ->
+        _showAbilityDialog,
+    ) { infoResponse, voiceoverPlaybackState, mediaPlayerPlaybackState, pokemon, showAbilityDialog ->
         when (infoResponse) {
             Result.Loading -> PokemonInfoUiState.Loading
             is Result.Error -> PokemonInfoUiState.Error
@@ -52,6 +57,7 @@ class PokemonInfoViewModel @Inject constructor(
                     statePlayVoiceover = voiceoverPlaybackState,
                     statePlayCry = mediaPlayerPlaybackState,
                     pokemon = pokemon,
+                    showAbilityDialog = showAbilityDialog,
                 )
         }
     }.toStateFlow(viewModelScope, PokemonInfoUiState.Loading)
@@ -71,12 +77,15 @@ class PokemonInfoViewModel @Inject constructor(
                 playMPAudioUseCase.invoke(null)
             }
 
-            is PokemonInfoEvent.OnClickAbility -> {
-                println("TODO Implement dialog: ${event.pokemonAbility}")
-            }
+            is PokemonInfoEvent.OnClickAbility ->
+                _showAbilityDialog.value = event.pokemonAbility
+
 
             PokemonInfoEvent.ClickTryAgain ->
                 retryableFlowTrigger.retry()
+
+            PokemonInfoEvent.DismissAbilityDialog ->
+                _showAbilityDialog.value = null
 
         }
 

@@ -8,4 +8,5 @@ sealed interface PokemonInfoEvent {
     data object ScreenStopped: PokemonInfoEvent
     data class OnClickAbility(val pokemonAbility: PokemonAbility): PokemonInfoEvent
     data object ClickTryAgain: PokemonInfoEvent
+    data object DismissAbilityDialog: PokemonInfoEvent
 }

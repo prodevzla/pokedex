@@ -117,7 +117,7 @@ fun PokemonDetailScreenContent(
             }
         },
         actions = {
-            val isSaved: Boolean = pokemon.isSaved ?: false
+            val isSaved: Boolean = pokemon.isSaved
             SaveButton(
                 isSaved = isSaved,
                 onClick = {

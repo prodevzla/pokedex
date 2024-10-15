@@ -9,9 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -19,7 +17,6 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Pokemon
-import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.PokemonType
 import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.ability.AbilityScreen
@@ -70,7 +67,6 @@ fun InfoScreenContent(
     onEvent: (PokemonInfoEvent) -> Unit = {},
     onClickPokemon: (Pokemon) -> Unit = {},
 ) {
-    var showAbilityDialog: PokemonAbility? by remember { mutableStateOf(null) }
 
     Column(
         modifier
@@ -100,16 +96,15 @@ fun InfoScreenContent(
             pokemonType = (state as? PokemonInfoUiState.Content)?.pokemonType,
             onClickAbility = {
                 onEvent.invoke(PokemonInfoEvent.OnClickAbility(it))
-                showAbilityDialog = it
             }
         )
 
-        showAbilityDialog?.let {
+        (state as? PokemonInfoUiState.Content)?.showAbilityDialog?.let {
             AbilityScreen(
                 abilityId = it.id,
                 abilityName = it.name,
                 onDismiss = {
-                    showAbilityDialog = null
+                    onEvent.invoke(PokemonInfoEvent.DismissAbilityDialog)
                 },
                 onClickPokemon = onClickPokemon
             )
@@ -133,7 +128,8 @@ fun InfoScreenContentPreview() {
                     pokemonType = PokemonType(
                         id = 1,
                         name = UiText.DynamicString("Normal")
-                    )
+                    ),
+                    showAbilityDialog = null
                 )
             )
         }

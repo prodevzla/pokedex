@@ -2,6 +2,7 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.viewcase
 
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
 import com.prodevzla.pokedex.domain.model.Pokemon
+import com.prodevzla.pokedex.domain.model.PokemonAbility
 import com.prodevzla.pokedex.domain.model.PokemonInfo
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonInfoUiState
 import com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.model.PokemonSpec
@@ -16,6 +17,7 @@ class TransformPokemonInfoIntoModelViewCase(
         statePlayVoiceover: AudioPlaybackState,
         statePlayCry: AudioPlaybackState,
         pokemon: Pokemon,
+        showAbilityDialog: PokemonAbility?,
     ): PokemonInfoUiState.Content {
         val spec = PokemonSpec(
             height = getHeightLabelViewCase(pokemonInfo.height),
@@ -30,7 +32,8 @@ class TransformPokemonInfoIntoModelViewCase(
         return PokemonInfoUiState.Content(
             spec = spec,
             abilities = pokemonInfo.abilities,
-            pokemonType = pokemon.types.first()
+            pokemonType = pokemon.types.first(),
+            showAbilityDialog = showAbilityDialog,
         )
     }
 

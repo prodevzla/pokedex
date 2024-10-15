@@ -10,5 +10,6 @@ sealed interface PokemonInfoUiState {
         val spec: PokemonSpec,
         val abilities: List<PokemonAbility>,
         val pokemonType: PokemonType,
+        val showAbilityDialog: PokemonAbility?,
     ) : PokemonInfoUiState
 }
