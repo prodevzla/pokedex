@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -60,14 +64,31 @@ fun AbilityScreen(
         return@remember viewModel::onEvent
     }
 
+    val skipPartiallyExpanded = remember {
+        (state as? AbilityUiState.Content)?.sheetState == SheetValue.Expanded
+    }
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        confirmValueChange = { sheetValue ->
+            onEvent.invoke(AbilityScreenEvent.SheetStateChange(sheetValue))
+            true
+        }
+    )
+
+    val lazyListState: LazyListState = rememberLazyListState()
+
     ModalBottomSheet(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.onSurface,
+        sheetState = sheetState,
+//        containerColor = MaterialTheme.colorScheme.onSurface,
         onDismissRequest = onDismiss,
     ) {
 
         if (state is AbilityUiState.Error) {
-            ErrorScreen(tryAgain = {})
+            ErrorScreen(modifier = Modifier.height(400.dp), tryAgain = {//todo: fix hardcoded height
+                onEvent.invoke(AbilityScreenEvent.ClickTryAgain)
+            })
             return@ModalBottomSheet
         }
 
@@ -80,9 +101,10 @@ fun AbilityScreen(
             onEvent = { event ->
                 when (event) {
                     is AbilityScreenEvent.OnClickPokemon -> onClickPokemon.invoke(event.pokemon)
-                    is AbilityScreenEvent.ToggleSave -> onEvent(event)
+                    else -> onEvent(event)
                 }
             },
+            lazyListState = lazyListState,
         )
 
     }
@@ -95,9 +117,12 @@ fun AbilityScreenContent(
     isLoading: Boolean,
     ability: Ability?,
     pokemons: List<Pokemon>?,
-    onEvent: (AbilityScreenEvent) -> Unit = {}
+    onEvent: (AbilityScreenEvent) -> Unit = {},
+    lazyListState: LazyListState,
 ) {
+
     LazyColumn(
+        state = lazyListState,
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
@@ -110,14 +135,14 @@ fun AbilityScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(64.dp)
-                    .background(MaterialTheme.colorScheme.onSurface)
+                    .background(MaterialTheme.colorScheme.surface)
                     //.align(Alignment.CenterHorizontally)
                     .wrapContentHeight(align = Alignment.CenterVertically),
 
 
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.surface,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
         }
@@ -199,6 +224,7 @@ fun AbilityScreenPreview() {
                 isLoading = false,
                 ability = PreviewData.ability,
                 pokemons = PreviewData.pokemonList,
+                lazyListState = rememberLazyListState()
             )
         }
     }

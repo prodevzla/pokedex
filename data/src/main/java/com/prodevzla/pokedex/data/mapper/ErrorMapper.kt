@@ -42,8 +42,8 @@ internal suspend inline fun <T : Operation.Data, R> executeApolloCall(
     processResponse: (T?) -> R
 ): R {
     return try {
-        val response = query().execute()
-        processResponse(response.data)
+        val response = query().execute().dataOrThrow()
+        processResponse(response)
     } catch (e: Exception) {
         Firebase.crashlytics.recordException(e)
         val error = when (e) {
