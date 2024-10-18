@@ -127,11 +127,9 @@ fun PokemonDetailScreenContent(
         },
 
         ) {
-        Column(
-            modifier = Modifier.background(color = pokemon.types.first().getColor())
-        ) {
 
             PokemonDetailHeader(
+                modifier = Modifier.background(color = pokemon.types.first().getColor()),
                 pokemon = pokemon,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope
@@ -159,7 +157,7 @@ fun PokemonDetailScreenContent(
                 onClickPokemon = onClickPokemon,
             )
         }
-    }
+
 }
 
 @Composable
