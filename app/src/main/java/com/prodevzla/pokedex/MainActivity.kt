@@ -15,11 +15,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.prodevzla.pokedex.presentation.abilities.AbilitiesScreen
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
+import com.prodevzla.pokedex.presentation.drawer.AppDrawerEvent
 import com.prodevzla.pokedex.presentation.list.ListScreen
-import com.prodevzla.pokedex.presentation.navigation.Favourites
+import com.prodevzla.pokedex.presentation.navigation.AbilitiesRoute
+import com.prodevzla.pokedex.presentation.navigation.FavouritesRoute
 import com.prodevzla.pokedex.presentation.navigation.HomeRoute
 import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
+import com.prodevzla.pokedex.presentation.navigation.SettingsRoute
 import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonDetailScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +51,15 @@ class MainActivity : ComponentActivity() {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
-                        AppDrawer()
+                        AppDrawer { appDrawerEvent ->
+                            navController.navigate(when (appDrawerEvent) {
+                                AppDrawerEvent.ClickAbilities -> AbilitiesRoute
+                                AppDrawerEvent.ClickSettings -> SettingsRoute
+                            })
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
                     },
                 ) {
 
@@ -89,8 +101,12 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable<Favourites> {
+                            composable<FavouritesRoute> {
                                 Text(text = "Favourites")
+                            }
+
+                            composable<AbilitiesRoute> {
+                                AbilitiesScreen()
                             }
                         }
                     }

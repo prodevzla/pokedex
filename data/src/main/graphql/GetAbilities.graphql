@@ -1,0 +1,11 @@
+query GetAbilities {
+    pokemon_v2_ability {
+        id
+        pokemon_v2_abilitynames(where: {pokemon_v2_language: {name: {_like: "en"}}}) {
+            name
+        }
+        pokemon_v2_abilityeffecttexts(where: {pokemon_v2_language: {name: {_like: "en"}}}) {
+            short_effect
+        }
+    }
+}

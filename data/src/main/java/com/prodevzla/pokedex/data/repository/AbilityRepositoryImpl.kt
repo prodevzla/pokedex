@@ -1,7 +1,9 @@
 package com.prodevzla.pokedex.data.repository
 
 import com.apollographql.apollo.ApolloClient
+import com.prodevzla.pokedex.data.GetAbilitiesQuery
 import com.prodevzla.pokedex.data.GetAbilityQuery
+import com.prodevzla.pokedex.data.mapper.AbilitiesMapper
 import com.prodevzla.pokedex.data.mapper.executeApolloCall
 import com.prodevzla.pokedex.data.mapper.toDomain
 import com.prodevzla.pokedex.domain.model.Ability
@@ -22,6 +24,17 @@ class AbilityRepositoryImpl @Inject constructor(
             processResponse = { body ->
                 //delay(1500)
                 emit(body!!.pokemon_v2_ability.toDomain())
+            }
+        )
+    }
+
+    override fun getAbilities(): Flow<List<Ability>> = flow {
+        executeApolloCall(
+            query = {
+                apolloClient.query(GetAbilitiesQuery())
+            },
+            processResponse = { body ->
+                emit(AbilitiesMapper().mapToDomain(body!!.pokemon_v2_ability))
             }
         )
     }

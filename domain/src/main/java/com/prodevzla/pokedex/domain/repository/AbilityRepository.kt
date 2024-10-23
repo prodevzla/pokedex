@@ -7,4 +7,6 @@ interface AbilityRepository {
 
     fun getAbility(id: Int): Flow<Ability>
 
+    fun getAbilities(): Flow<List<Ability>>
+
 }

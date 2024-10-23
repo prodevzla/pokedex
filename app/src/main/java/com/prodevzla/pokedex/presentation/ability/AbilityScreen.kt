@@ -160,7 +160,7 @@ fun AbilityScreenContent(
                 if (ability == null) {
                     return@ExpandableCard
                 }
-                InfoDetailText(text = ability.flavorText)
+                InfoDetailText(text = ability.flavorText ?: "")
             }
         }
 
@@ -186,7 +186,7 @@ fun AbilityScreenContent(
                 if (ability == null) {
                     return@ExpandableCard
                 }
-                InfoDetailText(text = ability.longEffect)
+                InfoDetailText(text = ability.longEffect ?: "")
             }
         }
 

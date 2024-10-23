@@ -1,6 +1,5 @@
 package com.prodevzla.pokedex.presentation.navigation
 
-import com.prodevzla.pokedex.domain.model.Pokemon
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,4 +16,10 @@ data class PokemonDetailRoute(
 )
 
 @Serializable
-object Favourites
+object FavouritesRoute
+
+@Serializable
+object AbilitiesRoute
+
+@Serializable
+object SettingsRoute
