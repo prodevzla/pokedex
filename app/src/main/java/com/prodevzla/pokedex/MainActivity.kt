@@ -106,7 +106,11 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<AbilitiesRoute> {
-                                AbilitiesScreen()
+                                AbilitiesScreen(
+                                    onClickBack = {
+                                        navController.navigateUp()
+                                    }
+                                )
                             }
                         }
                     }

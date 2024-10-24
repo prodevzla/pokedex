@@ -85,14 +85,14 @@ object PreviewData {
         statePlayCry = AudioPlaybackState.IDLE
     )
 
-    val pokemonAbility1 = PokemonAbility(
+    private val pokemonAbility1 = PokemonAbility(
         id = 1,
         name = "Run away",
         description = "Enables a sure getaway from wild Pokemon",
         isHidden = false
     )
 
-    val pokemonAbility2 = PokemonAbility(
+    private val pokemonAbility2 = PokemonAbility(
         id = 2,
         name = "Hustle",
         description = "Boosts the attack stat, but lowers accuracy",
@@ -101,12 +101,22 @@ object PreviewData {
 
     val pokemonAbilityList = listOf(pokemonAbility1, pokemonAbility2)
 
-    val ability = Ability(
+    val ability1 = Ability(
         id = 6260,
         name = "Overgrow",
         flavorText = "Overgrow",
         shortEffect = "Powers up Grass-type moves when the Pokemon's HP is low",
         longEffect = "Powers up Grass-type moves when the Pokemon's HP is low asdasd asd"
     )
+
+    val ability2 = Ability(
+        id = 6261,
+        name = "Intimidate",
+        flavorText = "Intimidate",
+        shortEffect = "Lowers opponents' Attack one stage upon entering battle",
+        longEffect = "Lowers opponents' Attack one stage upon entering battle"
+    )
+
+    val abilities = listOf(ability1, ability2)
 
 }

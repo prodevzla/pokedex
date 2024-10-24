@@ -222,7 +222,7 @@ fun AbilityScreenPreview() {
             AbilityScreenContent(
                 title = "Overgrow",
                 isLoading = false,
-                ability = PreviewData.ability,
+                ability = PreviewData.ability1,
                 pokemons = PreviewData.pokemonList,
                 lazyListState = rememberLazyListState()
             )
