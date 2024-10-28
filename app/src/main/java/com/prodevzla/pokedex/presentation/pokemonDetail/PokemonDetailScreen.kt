@@ -258,15 +258,13 @@ fun PokemonTypesColumn(modifier: Modifier = Modifier, types: List<PokemonType>) 
 @Composable
 fun PokemonDetailScreenPreview() {
     PokedexTheme {
-        Surface {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
-                    PokemonDetailScreenContent(
-                        pokemon = PreviewData.pokemon1,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
-                    )
-                }
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                PokemonDetailScreenContent(
+                    pokemon = PreviewData.pokemon1,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this
+                )
             }
         }
     }

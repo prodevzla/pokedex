@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,9 +43,7 @@ fun SaveButton(
 @Composable
 fun SavedPreview() {
     PokedexTheme {
-        Surface {
-            SaveButton(isSaved = true)
-        }
+        SaveButton(isSaved = true)
     }
 }
 
@@ -54,8 +51,6 @@ fun SavedPreview() {
 @Composable
 fun UnsavedPreview() {
     PokedexTheme {
-        Surface {
-            SaveButton(isSaved = false)
-        }
+        SaveButton(isSaved = false)
     }
 }

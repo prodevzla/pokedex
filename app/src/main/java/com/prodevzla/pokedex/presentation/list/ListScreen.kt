@@ -269,15 +269,13 @@ fun ListScreenPreview() {
     )
 
     PokedexTheme {
-        Surface {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
-                    ListContent(
-                        state = state,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
-                    )
-                }
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                ListContent(
+                    state = state,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this
+                )
             }
         }
     }
@@ -288,15 +286,13 @@ fun ListScreenPreview() {
 fun ListScreenLoadingPreview() {
     val state = ListState.Loading
     PokedexTheme {
-        Surface {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
-                    ListContent(
-                        state = state,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
-                    )
-                }
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                ListContent(
+                    state = state,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this
+                )
             }
         }
     }

@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -147,29 +146,27 @@ fun AbilityBox(
 @Composable
 fun AbilitiesCardPreview() {
     PokedexTheme {
-        Surface {
-            AbilitiesCard(
-                isLoading = false,
-                abilities = listOf(
-                    PokemonAbility(
-                        id = 1,
-                        name = "Run away",
-                        description = "Enables a sure getaway from wild Pokemon",
-                        isHidden = false
-                    ),
-                    PokemonAbility(
-                        id = 2,
-                        name = "Hustle",
-                        description = "Boosts the attack stat, but lowers accuracy",
-                        isHidden = true
-                    )
-                ),
-                pokemonType = PokemonType(
+        AbilitiesCard(
+            isLoading = false,
+            abilities = listOf(
+                PokemonAbility(
                     id = 1,
-                    name = UiText.DynamicString("Normal")
+                    name = "Run away",
+                    description = "Enables a sure getaway from wild Pokemon",
+                    isHidden = false
+                ),
+                PokemonAbility(
+                    id = 2,
+                    name = "Hustle",
+                    description = "Boosts the attack stat, but lowers accuracy",
+                    isHidden = true
                 )
-
+            ),
+            pokemonType = PokemonType(
+                id = 1,
+                name = UiText.DynamicString("Normal")
             )
-        }
+
+        )
     }
 }

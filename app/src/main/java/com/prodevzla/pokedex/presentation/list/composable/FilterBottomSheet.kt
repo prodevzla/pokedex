@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -59,7 +58,8 @@ fun FilterSheetContent(
         item {
             Text(
                 text = filter.dialogTitle.asString(),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
 
@@ -80,22 +80,20 @@ fun FilterSheetContent(
 @Composable
 fun FilterTypeBottomSheetPreview() {
     PokedexTheme {
-        Surface {
-            FilterSheetContent(
-                filter = Filter(
-                    dialogTitle = UiText.DynamicString("Select type"),
-                    weight = 1f,
-                    selection = 1,
-                    values = listOf(
-                        PokemonType(id = 1, name = UiText.DynamicString("normal")),
-                        PokemonType(id = 2, name = UiText.DynamicString("fighting")),
-                        PokemonType(id = 3, name = UiText.DynamicString("flying")),
-                        PokemonType(id = 4, name = UiText.DynamicString("poison"))
-                    ),
-                    type = FilterType.TYPE,
-                )
+        FilterSheetContent(
+            filter = Filter(
+                dialogTitle = UiText.DynamicString("Select type"),
+                weight = 1f,
+                selection = 1,
+                values = listOf(
+                    PokemonType(id = 1, name = UiText.DynamicString("normal")),
+                    PokemonType(id = 2, name = UiText.DynamicString("fighting")),
+                    PokemonType(id = 3, name = UiText.DynamicString("flying")),
+                    PokemonType(id = 4, name = UiText.DynamicString("poison"))
+                ),
+                type = FilterType.TYPE,
             )
-        }
+        )
     }
 }
 

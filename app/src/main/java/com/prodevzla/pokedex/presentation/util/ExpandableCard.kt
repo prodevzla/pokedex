@@ -9,7 +9,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -53,9 +52,7 @@ fun ExpandableCard(
 @Composable
 fun ExpandableCardLoadingPreview() {
     PokedexTheme {
-        Surface {
-            ExpandableCard(isLoading = true) {}
-        }
+        ExpandableCard(isLoading = true) {}
     }
 }
 
@@ -63,10 +60,8 @@ fun ExpandableCardLoadingPreview() {
 @Composable
 fun ExpandableCardNotLoadingPreview() {
     PokedexTheme {
-        Surface {
-            ExpandableCard(isLoading = false) {
-                Text("Test")
-            }
+        ExpandableCard(isLoading = false) {
+            Text("Test")
         }
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.SubcomposeLayout
@@ -59,9 +58,7 @@ fun PlayAudioContent(
 @Composable
 fun PlayAudioContentIdlePreview() {
     PokedexTheme {
-        Surface {
-            PlayAudioContent(state = AudioPlaybackState.IDLE) { }
-        }
+        PlayAudioContent(state = AudioPlaybackState.IDLE) { }
     }
 }
 
@@ -69,8 +66,6 @@ fun PlayAudioContentIdlePreview() {
 @Composable
 fun PlayAudioContentPlayingPreview() {
     PokedexTheme {
-        Surface {
-            PlayAudioContent(state = AudioPlaybackState.PLAYING) { }
-        }
+        PlayAudioContent(state = AudioPlaybackState.PLAYING) { }
     }
 }

@@ -3,7 +3,6 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.pokemonInfo.composable
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +20,8 @@ fun CardTitle(modifier: Modifier = Modifier, @StringRes text: Int) {
         style = MaterialTheme.typography.titleMedium,
         modifier = modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface
     )
 }
 
@@ -29,8 +29,6 @@ fun CardTitle(modifier: Modifier = Modifier, @StringRes text: Int) {
 @Composable
 fun CardTitlePreview() {
     PokedexTheme {
-        Surface {
-            CardTitle(text = R.string.tab_pokemon_info_abilities)
-        }
+        CardTitle(text = R.string.tab_pokemon_info_abilities)
     }
 }

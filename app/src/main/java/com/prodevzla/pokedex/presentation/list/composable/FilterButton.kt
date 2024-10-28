@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,11 +46,9 @@ fun FilterButton(
 @Composable
 fun FilterButtonPreview() {
     PokedexTheme {
-        Surface {
-            FilterButton(
-                text = UiText.DynamicString("Select type"),
-                color = PokemonType(id = 1, name = UiText.DynamicString("normal")).getColor(),
-            )
-        }
+        FilterButton(
+            text = UiText.DynamicString("Select type"),
+            color = PokemonType(id = 1, name = UiText.DynamicString("normal")).getColor(),
+        )
     }
 }

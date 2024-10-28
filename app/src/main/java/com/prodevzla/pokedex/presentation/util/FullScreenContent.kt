@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -61,9 +60,7 @@ fun GenericContent(
 @Composable
 fun ErrorPreview() {
     PokedexTheme {
-        Surface {
-            ErrorScreen()
-        }
+        ErrorScreen()
     }
 }
 
@@ -71,8 +68,6 @@ fun ErrorPreview() {
 @Composable
 fun LoadingPreview() {
     PokedexTheme {
-        Surface {
-            LoadingScreen()
-        }
+        LoadingScreen()
     }
 }

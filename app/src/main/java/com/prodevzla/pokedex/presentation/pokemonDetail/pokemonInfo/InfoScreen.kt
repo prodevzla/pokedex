@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -120,18 +119,16 @@ fun InfoScreenContent(
 @Composable
 fun InfoScreenContentPreview() {
     PokedexTheme {
-        Surface {
-            InfoScreenContent(
-                state = PokemonInfoUiState.Content(
-                    spec = PreviewData.pokemonSpec,
-                    abilities = PreviewData.pokemonAbilityList,
-                    pokemonType = PokemonType(
-                        id = 1,
-                        name = UiText.DynamicString("Normal")
-                    ),
-                    showAbilityDialog = null
-                )
+        InfoScreenContent(
+            state = PokemonInfoUiState.Content(
+                spec = PreviewData.pokemonSpec,
+                abilities = PreviewData.pokemonAbilityList,
+                pokemonType = PokemonType(
+                    id = 1,
+                    name = UiText.DynamicString("Normal")
+                ),
+                showAbilityDialog = null
             )
-        }
+        )
     }
 }

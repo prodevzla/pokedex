@@ -17,7 +17,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -135,13 +134,11 @@ fun AbilityCard(modifier: Modifier = Modifier, ability: Ability, onClick: () -> 
 @Composable
 fun AbilitiesScreenPreview() {
     PokedexTheme {
-        Surface {
-            AbilitiesScreenContent(state = AbilitiesUiState.Content(
-                abilities = PreviewData.abilities
-            ), onEvent = {}
+        AbilitiesScreenContent(state = AbilitiesUiState.Content(
+            abilities = PreviewData.abilities
+        ), onEvent = {}
 
-            )
-        }
+        )
     }
 }
 
@@ -149,11 +146,9 @@ fun AbilitiesScreenPreview() {
 @Composable
 fun AbilityCardPreview() {
     PokedexTheme {
-        Surface {
-            AbilityCard(
-                ability = PreviewData.ability1,
-                onClick = {}
-            )
-        }
+        AbilityCard(
+            ability = PreviewData.ability1,
+            onClick = {}
+        )
     }
 }

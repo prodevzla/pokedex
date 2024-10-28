@@ -16,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -218,14 +217,12 @@ fun AbilityScreenContent(
 @Composable
 fun AbilityScreenPreview() {
     PokedexTheme {
-        Surface {
-            AbilityScreenContent(
-                title = "Overgrow",
-                isLoading = false,
-                ability = PreviewData.ability1,
-                pokemons = PreviewData.pokemonList,
-                lazyListState = rememberLazyListState()
-            )
-        }
+        AbilityScreenContent(
+            title = "Overgrow",
+            isLoading = false,
+            ability = PreviewData.ability1,
+            pokemons = PreviewData.pokemonList,
+            lazyListState = rememberLazyListState()
+        )
     }
 }

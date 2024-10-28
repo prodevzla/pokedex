@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -188,36 +187,31 @@ val imageBackgroundShape = RoundedCornerShape(
 @Composable
 fun PokemonCardPreview() {
     PokedexTheme {
-        Surface {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
-                    PokemonCard(
-                        pokemon = PreviewData.pokemon1,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
-                    )
-                }
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                PokemonCard(
+                    pokemon = PreviewData.pokemon1,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this
+                )
             }
         }
-
     }
+
 }
 
 @ThemePreviews
 @Composable
 fun PokemonCardUnsavedPreview() {
     PokedexTheme {
-        Surface {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
-                    PokemonCard(
-                        pokemon = PreviewData.pokemon2,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this
-                    )
-                }
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                PokemonCard(
+                    pokemon = PreviewData.pokemon2,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this
+                )
             }
         }
-
     }
 }

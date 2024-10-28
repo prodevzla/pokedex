@@ -13,12 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -149,7 +147,8 @@ fun InfoDetailText(modifier: Modifier = Modifier, text: String) {
             .fillMaxWidth(),
         text = text,
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface
     )
 }
 
@@ -157,20 +156,18 @@ fun InfoDetailText(modifier: Modifier = Modifier, text: String) {
 @Composable
 fun SpeciesCardPreview() {
     PokedexTheme {
-        Surface {
-            SpeciesCard(
-                isLoading = false,
-                state = PokemonSpec(
-                    height = UiText.DynamicString("120 cm"),
-                    weight = UiText.DynamicString("30 Kg"),
-                    //genderRate = 8498,
-                    flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-                    cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
-                    statePlayVoiceover = AudioPlaybackState.PLAYING,
-                    statePlayCry = AudioPlaybackState.IDLE
-                ),
-            )
-        }
+        SpeciesCard(
+            isLoading = false,
+            state = PokemonSpec(
+                height = UiText.DynamicString("120 cm"),
+                weight = UiText.DynamicString("30 Kg"),
+                //genderRate = 8498,
+                flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+                cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
+                statePlayVoiceover = AudioPlaybackState.PLAYING,
+                statePlayCry = AudioPlaybackState.IDLE
+            ),
+        )
     }
 }
 
@@ -178,10 +175,8 @@ fun SpeciesCardPreview() {
 @Composable
 fun InfoDetailPreview() {
     PokedexTheme {
-        Surface {
-            InfoDetailBox(label = "height") {
-                InfoDetailText(text = "0.1m")
-            }
+        InfoDetailBox(label = "height") {
+            InfoDetailText(text = "0.1m")
         }
     }
 }
@@ -189,9 +184,7 @@ fun InfoDetailPreview() {
 @ThemePreviews
 @Composable
 fun SquareBoxTextPreview() {
-    PokedexTheme { 
-        Surface {
-            InfoDetailText(text = "0.1m")
-        }
+    PokedexTheme {
+        InfoDetailText(text = "0.1m")
     }
 }
