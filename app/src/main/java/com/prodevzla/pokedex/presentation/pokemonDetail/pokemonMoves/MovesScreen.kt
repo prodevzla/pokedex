@@ -23,7 +23,7 @@ fun MovesScreen(modifier: Modifier = Modifier) {
 
 @ThemePreviews
 @Composable
-fun MovesContentPreview() {
+private fun MovesContentPreview() {
     PokedexTheme {
         MovesScreen()
     }

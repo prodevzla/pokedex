@@ -188,3 +188,13 @@ fun SquareBoxTextPreview() {
         InfoDetailText(text = "0.1m")
     }
 }
+
+@ThemePreviews
+@Composable
+fun SquareBoxAudioPreview() {
+    PokedexTheme {
+        InfoDetailBox(label = "Audio") {
+            PlayAudioContent(state = AudioPlaybackState.IDLE) { }
+        }
+    }
+}

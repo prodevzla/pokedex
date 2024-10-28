@@ -100,7 +100,7 @@ fun ColumnContent(
 
 @ThemePreviews
 @Composable
-fun CustomScaffoldPreview() {
+private fun CustomScaffoldPreview() {
     PokedexTheme {
         CustomScaffold(modifier = Modifier, title = { Text("Pokedex") }) {
             Text(text = "Hello")

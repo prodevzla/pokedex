@@ -126,7 +126,7 @@ fun SortDialog(
 
 @ThemePreviews
 @Composable
-fun SortDialogPreview() {
+private fun SortDialogPreview() {
     PokedexTheme {
         SortDialog(
             value = Sort()

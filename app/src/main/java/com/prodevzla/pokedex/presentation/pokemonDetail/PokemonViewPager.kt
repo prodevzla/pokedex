@@ -100,7 +100,7 @@ fun PokemonViewPager(
 
 @ThemePreviews
 @Composable
-fun PokemonViewPagerPreview() {
+private fun PokemonViewPagerPreview() {
     PokedexTheme {
         Surface {
             PokemonViewPager(

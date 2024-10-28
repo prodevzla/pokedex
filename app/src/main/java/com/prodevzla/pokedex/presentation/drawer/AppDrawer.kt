@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,37 +19,60 @@ import com.prodevzla.pokedex.ui.theme.PokedexTheme
 fun AppDrawer(onClick: (AppDrawerEvent) -> Unit) {
     ModalDrawerSheet {
         Column {
-            ListItem(
-                modifier = Modifier.clickable {
-                    onClick.invoke(AppDrawerEvent.ClickAbilities)
-                },
-                headlineContent = {
-                    Text("Abilities")
-                },
+            DrawerItem(
+                label = "Favourites",
+                event = AppDrawerEvent.ClickFavourites,
+                onClick = onClick
             )
             HorizontalDivider(modifier = Modifier.height(1.dp))
-            ListItem(
-                modifier = Modifier.clickable {
-                    onClick.invoke(AppDrawerEvent.ClickSettings)
-                },
-                headlineContent = {
-                    Text("Settings")
-                },
+
+            DrawerItem(
+                label = "Abilities",
+                event = AppDrawerEvent.ClickAbilities,
+                onClick = onClick
             )
             HorizontalDivider(modifier = Modifier.height(1.dp))
+
+            DrawerItem(
+                label = "Settings",
+                event = AppDrawerEvent.ClickSettings,
+                onClick = onClick
+            )
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+
+            DrawerItem(
+                label = "Palette",
+                event = AppDrawerEvent.ClickPalette,
+                onClick = onClick
+            )
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+
         }
     }
 }
 
+@Composable
+fun DrawerItem(label: String, event: AppDrawerEvent, onClick: (AppDrawerEvent) -> Unit) {
+    ListItem(
+        modifier = Modifier.clickable {
+            onClick.invoke(event)
+        },
+        headlineContent = {
+            Text(
+                label,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        },
+    )
+}
+
 @ThemePreviews
 @Composable
-fun AppDrawerPreview() {
-    PokedexTheme { 
+private fun AppDrawerPreview() {
+    PokedexTheme {
         Surface {
             AppDrawer({})
         }
     }
 }
-
-//prepare query with all the abilities
-//create events sealed class for this screen

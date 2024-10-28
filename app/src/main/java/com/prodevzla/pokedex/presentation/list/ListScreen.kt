@@ -260,7 +260,7 @@ fun ListContent(
 
 @ThemePreviews
 @Composable
-fun ListScreenPreview() {
+private fun ListScreenPreview() {
     val state = ListState.Content(
         pokemonList = PreviewData.pokemonList,
         filters = PreviewData.filterList,
@@ -283,7 +283,7 @@ fun ListScreenPreview() {
 
 @ThemePreviews
 @Composable
-fun ListScreenLoadingPreview() {
+private fun ListScreenLoadingPreview() {
     val state = ListState.Loading
     PokedexTheme {
         SharedTransitionLayout {

@@ -256,7 +256,7 @@ fun PokemonTypesColumn(modifier: Modifier = Modifier, types: List<PokemonType>) 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @ThemePreviews
 @Composable
-fun PokemonDetailScreenPreview() {
+private fun PokemonDetailScreenPreview() {
     PokedexTheme {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {

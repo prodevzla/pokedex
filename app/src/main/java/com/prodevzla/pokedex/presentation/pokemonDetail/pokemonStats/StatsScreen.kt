@@ -27,7 +27,7 @@ fun StatsScreen(
 
 @ThemePreviews
 @Composable
-fun StatsContentPreview() {
+private fun StatsContentPreview() {
     PokedexTheme {
         StatsScreen()
     }

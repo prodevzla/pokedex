@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -47,24 +45,34 @@ android {
             }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.13"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    ksp {
+        arg("skipPrivatePreviews", "true")
+    }
+
 }
 
 //tasks.withType<KotlinJvmCompile>().configureEach {
@@ -101,6 +109,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+    implementation(libs.showkase.annotation)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
@@ -111,9 +120,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation(libs.leak.canary)
+    debugImplementation(libs.showkase)
 
     ksp(libs.hilt.android.compiler)
     ksp(libs.moshi.kotlin.codegen)
+    kspDebug(libs.showkase.processor)
 
 }
 

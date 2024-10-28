@@ -58,7 +58,7 @@ fun GenericContent(
 
 @ThemePreviews
 @Composable
-fun ErrorPreview() {
+private fun ErrorPreview() {
     PokedexTheme {
         ErrorScreen()
     }
@@ -66,7 +66,7 @@ fun ErrorPreview() {
 
 @ThemePreviews
 @Composable
-fun LoadingPreview() {
+private fun LoadingPreview() {
     PokedexTheme {
         LoadingScreen()
     }

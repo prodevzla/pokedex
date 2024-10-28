@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.airbnb.android.showkase.models.Showkase
 import com.prodevzla.pokedex.presentation.abilities.AbilitiesScreen
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.drawer.AppDrawerEvent
@@ -52,13 +53,18 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = {
                         AppDrawer { appDrawerEvent ->
+                            if (appDrawerEvent == AppDrawerEvent.ClickPalette) {
+                                startActivity(Showkase.getBrowserIntent(navController.context))
+                                toggleDrawer(scope, drawerState)
+                                return@AppDrawer
+                            }
                             navController.navigate(when (appDrawerEvent) {
+                                AppDrawerEvent.ClickFavourites -> FavouritesRoute
                                 AppDrawerEvent.ClickAbilities -> AbilitiesRoute
                                 AppDrawerEvent.ClickSettings -> SettingsRoute
+                                else -> {}
                             })
-                            scope.launch {
-                                drawerState.close()
-                            }
+                            toggleDrawer(scope, drawerState)
                         }
                     },
                 ) {
@@ -111,6 +117,10 @@ class MainActivity : ComponentActivity() {
                                         navController.navigateUp()
                                     }
                                 )
+                            }
+
+                            composable<SettingsRoute> {
+                                Text(text = "Settings")
                             }
                         }
                     }

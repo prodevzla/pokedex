@@ -132,7 +132,7 @@ fun AbilityCard(modifier: Modifier = Modifier, ability: Ability, onClick: () -> 
 
 @ThemePreviews
 @Composable
-fun AbilitiesScreenPreview() {
+private fun AbilitiesScreenPreview() {
     PokedexTheme {
         AbilitiesScreenContent(state = AbilitiesUiState.Content(
             abilities = PreviewData.abilities

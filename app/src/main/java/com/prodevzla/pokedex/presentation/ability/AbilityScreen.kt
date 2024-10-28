@@ -215,7 +215,7 @@ fun AbilityScreenContent(
 
 @ThemePreviews
 @Composable
-fun AbilityScreenPreview() {
+private fun AbilityScreenPreview() {
     PokedexTheme {
         AbilityScreenContent(
             title = "Overgrow",
