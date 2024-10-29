@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
+import com.prodevzla.pokedex.BuildConfig
 
 @Composable
 fun AppDrawer(onClick: (AppDrawerEvent) -> Unit) {
@@ -40,12 +41,14 @@ fun AppDrawer(onClick: (AppDrawerEvent) -> Unit) {
             )
             HorizontalDivider(modifier = Modifier.height(1.dp))
 
-            DrawerItem(
-                label = "Palette",
-                event = AppDrawerEvent.ClickPalette,
-                onClick = onClick
-            )
-            HorizontalDivider(modifier = Modifier.height(1.dp))
+            if (BuildConfig.DEBUG) {
+                DrawerItem(
+                    label = "Palette",
+                    event = AppDrawerEvent.ClickPalette,
+                    onClick = onClick
+                )
+                HorizontalDivider(modifier = Modifier.height(1.dp))
+            }
 
         }
     }

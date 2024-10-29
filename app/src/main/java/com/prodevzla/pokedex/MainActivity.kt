@@ -15,10 +15,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.android.showkase.models.Showkase
 import com.prodevzla.pokedex.presentation.abilities.AbilitiesScreen
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.drawer.AppDrawerEvent
+import com.prodevzla.pokedex.presentation.drawer.handlePalette
 import com.prodevzla.pokedex.presentation.list.ListScreen
 import com.prodevzla.pokedex.presentation.navigation.AbilitiesRoute
 import com.prodevzla.pokedex.presentation.navigation.FavouritesRoute
@@ -53,8 +53,8 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = {
                         AppDrawer { appDrawerEvent ->
-                            if (appDrawerEvent == AppDrawerEvent.ClickPalette) {
-                                startActivity(Showkase.getBrowserIntent(navController.context))
+                            if (BuildConfig.DEBUG) {
+                                handlePalette(navController.context, appDrawerEvent)
                                 toggleDrawer(scope, drawerState)
                                 return@AppDrawer
                             }
