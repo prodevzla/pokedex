@@ -26,7 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.prodevzla.pokedex.domain.model.Ability
+import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.abilities.model.AbilitiesUiState
+import com.prodevzla.pokedex.presentation.ability.AbilityScreen
 import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
@@ -40,6 +42,7 @@ fun AbilitiesScreen(
     modifier: Modifier = Modifier,
     viewModel: AbilitiesViewModel = hiltViewModel(),
     onClickBack: () -> Unit,
+    onClickPokemon: (Pokemon) -> Unit,
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -50,7 +53,8 @@ fun AbilitiesScreen(
 
     AbilitiesScreenContent(modifier, state, onEvent = { event ->
         when (event) {
-            AbilitiesScreenEvent.OnClickBack -> onClickBack.invoke()
+            AbilitiesScreenEvent.ClickBack -> onClickBack.invoke()
+            is AbilitiesScreenEvent.ClickPokemon -> onClickPokemon.invoke(event.pokemon)
             else -> onEvent.invoke(event)
         }
     })
@@ -74,7 +78,7 @@ fun AbilitiesScreenContent(
         },
         navIcon = {
             IconButton(onClick = {
-                onEvent(AbilitiesScreenEvent.OnClickBack)
+                onEvent(AbilitiesScreenEvent.ClickBack)
             }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "navigate back")
             }
@@ -97,10 +101,24 @@ fun AbilitiesScreenContent(
                         AbilityCard(
                             ability = ability,
                             onClick = {
-                                onEvent.invoke(AbilitiesScreenEvent.OnClickAbility(ability))
+                                onEvent.invoke(AbilitiesScreenEvent.ClickAbility(ability))
+
                             }
                         )
                     }
+                }
+
+                state.showAbilityDialog?.let {
+                    AbilityScreen(
+                        abilityId = it.id,
+                        abilityName = it.name,
+                        onDismiss = {
+                            onEvent.invoke(AbilitiesScreenEvent.DismissAbilityDialog)
+                        },
+                        onClickPokemon = {
+                            onEvent.invoke(AbilitiesScreenEvent.ClickPokemon(it))
+                        }
+                    )
                 }
             }
         }
@@ -136,9 +154,13 @@ fun AbilityCard(modifier: Modifier = Modifier, ability: Ability, onClick: () -> 
 @Composable
 private fun AbilitiesScreenPreview() {
     PokedexTheme {
-        AbilitiesScreenContent(state = AbilitiesUiState.Content(
-            abilities = PreviewData.abilities
-        ), onEvent = {}
+        AbilitiesScreenContent(
+            state = AbilitiesUiState.Content(
+                abilities = PreviewData.abilities,
+                showAbilityDialog = null,
+
+                ),
+            onEvent = {}
 
         )
     }

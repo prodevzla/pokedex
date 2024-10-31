@@ -106,6 +106,11 @@ class MainActivity : ComponentActivity() {
                                 AbilitiesScreen(
                                     onClickBack = {
                                         navController.navigateUp()
+                                    },
+                                    onClickPokemon = { pokemon ->
+                                        navController.navigate(NavigationRoute.PokemonDetailRoute(
+                                            id = pokemon.id
+                                        ))
                                     }
                                 )
                             }
