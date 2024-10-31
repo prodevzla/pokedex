@@ -22,9 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.prodevzla.pokedex.R
 import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.presentation.abilities.model.AbilitiesUiState
@@ -70,12 +72,13 @@ fun AbilitiesScreenContent(
     CustomScaffold(
         title = {
             Text(
-                text = "Abilities",
+                text = stringResource(R.string.title_abilities),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
         },
+        showTitleDivider = true,
         navIcon = {
             IconButton(onClick = {
                 onEvent(AbilitiesScreenEvent.ClickBack)

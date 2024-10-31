@@ -29,4 +29,6 @@
     <string name="ability_title_effect">Effect</string>
     <string name="ability_title_details">Details</string>
     <string name="ability_title_pokemon">Pokèmon with this ability</string>
+    <string name="title_favourites">Favourites</string>
+    <string name="title_abilities">Abilities</string>
 </resources>

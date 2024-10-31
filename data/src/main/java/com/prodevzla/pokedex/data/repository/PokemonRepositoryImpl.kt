@@ -148,4 +148,12 @@ open class PokemonRepositoryImpl @Inject constructor(
         pokemonDao.updateSaveStatus(updatedRecord)
     }
 
+    override fun getFavourites(): Flow<List<Pokemon>> =
+        pokemonDao.getFavourites()
+            .map { pokemonEntities ->
+                //delay(1500)
+                //throw Exception("test")
+                pokemonEntities.fromEntityToDomain()
+            }
+
 }

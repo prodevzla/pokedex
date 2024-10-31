@@ -7,6 +7,7 @@ import com.prodevzla.pokedex.domain.repository.AudioRepository
 import com.prodevzla.pokedex.domain.repository.PokemonRepository
 import com.prodevzla.pokedex.domain.usecase.GetAbilitiesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetAbilityUseCase
+import com.prodevzla.pokedex.domain.usecase.GetFavouritesUseCase
 import com.prodevzla.pokedex.domain.usecase.GetFiltersUseCase
 import com.prodevzla.pokedex.domain.usecase.GetGameVersionsUseCase
 import com.prodevzla.pokedex.domain.usecase.GetPokemonInfoUseCase
@@ -118,4 +119,8 @@ object DomainModule {
 
     @Provides
     fun provideGetAbilitiesUseCase(repository: AbilityRepository) = GetAbilitiesUseCase(repository)
+
+    @Provides
+    fun provideGetFavouritesUseCase(repository: PokemonRepository) = GetFavouritesUseCase(repository)
+
 }

@@ -26,4 +26,7 @@ interface PokemonDao: BaseDao<PokemonEntity> {
     @Update
     fun updateSaveStatus(pokemonEntity: PokemonEntity)
 
+    @Query("SELECT * FROM pokemonentity WHERE isSaved = 1")
+    fun getFavourites(): Flow<List<PokemonEntity>>
+
 }

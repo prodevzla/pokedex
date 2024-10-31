@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,24 +33,31 @@ fun CustomScaffold(
     pullToRefreshEnabled: Boolean = false,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
+    showTitleDivider: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = title,
-                colors = TopAppBarColors(
-                    containerColor = topBarColor,
-                    scrolledContainerColor = Color.Black,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface,
-                    actionIconContentColor = MaterialTheme.colorScheme.onSurface
+            Column {
+                CenterAlignedTopAppBar(
+                    title = title,
+                    colors = TopAppBarColors(
+                        containerColor = topBarColor,
+                        scrolledContainerColor = Color.Black,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                        titleContentColor = MaterialTheme.colorScheme.onSurface,
+                        actionIconContentColor = MaterialTheme.colorScheme.onSurface
 
-                ),
-                navigationIcon = navIcon,
-                actions = actions,
-            )
+                    ),
+                    navigationIcon = navIcon,
+                    actions = actions,
+                )
+
+                if (showTitleDivider) {
+                    HorizontalDivider()
+                }
+            }
         },
         floatingActionButton = floatingActionButton
     ) { innerPadding: PaddingValues ->

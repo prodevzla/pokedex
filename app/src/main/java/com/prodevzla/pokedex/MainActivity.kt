@@ -19,6 +19,7 @@ import com.prodevzla.pokedex.presentation.abilities.AbilitiesScreen
 import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.drawer.AppDrawerEvent
 import com.prodevzla.pokedex.presentation.drawer.handlePalette
+import com.prodevzla.pokedex.presentation.favourites.FavouritesScreen
 import com.prodevzla.pokedex.presentation.list.ListScreen
 import com.prodevzla.pokedex.presentation.navigation.NavigationRoute
 import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonDetailScreen
@@ -99,7 +100,16 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable<NavigationRoute.FavouritesRoute> {
-                                Text(text = "Favourites")
+                                FavouritesScreen(
+                                    onClickBack = {
+                                        navController.navigateUp()
+                                    },
+                                    onClickPokemon = { pokemon ->
+                                        navController.navigate(NavigationRoute.PokemonDetailRoute(
+                                            id = pokemon.id
+                                        ))
+                                    }
+                                )
                             }
 
                             composable<NavigationRoute.AbilitiesRoute> {

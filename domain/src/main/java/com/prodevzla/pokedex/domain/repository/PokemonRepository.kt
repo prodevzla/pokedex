@@ -23,4 +23,6 @@ interface PokemonRepository {
 
     suspend fun updateSaveStatus(id: Int)
 
+    fun getFavourites(): Flow<List<Pokemon>>
+
 }
