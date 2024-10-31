@@ -20,11 +20,7 @@ import com.prodevzla.pokedex.presentation.drawer.AppDrawer
 import com.prodevzla.pokedex.presentation.drawer.AppDrawerEvent
 import com.prodevzla.pokedex.presentation.drawer.handlePalette
 import com.prodevzla.pokedex.presentation.list.ListScreen
-import com.prodevzla.pokedex.presentation.navigation.AbilitiesRoute
-import com.prodevzla.pokedex.presentation.navigation.FavouritesRoute
-import com.prodevzla.pokedex.presentation.navigation.HomeRoute
-import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
-import com.prodevzla.pokedex.presentation.navigation.SettingsRoute
+import com.prodevzla.pokedex.presentation.navigation.NavigationRoute
 import com.prodevzla.pokedex.presentation.pokemonDetail.PokemonDetailScreen
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,28 +49,23 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = {
                         AppDrawer { appDrawerEvent ->
-                            if (BuildConfig.DEBUG) {
+                            if (appDrawerEvent == AppDrawerEvent.ClickPalette && BuildConfig.DEBUG) {
                                 handlePalette(navController.context, appDrawerEvent)
-                                toggleDrawer(scope, drawerState)
-                                return@AppDrawer
+                            } else {
+                                navController.navigate(appDrawerEvent.route!!)
                             }
-                            navController.navigate(when (appDrawerEvent) {
-                                AppDrawerEvent.ClickFavourites -> FavouritesRoute
-                                AppDrawerEvent.ClickAbilities -> AbilitiesRoute
-                                AppDrawerEvent.ClickSettings -> SettingsRoute
-                                else -> {}
-                            })
+
                             toggleDrawer(scope, drawerState)
                         }
                     },
                 ) {
 
                     SharedTransitionLayout {
-                        NavHost(navController = navController, startDestination = HomeRoute) {
-                            composable<HomeRoute> {
+                        NavHost(navController = navController, startDestination = NavigationRoute.HomeRoute) {
+                            composable<NavigationRoute.HomeRoute> {
                                 ListScreen(
                                     onClickPokemon = { pokemon ->
-                                        navController.navigate(PokemonDetailRoute(
+                                        navController.navigate(NavigationRoute.PokemonDetailRoute(
                                             id = pokemon.id,
                                         ))
                                     },
@@ -85,7 +76,7 @@ class MainActivity : ComponentActivity() {
                                     animatedVisibilityScope = this
                                 )
                             }
-                            composable<PokemonDetailRoute>(
+                            composable<NavigationRoute.PokemonDetailRoute>(
 //                                typeMap = mapOf(
 //                                    typeOf<Pokemon>() to PokemonNavType.PokemonType
 //                                )
@@ -100,18 +91,18 @@ class MainActivity : ComponentActivity() {
                                     sharedTransitionScope = this@SharedTransitionLayout,
                                     animatedVisibilityScope = this,
                                     onClickPokemon = { pokemon ->
-                                        navController.navigate(PokemonDetailRoute(
+                                        navController.navigate(NavigationRoute.PokemonDetailRoute(
                                             id = pokemon.id
                                         ))
                                     }
                                 )
                             }
 
-                            composable<FavouritesRoute> {
+                            composable<NavigationRoute.FavouritesRoute> {
                                 Text(text = "Favourites")
                             }
 
-                            composable<AbilitiesRoute> {
+                            composable<NavigationRoute.AbilitiesRoute> {
                                 AbilitiesScreen(
                                     onClickBack = {
                                         navController.navigateUp()
@@ -119,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable<SettingsRoute> {
+                            composable<NavigationRoute.SettingsRoute> {
                                 Text(text = "Settings")
                             }
                         }

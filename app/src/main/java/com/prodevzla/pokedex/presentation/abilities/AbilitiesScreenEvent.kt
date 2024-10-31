@@ -8,4 +8,6 @@ sealed interface AbilitiesScreenEvent {
 
     data class OnClickAbility(val ability: Ability): AbilitiesScreenEvent
 
+    data object ClickTryAgain: AbilitiesScreenEvent
+
 }

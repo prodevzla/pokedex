@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.prodevzla.pokedex.domain.model.Result
 import com.prodevzla.pokedex.domain.usecase.GetAbilitiesUseCase
 import com.prodevzla.pokedex.presentation.abilities.model.AbilitiesUiState
+import com.prodevzla.pokedex.presentation.util.RetryableFlowTrigger
+import com.prodevzla.pokedex.presentation.util.retryableFlow
 import com.prodevzla.pokedex.presentation.util.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
@@ -15,7 +17,11 @@ class AbilitiesViewModel @Inject constructor(
     getAbilitiesUseCase: GetAbilitiesUseCase
 ): ViewModel() {
 
-    val uiState = getAbilitiesUseCase.invoke().map {
+    private val retryableFlowTrigger = RetryableFlowTrigger()
+
+    val uiState = retryableFlowTrigger.retryableFlow {
+        getAbilitiesUseCase.invoke()
+    }.map {
         when (it) {
             Result.Loading -> AbilitiesUiState.Loading
             is Result.Error -> AbilitiesUiState.Error
@@ -29,6 +35,7 @@ class AbilitiesViewModel @Inject constructor(
         when (event) {
             AbilitiesScreenEvent.OnClickBack -> {}
             is AbilitiesScreenEvent.OnClickAbility -> {}
+            AbilitiesScreenEvent.ClickTryAgain -> retryableFlowTrigger.retry()
         }
     }
 

@@ -82,7 +82,9 @@ fun AbilitiesScreenContent(
     ) {
         when (state) {
             AbilitiesUiState.Loading -> LoadingScreen()
-            AbilitiesUiState.Error -> ErrorScreen()
+            AbilitiesUiState.Error -> ErrorScreen(tryAgain = {
+                onEvent.invoke(AbilitiesScreenEvent.ClickTryAgain)
+            })
             is AbilitiesUiState.Content -> {
                 LazyColumn(
                     modifier = modifier

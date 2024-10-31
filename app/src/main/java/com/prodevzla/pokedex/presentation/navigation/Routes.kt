@@ -2,25 +2,27 @@ package com.prodevzla.pokedex.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object HomeRoute
+sealed interface NavigationRoute {
+    @Serializable
+    data object HomeRoute: NavigationRoute
 
 //@Serializable
 //data class PokemonDetailRoute(
 //    val pokemon: Pokemon
 //)
 
-@Serializable
-data class PokemonDetailRoute(
-    val id: Int,
-)
+    @Serializable
+    data class PokemonDetailRoute(
+        val id: Int,
+    ): NavigationRoute
 
-@Serializable
-object FavouritesRoute
+    @Serializable
+    data object FavouritesRoute: NavigationRoute
 
-@Serializable
-object AbilitiesRoute
+    @Serializable
+    data object AbilitiesRoute: NavigationRoute
 
-@Serializable
-object SettingsRoute
+    @Serializable
+    data object SettingsRoute: NavigationRoute
 
+}

@@ -3,11 +3,11 @@ package com.prodevzla.pokedex.presentation.pokemonDetail.base
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.prodevzla.pokedex.presentation.navigation.PokemonDetailRoute
+import com.prodevzla.pokedex.presentation.navigation.NavigationRoute
 
 fun SavedStateHandle.getPokemonId(): Int {
 //    return this.toRoute<PokemonDetailRoute>(mapOf(typeOf<Pokemon>() to PokemonNavType.PokemonType)).pokemon
-    return this.toRoute<PokemonDetailRoute>().id
+    return this.toRoute<NavigationRoute.PokemonDetailRoute>().id
 }
 
 /**
