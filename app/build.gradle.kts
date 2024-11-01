@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.distribution)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -130,5 +131,12 @@ dependencies {
     ksp(libs.moshi.kotlin.codegen)
     kspDebug(libs.showkase.processor)
 
+    detektPlugins(libs.detekt.formatting)
+
 }
 
+detekt {
+    toolVersion = "1.23.7"
+    config.setFrom(file("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+}
