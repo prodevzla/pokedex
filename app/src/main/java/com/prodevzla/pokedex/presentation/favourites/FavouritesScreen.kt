@@ -32,6 +32,7 @@ import com.prodevzla.pokedex.presentation.util.CustomScaffold
 import com.prodevzla.pokedex.presentation.util.ErrorScreen
 import com.prodevzla.pokedex.presentation.util.LoadingScreen
 import com.prodevzla.pokedex.presentation.util.PreviewData
+import com.prodevzla.pokedex.presentation.util.ThemePreviews
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
 
@@ -126,8 +127,8 @@ fun FavouritesScreenContent(
 }
 
 @Composable
-@Preview
-fun FavouritesScreenPreview() {
+@ThemePreviews
+private fun FavouritesScreenPreview() {
     PokedexTheme {
         FavouritesScreenContent(
             state = FavouritesState.Content(
