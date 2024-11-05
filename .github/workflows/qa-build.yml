@@ -18,6 +18,8 @@ jobs:
  
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Run detekt
+      run: ./gradlew detekt
     - name: Build Release apk
       run: ./gradlew assembleRelease 
     - name: Get release file apk path
