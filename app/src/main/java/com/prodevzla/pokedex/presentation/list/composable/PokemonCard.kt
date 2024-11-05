@@ -29,12 +29,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.airbnb.android.showkase.annotation.ShowkaseComposable
 import com.prodevzla.pokedex.domain.model.Pokemon
 import com.prodevzla.pokedex.domain.model.PokemonType
+import com.prodevzla.pokedex.domain.model.UiText
 import com.prodevzla.pokedex.presentation.navigation.sharedKeyPokemonImage
 import com.prodevzla.pokedex.presentation.util.PreviewData
 import com.prodevzla.pokedex.presentation.util.ThemePreviews
@@ -44,6 +49,7 @@ import com.prodevzla.pokedex.presentation.util.sharedElementTransition
 import com.prodevzla.pokedex.presentation.util.toTitle
 import com.prodevzla.pokedex.ui.theme.PokedexTheme
 import com.prodevzla.pokedex.ui.theme.spacing
+import kotlin.random.Random
 
 //context(SharedTransitionScope, AnimatedVisibilityScope)
 @Composable
@@ -183,7 +189,7 @@ val imageBackgroundShape = RoundedCornerShape(
     bottomStartPercent = 50,
 )
 
-@ThemePreviews
+//@ThemePreviews
 @Composable
 fun PokemonCardPreview() {
     PokedexTheme {
@@ -200,18 +206,47 @@ fun PokemonCardPreview() {
 
 }
 
-@ThemePreviews
+@Preview
 @Composable
-fun PokemonCardUnsavedPreview() {
+private fun PokemonCardUnsavedPreview(
+    @PreviewParameter(PokemonCardPreviewParameterProvider::class) pokemon: Pokemon
+) {
     PokedexTheme {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 PokemonCard(
-                    pokemon = PreviewData.pokemon2,
+                    pokemon = pokemon,
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this
                 )
             }
         }
+    }
+}
+
+private class PokemonCardPreviewParameterProvider :
+    PreviewParameterProvider<Pokemon> {
+    override val values: Sequence<Pokemon> = sequence {
+
+        (1..5).forEach {
+            yield(
+                Pokemon(
+                    id = it,
+                    name = "Charizard",
+                    types = listOf(
+                        PokemonType(
+                            id = 10,
+                            name = UiText.DynamicString("Fire")
+                        )
+                    ),
+                    generation = 1,
+                    image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+                    isSaved = Random.nextBoolean(),
+                    abilities = listOf(1, 2)
+                    //gameVersions = emptyList()
+                )
+            )
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.prodevzla.pokedex.presentation.util
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.prodevzla.pokedex.domain.model.Ability
 import com.prodevzla.pokedex.domain.model.AudioPlaybackState
 import com.prodevzla.pokedex.domain.model.Filter
@@ -79,7 +80,7 @@ object PreviewData {
         height = UiText.DynamicString("120 cm"),
         weight = UiText.DynamicString("30 Kg"),
         //genderRate = 8498,
-        flavorText = "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+        flavorText = LoremIpsum(words = 25).values.toList().first().toString(),
         cry = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
         statePlayVoiceover = AudioPlaybackState.IDLE,
         statePlayCry = AudioPlaybackState.IDLE
@@ -106,7 +107,7 @@ object PreviewData {
         name = "Overgrow",
         flavorText = "Overgrow",
         shortEffect = "Powers up Grass-type moves when the Pokemon's HP is low",
-        longEffect = "Powers up Grass-type moves when the Pokemon's HP is low asdasd asd"
+        longEffect = LoremIpsum(words = 25).values.toList().first().toString()
     )
 
     val ability2 = Ability(
@@ -114,7 +115,7 @@ object PreviewData {
         name = "Intimidate",
         flavorText = "Intimidate",
         shortEffect = "Lowers opponents' Attack one stage upon entering battle",
-        longEffect = "Lowers opponents' Attack one stage upon entering battle"
+        longEffect = LoremIpsum(words = 25).values.toList().first().toString()
     )
 
     val abilities = listOf(ability1, ability2)
