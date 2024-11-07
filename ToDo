@@ -1,0 +1,38 @@
+--check why pokemons from gen 9 are not coming through - gen array is empty
+
+--create game versions screen ?
+
+--add some integration tests
+
+--add jacoco, compare lint vs klint, add detekt, add konsist, add renovate (dependencies): https://medium.com/codequest/clean-android-multi-module-offline-first-scalable-app-in-2022-part-2-including-compose-ui-e1fd0a0f410e
+
+--add settings screens with unit selection e.g. weight in pounds or kilos, height in cm or inches
+
+--use com.android.support:palette-v7 to get the most dominant color from each pokemon
+
+--app module knows about domain and data module:
+    --domain knows about data: because of the dependency injection graph
+
+--data knows about domain:
+    --because domain has the declaration of the repository interface
+    --because data transforms api models and db entities into models from the domain layer
+
+--composable ui test or unit test
+
+--create abilities screen inside the drawer
+
+--use tooltips inside listScreen -> https://levelup.gitconnected.com/tooltips-in-jetpack-compose-8642dbe51b72
+
+--add generation and gender ratio to info screen
+
+--transform other mappers
+
+++(similar to GitHub, BitBucket and GitLab) Gerrit. The SVC tool used at Jumbo is git.  Gerrit is a workflow tool that sits on top of git to manage workflows similar to GitHub Flow
+--Jenkins. The main tool we use for Continuous Integration (CI) and Continuous Delivery (CD)
+--(with Anvil, we don't need to write the modules) Anvil/Dagger
+--Detekt and Kotlinter
+--Espresso UI testing
+--Amplitude analytics
+
+
+--create helloworld project with single module and get detekt working
