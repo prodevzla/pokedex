@@ -14,3 +14,6 @@
 .cxx
 local.properties
 /Users/renatoferrante/Desktop/Pokedex/app/google-services.json
+data/build/
+domain/build/
+/.idea/

@@ -2,8 +2,8 @@ package com.prodevzla.pokedex.data.mapper
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Operation
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.crashlytics
 import com.prodevzla.pokedex.domain.model.DataError
 
 //internal inline fun <T, R> executeNetworkCall(

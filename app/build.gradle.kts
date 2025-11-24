@@ -14,12 +14,12 @@ plugins {
 
 android {
     namespace = "com.prodevzla.pokedex"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.prodevzla.pokedex"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -115,6 +115,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.showkase.annotation)
+    implementation(libs.androidx.compose.material.icons.core)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

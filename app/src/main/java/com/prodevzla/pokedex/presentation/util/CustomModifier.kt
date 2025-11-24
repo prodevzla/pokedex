@@ -39,7 +39,7 @@ fun Modifier.sharedElementTransition(
             //then is applied to the Modifier we are extending
             return then(
                 Modifier.sharedElement(
-                    state = rememberSharedContentState(key = key),
+                    sharedContentState = rememberSharedContentState(key = key),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
             )
